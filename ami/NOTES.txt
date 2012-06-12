@@ -1,0 +1,26 @@
+SMS küldése
+	action: DongleSendPDU
+	ActionID: 59
+	Device: dongle0
+	PDU: 0031000B816002660304F000000010C8329BFD061DA74DD0F52D679343
+
+Válasz a várakozósorból
+	Response: Success
+	ActionID: 59
+	Message: [dongle0] SMS queued for send
+	ID: 0x5e13c0
+
+Elküldve
+	Event: DongleSMSStatus
+	Privilege: call,all
+	Device: dongle0
+	ID: 0x5e13c0
+	Status: Sent
+
+Nincs elküldve
+	Event: DongleSMSStatus
+	Privilege: call,all
+	Device: dongle0
+	ID: 0x5c0888
+	Status: NotSent
+

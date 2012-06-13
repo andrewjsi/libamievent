@@ -45,13 +45,13 @@ static void ami_response_callback (ami_event_t *response) {
 int main (int argc, char *argv[]) {
 	ami_t *ami;
 
-	ami = ami_init("localhost", 5038, "jsi", "pwd", ami_callback);
-
+	ami = ami_new(ami_callback, NULL);
 	if (ami == NULL) {
-		printf("ami_init beszart\n");
+		printf("ami_new beszart\n");
 		return 1;
 	}
 
+	ami_credentials(ami, "jsi", "pwd", "localhost", "5038");
 	ami_connect(ami);
 
 	char *userdata = "juzeradat";

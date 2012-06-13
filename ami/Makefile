@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -ggdb
 
 LIBS = -lev -lm
-OBJ=test_ami.o ami.o
+OBJ=test_ami.o ami.o netsocket.o
 BIN=test_ami
 
 all: compile

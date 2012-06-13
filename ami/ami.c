@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "ami.h"
+#include "debug.h"
 
 ami_t *ami_new (void *callback, void *userdata) {
 	ami_t *ami = malloc(sizeof(*ami));

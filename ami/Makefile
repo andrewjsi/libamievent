@@ -1,9 +1,9 @@
 CC = gcc
 # Wall-t visszakapcsolni!
-CFLAGS = -ggdb
+CFLAGS = -ggdb -I../libc-jss
 
 LIBS = -lev -lm
-OBJ=test_ami.o ami.o netsocket.o
+OBJ=test_ami.o ami.o ../libc-jss/netsocket.o
 BIN=test_ami
 
 all: compile

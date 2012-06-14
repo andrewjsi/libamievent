@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "logger.h"
 #include "ami.h"
 
 static void ami_callback (ami_event_t *ame) {

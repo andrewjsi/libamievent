@@ -3,19 +3,15 @@ CC = gcc
 CFLAGS = -ggdb -I../libc-jss
 
 LIBS = -lev -lm
-OBJ=test_ami.o ami.o ../libc-jss/netsocket.o
+OBJ=test_ami.o ami.o ../libc-jss/netsocket.o ../libc-jss/logger.o
 BIN=test_ami
 
-all: compile
-#~ all: RSOE
+all: clean compile
 
 compile: $(OBJ)
 	$(CC) $(CFLAGS) -o $(BIN) $(OBJ) $(LIBS)
 
 clean:
 	rm -rf $(OBJ) $(BIN) core
-
-#~ storm: storm.o stormc.o netsocket.o
-	#~ $(CC) $(CFLAGS) -o storm storm.o stormc.o netsocket.o packet.o $(LIBS)
 
 

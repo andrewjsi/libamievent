@@ -1,9 +1,47 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <errno.h>
 
 #include "ami.h"
 #include "debug.h"
+
+#define CON_DEBUG
+#include "logger.h"
+
+static void netsocket_callback (netsocket_t *netsocket, int event) {
+	ami_t *ami = netsocket->userdata;
+
+	switch (event) {
+		case NETSOCKET_EVENT_CONNECT:
+			con_debug("Connected to %s (%s) port %d",
+				netsocket->host,
+				netsocket->ip,
+				netsocket->port
+			);
+			break;
+
+		case NETSOCKET_EVENT_DISCONNECT:
+			if (netsocket->connected) {
+				con_debug("Disconnected from %s: %s",
+					netsocket->host,
+					netsocket->disconnect_reason
+				);
+			} else {
+				conft("Can't connect to %s[%s]:%d %s",
+					netsocket->host,
+					(netsocket->ip) ? netsocket->ip : "",
+					netsocket->port,
+					netsocket->disconnect_reason
+				);
+			}
+			break;
+
+		case NETSOCKET_EVENT_READ:
+			//~ process_input();
+			break;
+	}
+}
 
 ami_t *ami_new (void *callback, void *userdata) {
 	ami_t *ami = malloc(sizeof(*ami));
@@ -16,6 +54,13 @@ ami_t *ami_new (void *callback, void *userdata) {
 	ami->callback = callback;
 	ami->userdata = userdata;
 
+	ami->netsocket = netsocket_new(netsocket_callback, ami);
+	ami->netsocket->host = AMI_DEFAULT_HOST;
+	ami->netsocket->port = AMI_DEFAULT_PORT;
+}
+
+void ami_destroy(ami_t *ami) {
+	netsocket_destroy(ami->netsocket);
 }
 
 void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char *port) {
@@ -33,13 +78,12 @@ void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char
 		if (port_tmp > 0 || port_tmp < 65536)
 			ami->port = port_tmp;
 	}
-}
-
-void ami_destroy(ami_t *ami) {
 
 }
 
 void ami_connect (ami_t *ami) {
+	ami->netsocket->host = ami->host;
+	ami->netsocket->port = ami->port;
 	netsocket_connect(ami->netsocket);
 }
 

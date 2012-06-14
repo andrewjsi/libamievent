@@ -28,7 +28,7 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 					netsocket->disconnect_reason
 				);
 			} else {
-				conft("Can't connect to %s[%s]:%d %s",
+				con_debug("Can't connect to %s[%s]:%d %s",
 					netsocket->host,
 					(netsocket->ip) ? netsocket->ip : "",
 					netsocket->port,
@@ -54,9 +54,13 @@ ami_t *ami_new (void *callback, void *userdata) {
 	ami->callback = callback;
 	ami->userdata = userdata;
 
-	ami->netsocket = netsocket_new(netsocket_callback, ami);
+	if (!(ami->netsocket = netsocket_new(netsocket_callback, ami))) {
+		con_debug("netsocket_new returned NULL");
+	}
 	ami->netsocket->host = AMI_DEFAULT_HOST;
 	ami->netsocket->port = AMI_DEFAULT_PORT;
+
+	return ami;
 }
 
 void ami_destroy(ami_t *ami) {

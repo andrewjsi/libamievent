@@ -1,24 +1,26 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "logger.h"
 #include "ami.h"
+
+#define CON_DEBUG
+#include "logger.h"
 
 static void ami_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
 
 	switch (ame->type) {
 		case AMI_DISCONNECT:
-			printf("Disconnected from %s (%s)\n", ame->ami->netsocket->host, ame->ami->disconnect_reason);
+			conft("Disconnected from %s (%s)\n", ame->ami->netsocket->host, ame->ami->disconnect_reason);
 			// schedule_reconnect();
 			break;
 
 		case AMI_CONNECT:
-			printf("Connected yeahhhh\n");
+			conft("Connected yeahhhh\n");
 			break;
 
 		default:
-			printf("Broaf\n");
+			conft("Broaf\n");
 			break;
 	}
 }
@@ -48,11 +50,11 @@ int main (int argc, char *argv[]) {
 
 	ami = ami_new(ami_callback, NULL);
 	if (ami == NULL) {
-		printf("ami_new beszart\n");
+		con_debug("ami_new() returned NULL");
 		return 1;
 	}
 
-	ami_credentials(ami, "jsi", "pwd", "localhost", "5038");
+	ami_credentials(ami, "jsi", "pwd", "wr", "5038");
 	ami_connect(ami);
 
 	char *userdata = "juzeradat";

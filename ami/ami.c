@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include <ev.h>
 
 #include "ami.h"
 #include "debug.h"
@@ -43,9 +44,17 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 	}
 }
 
-ami_t *ami_new (void *callback, void *userdata) {
+ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop) {
 	ami_t *ami = malloc(sizeof(*ami));
+	if (ami == NULL) {
+		con_debug("ami_new() returned NULL");
+		return NULL;
+	}
 	bzero(ami, sizeof(*ami)); // mindent nullázunk
+
+	// ha meg van adva a loop paraméter, akkor azt használjuk eseménykezelőnek
+	// ellenkező esetben az alapértelmezett eseménykezelőt
+	ami->loop = (loop != NULL) ? loop : ev_default_loop(0);
 
 	// default értékek
 	strncpy(ami->host, AMI_DEFAULT_HOST, sizeof(ami->host) - 1);
@@ -54,7 +63,7 @@ ami_t *ami_new (void *callback, void *userdata) {
 	ami->callback = callback;
 	ami->userdata = userdata;
 
-	if (!(ami->netsocket = netsocket_new(netsocket_callback, ami))) {
+	if (!(ami->netsocket = netsocket_new(netsocket_callback, ami, ami->loop))) {
 		con_debug("netsocket_new returned NULL");
 	}
 	ami->netsocket->host = AMI_DEFAULT_HOST;

@@ -48,7 +48,7 @@ static void ami_response_callback (ami_event_t *response) {
 int main (int argc, char *argv[]) {
 	ami_t *ami;
 
-	ami = ami_new(ami_callback, NULL);
+	ami = ami_new(ami_callback, NULL, NULL);
 	if (ami == NULL) {
 		con_debug("ami_new() returned NULL");
 		return 1;

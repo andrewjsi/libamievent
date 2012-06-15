@@ -33,6 +33,7 @@ typedef struct ami_t {
 	void *userdata;
 	ami_event_list_t *ami_event_list_head;
 	ami_action_list_t *ami_action_list_head;
+	struct ev_loop *loop;
 } ami_t;
 
 typedef struct ami_event_t {
@@ -52,7 +53,7 @@ typedef struct ami_event_t {
 
 } ami_event_t;
 
-ami_t *ami_new (void *callback, void *userdata);
+ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop);
 void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char *port);
 void ami_destroy(ami_t *ami);
 void ami_connect (ami_t *ami);

@@ -1,14 +1,99 @@
+//~ TODO: a process_input() nem teljesen korrekt. Ha több csomag érkezik
+//~ egyszerre, akkor mintha nem mindegyik érkezne be... Megvizsgálni!
+
+//~ TODO: 1.4-es Asteriskre csatlakozva baszik menni. 1.8 OK.
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
 #include <ev.h>
+#include <stdio.h> // TODO: kell ez?
 
 #include "ami.h"
 #include "debug.h"
 
 #define CON_DEBUG
 #include "logger.h"
+
+// teszt kedvéért
+static void parse_input (ami_t *ami, char *buf, int size) {
+	int i;
+	for (i = 0; i < size; i++) {
+		putchar(buf[i]);
+	}
+	printf("\n");
+}
+
+static void process_input (ami_t *ami) {
+	// netsocket->inbuf hozzáfűzése az ami->inbuf stringhez egészen addig, amíg
+	// az ami->inbuf -ban van hely. ami->inbuf_pos mutatja, hogy épp meddig terpeszkedik a string
+	int freespace, bytes;
+	char *pos; // ami->inbuf stringben az első "\r\n\r\n" lezáró token előtti pozíció
+
+	freespace = sizeof(ami->inbuf) - ami->inbuf_pos - 1;
+	bytes = (freespace < ami->netsocket->inbuf_len) ? freespace : ami->netsocket->inbuf_len;
+	memmove(ami->inbuf + ami->inbuf_pos, ami->netsocket->inbuf, bytes);
+	ami->inbuf_pos += bytes;
+
+	if (
+		!strcmp(ami->inbuf, "Asterisk Call Manager/1.1\r\n") ||
+		!strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n"))
+	{
+		ami->inbuf[0] = 0;
+		ami->inbuf_pos = 0;
+		con_debug("Received \"Asterisk Call Manager\" header");
+		netsocket_printf(ami->netsocket, "action: login\nusername: jsi\nsecret: pwd\n\n");
+		return;
+	}
+
+start:
+	if ((pos = strstr(ami->inbuf, "\r\n\r\n"))) {
+		int offset = pos - ami->inbuf;
+		//~ debi(pos); debi(ami->inbuf); debi(ami->inbuf_pos); debi(offset);
+
+		parse_input(ami, ami->inbuf, offset + 2); // 2 = egy darab \r\n mérete
+
+		// ha maradt még feldolgozandó adat, akkor azt a string elejére mozgatjuk
+		if (ami->inbuf_pos > (offset + 4)) {
+			memmove(ami->inbuf, ami->inbuf + offset + 4, ami->inbuf_pos - (offset + 4));
+			ami->inbuf_pos = 0;
+			goto start;
+		} else { // ha nincs már több adat, akkor string reset
+			ami->inbuf[0] = 0;
+			ami->inbuf_pos = 0;
+			return;
+		}
+	}
+
+	// Az ami->inbuf -ban lévő szabad hely kiszámolása újra. Tehát arra vagyunk
+	// kiváncsiak, hogy miután megpróbáltuk feldolgozni a csomagot, van -e még
+	// szabad hely. Ha nincs, az nem jó! A gyakorlatban ez az eset akkor
+	// következik be, ha az Asterisk az AMI_BUFSIZ makróban beállított buffer
+	// méretnél több adatot küld \r\n\r\n lezáró nélkül.
+	freespace = sizeof(ami->inbuf) - ami->inbuf_pos - 1;
+
+	// Ha ide kerülünk, akkor gáz van, mert elfogyott a szabad hely, de még nincs elegendő
+	// adat a bufferben ahhoz, hogy az üzenetet feldolgozzuk. Elképzelhető, hogy ezen
+	// a ponton az egész netsocket kapcsolatot le kéne bontani, hogy a teljes folyamat
+	// újrainduljon. Mert ha csak string reset van, akkor az a következő csomagnál
+	// string nyesedéket eredményezhet, aminek megjósolhatatlan a kimenetele.
+	if (!freespace) {
+		con_debug("Buffer overflow, clearing ami->inbuf. ami->inbuf_pos=%d", ami->inbuf_pos);
+		ami->inbuf[0] = 0; // string reset
+		ami->inbuf_pos = 0;
+		return;
+	}
+
+	//~ Ha ide jut a program, akkor az aktuális csomag fragmentálódott. Tehát,
+	//~ amikor már van valami a bufferben, de még nem jött lezáró, azaz akkor,
+	//~ amikor még nincs elegendő adat a csomag feldolgozásához. A töredék-csomag
+	//~ a következő socket olvasásig a bufferben marad. Ez az eset a
+	//~ gyakorlatban ritka, de különleges helyzetben néha előfordul. Ezen a
+	//~ ponton nincs semmilyen műveletre, mert a függvény felépítéséből adódóan a
+	//~ helyzet már le van kezelve.
+	con_debug("fragmented packet from server");
+}
 
 static void netsocket_callback (netsocket_t *netsocket, int event) {
 	ami_t *ami = netsocket->userdata;
@@ -39,7 +124,7 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 			break;
 
 		case NETSOCKET_EVENT_READ:
-			//~ process_input();
+			process_input(ami);
 			break;
 	}
 }
@@ -121,6 +206,4 @@ char *ami_getvar (ami_event_t *event, char *var) {
 void ami_strncpy (ami_event_t *event, char *dest, char *var, size_t maxsize) {
 
 }
-
-
 

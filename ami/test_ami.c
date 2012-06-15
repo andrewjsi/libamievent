@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <ev.h>
 
 #include "ami.h"
 
@@ -48,7 +49,7 @@ static void ami_response_callback (ami_event_t *response) {
 int main (int argc, char *argv[]) {
 	ami_t *ami;
 
-	ami = ami_new(ami_callback, NULL, NULL);
+	ami = ami_new(ami_callback, NULL, EV_DEFAULT);
 	if (ami == NULL) {
 		con_debug("ami_new() returned NULL");
 		return 1;
@@ -74,8 +75,10 @@ int main (int argc, char *argv[]) {
 
 	ami_event_unregister(response);
 
-	ami_destroy(ami);
 
+	ev_loop(EV_DEFAULT, 0);
+
+	ami_destroy(ami);
 
 	return 0;
 }

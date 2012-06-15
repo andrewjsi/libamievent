@@ -8,6 +8,10 @@
 #define AMI_DEFAULT_PORT 5038
 #endif
 
+#ifndef AMI_BUFSIZ
+#define AMI_BUFSIZ 4096
+#endif
+
 typedef struct ami_event_list_t {
 	void (*callback)(void*);
 	void *userdata;
@@ -34,6 +38,8 @@ typedef struct ami_t {
 	ami_event_list_t *ami_event_list_head;
 	ami_action_list_t *ami_action_list_head;
 	struct ev_loop *loop;
+	char inbuf[AMI_BUFSIZ];
+	int inbuf_pos;
 } ami_t;
 
 typedef struct ami_event_t {

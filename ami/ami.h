@@ -8,6 +8,20 @@
 #define AMI_DEFAULT_PORT 5038
 #endif
 
+typedef struct ami_event_list_t {
+	void (*callback)(void*);
+	void *userdata;
+    struct ami_event_list_t *prev;
+    struct ami_event_list_t *next;
+} ami_event_list_t;
+
+typedef struct ami_action_list_t {
+	void (*callback)(void*);
+	void *userdata;
+    struct ami_action_list_t *prev;
+    struct ami_action_list_t *next;
+} ami_action_list_t;
+
 typedef struct ami_t {
 	char host[64];
 	int port;
@@ -17,6 +31,8 @@ typedef struct ami_t {
 	char disconnect_reason[64];
 	void (*callback)(void*);
 	void *userdata;
+	ami_event_list_t *ami_event_list_head;
+	ami_action_list_t *ami_action_list_head;
 } ami_t;
 
 typedef struct ami_event_t {

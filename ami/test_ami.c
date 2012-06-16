@@ -55,7 +55,13 @@ int main (int argc, char *argv[]) {
 		return 1;
 	}
 
-	ami_credentials(ami, "jsi", "pwd", "wr", "5038");
+	if (argc < 2) {
+		printf("usage: %s <host>\n", argv[0]);
+		return 1;
+	}
+
+	printf("Connecting to %s ...\n", argv[1]);
+	ami_credentials(ami, "jsi", "pwd", argv[1], "5038");
 	ami_connect(ami);
 
 	char *userdata = "juzeradat";

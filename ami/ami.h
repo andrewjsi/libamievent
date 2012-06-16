@@ -26,27 +26,12 @@ typedef struct ami_action_list_t {
     struct ami_action_list_t *next;
 } ami_action_list_t;
 
-typedef struct ami_t {
-	char host[64];
-	int port;
-	char username[32];
-	char secret[32];
-	netsocket_t *netsocket;
-	char disconnect_reason[64];
-	void (*callback)(void*);
-	void *userdata;
-	ami_event_list_t *ami_event_list_head;
-	ami_action_list_t *ami_action_list_head;
-	struct ev_loop *loop;
-	char inbuf[AMI_BUFSIZ];
-	int inbuf_pos;
-} ami_t;
-
 typedef struct ami_event_t {
-	ami_t *ami;
-	int err;							// Response esetén 0=SUCCESS 1=minden más
-	char actionid[16];					// Action esetén ide kerül az ActionID
-	char **vars;
+	struct ami_t *ami;
+	int err; // Response esetén 0=SUCCESS 1=minden más
+	//~ char actionid[16]; // Action esetén ide kerül az ActionID
+	char *field[64];
+	int field_size;
 	void (*callback)(void*);
 	void *userdata;
 	enum {
@@ -58,6 +43,23 @@ typedef struct ami_event_t {
 	} type;
 
 } ami_event_t;
+
+typedef struct ami_t {
+	char host[64];                              // AMI szerver host
+	int port;                                   // AMI szerver port
+	char username[32];                          // AMI szerverhez username
+	char secret[32];                            // AMI szerver password
+	netsocket_t *netsocket;                     // Netsocket objektum
+	char disconnect_reason[64];                 // ???
+	void (*callback)(void*);                    // Callback
+	void *userdata;                             // Callback-nek átadott általános mutató
+	ami_event_list_t *ami_event_list_head;      // megrendelt események
+	ami_action_list_t *ami_action_list_head;    // kiküldött parancs tárolása a visszajövõ Response üzenethez
+	struct ev_loop *loop;                       // eseményhurok
+	char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
+	int inbuf_pos;                              // bejövõ buffer pozíciója
+	struct ami_event_t event;
+} ami_t;
 
 ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop);
 void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char *port);

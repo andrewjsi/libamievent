@@ -18,11 +18,50 @@
 
 // teszt kedvéért
 static void parse_input (ami_t *ami, char *buf, int size) {
-	int i;
-	for (i = 0; i < size; i++) {
-		putchar(buf[i]);
+	int iii;
+	for (iii = 0; iii < size; iii++) {
+		putchar(buf[iii]);
 	}
 	printf("\n");
+
+	ami_event_t *event;
+	event = &ami->event;
+	bzero(event, sizeof(ami->event)); // ami->event teljes nullázása
+
+	int i;
+	int inexpr = 0;
+	event->field[event->field_size++] = buf;
+
+	int max_field_size = sizeof(event->field) / sizeof(char*) - 1; // event->field tömb mérete (elemeinek száma)
+	for (i = 0; i < size && event->field_size < max_field_size; i++) {
+		if (inexpr == 0) { // ": " bal oldalán vagyunk
+			if (buf[i] == ':' && buf[i+1] == ' ') {
+				buf[i] = '\0';
+				buf[i+1] = '\0';
+				i += 2;
+				event->field[event->field_size++] = buf + i;
+				inexpr = 1;
+			}
+		}
+
+		if (inexpr == 1) { // ": " jobb oldalán vagyunk
+			if (buf[i] == '\r' && buf[i+1] == '\n') {
+				buf[i] = '\0';
+				buf[i+1] = '\0';
+				i += 2;
+				event->field[event->field_size++] = buf + i;
+				inexpr = 0;
+			}
+		}
+	}
+
+	event->field_size--;
+
+	int z;
+	for (z = 0; z < event->field_size; z++) {
+		printf("%d - %s\n", z, event->field[z]);
+	}
+
 }
 
 static void process_input (ami_t *ami) {
@@ -43,7 +82,7 @@ static void process_input (ami_t *ami) {
 		ami->inbuf[0] = '\0';
 		ami->inbuf_pos = 0;
 		con_debug("Received \"Asterisk Call Manager\" header");
-		netsocket_printf(ami->netsocket, "action: login\nusername: jsi\nsecret: pwd\n\n");
+		netsocket_printf(ami->netsocket, "action: login\r\nusername: jsi\r\nsecret: pwd\r\n\r\n");
 		return;
 	}
 

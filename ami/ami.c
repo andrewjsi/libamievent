@@ -40,7 +40,7 @@ static void process_input (ami_t *ami) {
 		!strcmp(ami->inbuf, "Asterisk Call Manager/1.1\r\n") ||
 		!strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n"))
 	{
-		ami->inbuf[0] = 0;
+		ami->inbuf[0] = '\0';
 		ami->inbuf_pos = 0;
 		con_debug("Received \"Asterisk Call Manager\" header");
 		netsocket_printf(ami->netsocket, "action: login\nusername: jsi\nsecret: pwd\n\n");
@@ -55,12 +55,12 @@ start:
 		parse_input(ami, ami->inbuf, offset + 2); // 2 = egy darab \r\n mérete
 
 		// ha maradt még feldolgozandó adat, akkor azt a string elejére mozgatjuk
-		if (ami->inbuf_pos > (offset + 4)) {
+		if (ami->inbuf_pos > (offset + 4)) { // 4 = a "\r\n\r\n" lezaro merete
 			memmove(ami->inbuf, ami->inbuf + offset + 4, ami->inbuf_pos - (offset + 4));
 			ami->inbuf_pos = 0;
 			goto start;
 		} else { // ha nincs már több adat, akkor string reset
-			ami->inbuf[0] = 0;
+			ami->inbuf[0] = '\0';
 			ami->inbuf_pos = 0;
 			return;
 		}
@@ -80,7 +80,7 @@ start:
 	// string nyesedéket eredményezhet, aminek megjósolhatatlan a kimenetele.
 	if (!freespace) {
 		con_debug("Buffer overflow, clearing ami->inbuf. ami->inbuf_pos=%d", ami->inbuf_pos);
-		ami->inbuf[0] = 0; // string reset
+		ami->inbuf[0] = '\0'; // string reset
 		ami->inbuf_pos = 0;
 		return;
 	}
@@ -176,7 +176,6 @@ void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char
 		if (port_tmp > 0 || port_tmp < 65536)
 			ami->port = port_tmp;
 	}
-
 }
 
 void ami_connect (ami_t *ami) {

@@ -1,6 +1,3 @@
-//~ TODO: a process_input() nem teljesen korrekt. Ha több csomag érkezik
-//~ egyszerre, akkor mintha nem mindegyik érkezne be... Megvizsgálni!
-
 //~ TODO: 1.4-es Asteriskre csatlakozva baszik menni. 1.8 OK.
 
 #include <stdlib.h>
@@ -96,7 +93,7 @@ start:
 		// ha maradt még feldolgozandó adat, akkor azt a string elejére mozgatjuk
 		if (ami->inbuf_pos > (offset + 4)) { // 4 = a "\r\n\r\n" lezaro merete
 			memmove(ami->inbuf, ami->inbuf + offset + 4, ami->inbuf_pos - (offset + 4));
-			ami->inbuf_pos = 0;
+			ami->inbuf_pos -= (offset + 4);
 			goto start;
 		} else { // ha nincs már több adat, akkor string reset
 			ami->inbuf[0] = '\0';

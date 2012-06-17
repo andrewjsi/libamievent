@@ -72,6 +72,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		printf("%d - %s\n", z, event->field[z]);
 	}
 
+	printf("------- s %s s\n", ami_getvar(event, "Event"));
+
 }
 
 static void process_input (ami_t *ami) {
@@ -264,7 +266,17 @@ int ami_event_unregister(ami_event_t *event) {
 }
 
 char *ami_getvar (ami_event_t *event, char *var) {
-
+	int i;
+	for (i = 0; i < event->field_size; i += 2) {
+		if (!strcmp(event->field[i], var)) {
+			if (event->field[i+1] != NULL) {
+				return event->field[i+1];
+			} else {
+				return ""; // TODO: jó ez? Nem NULL kéne ide is?
+			}
+		}
+	}
+	return NULL;
 }
 
 void ami_strncpy (ami_event_t *event, char *dest, char *var, size_t maxsize) {

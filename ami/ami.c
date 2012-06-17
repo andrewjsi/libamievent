@@ -23,29 +23,32 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	event = &ami->event;
 	bzero(event, sizeof(ami->event)); // ami->event teljes nullázása
 
-	int i;
-	int inexpr = 0;
-	event->field[event->field_size++] = buf;
+	enum {
+		LEFT,
+		RIGHT,
+	} inexpr = LEFT;
 
+	event->field[event->field_size++] = buf;
 	int max_field_size = sizeof(event->field) / sizeof(char*) - 1; // event->field tömb mérete (elemeinek száma)
+	int i;
 	for (i = 0; i < size && event->field_size < max_field_size; i++) {
-		if (inexpr == 0) { // ": " bal oldalán vagyunk
+		if (inexpr == LEFT) { // ": " bal oldalán vagyunk
 			if (buf[i] == ':' && buf[i+1] == ' ') {
 				buf[i] = '\0';
 				buf[i+1] = '\0';
 				i += 2;
 				event->field[event->field_size++] = buf + i;
-				inexpr = 1;
+				inexpr = RIGHT;
 			}
 		}
 
-		if (inexpr == 1) { // ": " jobb oldalán vagyunk
+		if (inexpr == RIGHT) { // ": " jobb oldalán vagyunk
 			if (buf[i] == '\r' && buf[i+1] == '\n') {
 				buf[i] = '\0';
 				buf[i+1] = '\0';
 				i += 2;
 				event->field[event->field_size++] = buf + i;
-				inexpr = 0;
+				inexpr = LEFT;
 			}
 		}
 	}

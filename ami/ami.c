@@ -4,6 +4,7 @@
 #include <errno.h>
 #include <ev.h>
 #include <stdio.h> // TODO: kell ez?
+#include <stdarg.h>
 
 #include "ami.h"
 #include "debug.h"
@@ -11,69 +12,85 @@
 #define CON_DEBUG
 #include "logger.h"
 
-// teszt kedvéért
-static void parse_input (ami_t *ami, char *buf, int size) {
-	int iii;
-	for (iii = 0; iii < size; iii++) {
-		putchar(buf[iii]);
-	}
-	printf("\n");
+/* Felépítjük az event->field string tömböt, amiben az Asterisk által
+küldött "változó: érték" párokat mentjük el úgy, hogy "változó", "érték",
+"változó", "érték", ... A tömböt az ami->inbuf mutatókkal való
+feldarabolásával és NULL byteok elhelyezésével kapjuk.
 
-	ami_event_t *event;
-	event = &ami->event;
-	bzero(event, sizeof(ami->event)); // ami->event teljes nullázása
+Ha az ami->inbuf tartalma:
+Response: Success
+Message: Authentication accepted
 
-	/* Felépítjük az event->field string tömböt, amiben az Asterisk által
-	küldött "változó: érték" párokat mentjük el úgy, hogy "változó", "érték",
-	"változó", "érték", ... A tömböt az ami->inbuf mutatókkal való
-	feldarabolásával és NULL byteok elhelyezésével kapjuk.
+Akkor az ami->field:
+{"Respone","Success","Message","Authentication accepted"}
 
-	Ha az ami->inbuf tartalma:
-	Response: Success
-	Message: Authentication accepted
-
-	Akkor az ami->field:
-	{"Respone","Success","Message","Authentication accepted"} */
-
+field              string tömb
+max_field_size     maximum ennyi darab string rakható a field tömbbe
+field_len          annyi lesz az értéke, ahány elem bekerült a field tömbbe
+data               innen olvassuk az adatokat és ezt a buffert daraboljuk fel és zárjuk le NULL-al
+data_size          data mérete
+*/
+void tokenize_field (char **field, int max_field_size, int *field_len, char *data, int data_size) {
 	enum {
 		LEFT,
 		RIGHT,
 	} inexpr = LEFT;
 
-	event->field[event->field_size++] = buf;
-	int max_field_size = sizeof(event->field) / sizeof(char*) - 1; // event->field tömb elemeinek aszáma
+	int len = 0; // visszatéréskor ezt mentjük el a *field_len -be
+	field[len++] = data;
+	//~ int max_field_size = sizeof(el->field) / sizeof(char*) - 1; // el->field tömb elemeinek aszáma
 	int i;
-	for (i = 0; i < size && event->field_size < max_field_size; i++) {
+	for (i = 0; i < data_size && len < max_field_size; i++) {
 		if (inexpr == LEFT) { // ": " bal oldalán vagyunk, változó
-			if (buf[i] == ':' && buf[i+1] == ' ') {
-				buf[i] = '\0';
-				buf[i+1] = '\0';
+			if (data[i] == ':' && data[i+1] == ' ') {
+				data[i] = '\0';
+				data[i+1] = '\0';
 				i += 2;
-				event->field[event->field_size++] = buf + i;
+				field[len++] = data + i;
 				inexpr = RIGHT;
 			}
 		}
 
 		if (inexpr == RIGHT) { // ": " jobb oldalán vagyunk, érték
-			if (buf[i] == '\r' && buf[i+1] == '\n') {
-				buf[i] = '\0';
-				buf[i+1] = '\0';
+			if (data[i] == '\r' && data[i+1] == '\n') {
+				data[i] = '\0';
+				data[i+1] = '\0';
 				i += 2;
-				event->field[event->field_size++] = buf + i;
+				field[len++] = data + i;
 				inexpr = LEFT;
 			}
 		}
 	}
 
-	event->field_size--;
+	if (inexpr == LEFT)
+		len--;
 
+	*field_len = len;
+
+debi(len);
 	int z;
-	for (z = 0; z < event->field_size; z++) {
-		printf("%d - %s\n", z, event->field[z]);
+	for (z = 0; z < len; z++) {
+		printf("tokenize_field ### %d - %s\n", z, field[z]);
 	}
+}
+
+
+// teszt kedvéért
+static void parse_input (ami_t *ami, char *buf, int size) {
+	ami_event_t *event;
+	event = &ami->event;
+	bzero(event, sizeof(ami->event)); // az előző ami->event kinullázása
+
+	tokenize_field(
+		event->field,
+		sizeof(event->field) / sizeof(char*) - 1,
+		&event->field_size,
+		buf,
+		size
+	);
 
 	printf("------- s %s s\n", ami_getvar(event, "Event"));
-
+	printf("\n");
 }
 
 static void process_input (ami_t *ami) {
@@ -257,7 +274,29 @@ ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char 
 }
 
 ami_event_t *ami_event_register (ami_t *ami, void *callback, void *userdata, const char *fmt, ...) {
-	ami_event_t *event = malloc(sizeof(ami_event_t));
+	ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
+	bzero(el, sizeof(el));
+
+	va_list ap;
+	va_start(ap, fmt);
+	vsnprintf(el->field_data, sizeof(el->field_data), fmt, ap);
+	va_end(ap);
+
+//~ void tokenize_field (char **field, int max_field_size, int *field_len, char *data, int data_size) {
+//~ int max_field_size = sizeof(el->field) / sizeof(char*) - 1; // el->field tömb elemeinek aszáma
+	//~ ev->field
+	//~ ev->field_size
+	//~ ev->field_data
+	//~ ev->field_data_size
+
+	tokenize_field(
+		el->field,
+		sizeof(el->field) / sizeof(char*) - 1,
+		&el->field_size,
+		el->field_data,
+		sizeof(el->field_data)
+	);
+
 
 }
 

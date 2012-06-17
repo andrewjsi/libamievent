@@ -9,12 +9,15 @@
 #endif
 
 #ifndef AMI_BUFSIZ
-#define AMI_BUFSIZ 384
+#define AMI_BUFSIZ 2048
 #endif
 
 typedef struct ami_event_list_t {
 	void (*callback)(void*);
 	void *userdata;
+	char *field[64];
+	int field_size;
+	char field_data[512];
     struct ami_event_list_t *prev;
     struct ami_event_list_t *next;
 } ami_event_list_t;
@@ -62,13 +65,21 @@ typedef struct ami_t {
 } ami_t;
 
 ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop);
+
 void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char *port);
+
 void ami_destroy(ami_t *ami);
+
 void ami_connect (ami_t *ami);
+
 ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char *fmt, ...);
+
 ami_event_t *ami_event_register (ami_t *ami, void *callback, void *userdata, const char *fmt, ...);
+
 int ami_event_unregister(ami_event_t *event);
+
 char *ami_getvar (ami_event_t *event, char *var);
+
 void ami_strncpy (ami_event_t *event, char *dest, char *var, size_t maxsize);
 
 

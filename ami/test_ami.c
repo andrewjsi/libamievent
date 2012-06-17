@@ -68,7 +68,12 @@ int main (int argc, char *argv[]) {
 	char *message_id = "V59";
 
 	ami_event_t *sms_status = ami_event_register(ami, ami_event_callback, userdata,
-		"Event: DongleSMSStatus\r\nID: %s\r\n", message_id);
+		"Event: DongleSMSStatus\nID: %s", message_id);
+
+	ami_event_t *sms_status3 = ami_event_register(ami, ami_event_callback, userdata,
+		"egy\nketto\nharom", message_id);
+
+
 	ami_event_unregister(sms_status);
 
 	char *device = "dongle0";
@@ -81,7 +86,7 @@ int main (int argc, char *argv[]) {
 
 	ami_event_unregister(response);
 
-
+sleep(1);
 	ev_loop(EV_DEFAULT, 0);
 
 	ami_destroy(ami);

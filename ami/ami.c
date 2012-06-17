@@ -17,6 +17,9 @@ küldött "változó: érték" párokat mentjük el úgy, hogy "változó", "ér
 "változó", "érték", ... A tömböt az ami->inbuf mutatókkal való
 feldarabolásával és NULL byteok elhelyezésével kapjuk.
 
+A sorvégeket lezárhatja \r\n és \n is egyaránt.
+A legutolsó sor végét nem kötelező lezárni.
+
 Ha az ami->inbuf tartalma:
 Response: Success
 Message: Authentication accepted
@@ -30,6 +33,14 @@ field_len          annyi lesz az értéke, ahány elem bekerült a field tömbbe
 data               innen olvassuk az adatokat és ezt a buffert daraboljuk fel és zárjuk le NULL-al
 data_size          data mérete
 */
+
+//~ TODO: Hibás a függvény működése, ha a **field tömbünk mérete kicsi és a
+//~ feldarabolás során nem férnek el benne a tokenek. Nincs segfault meg
+//~ memóriahiba, hanem csak annyi történik, hogy az utolsó változó-érték pár
+//~ értéke megkapja sortörésekkel együtt a maradék buffert. Ezt úgy lehetne
+//~ megoldani, hogy a függvény nem bal-jobb oldalt vizsgál, hanem egy for ciklus
+//~ NULL-ra állítja a ": " és a "\r" és "\n" karaktereket a teljes data-ban. Majd
+//~ ezután következne a feldarabolás mutatókkal.
 void tokenize_field (char **field, int max_field_size, int *field_len, char *data, int data_size) {
 	enum {
 		LEFT,
@@ -38,9 +49,12 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 
 	int len = 0; // visszatéréskor ezt mentjük el a *field_len -be
 	field[len++] = data;
-	//~ int max_field_size = sizeof(el->field) / sizeof(char*) - 1; // el->field tömb elemeinek aszáma
 	int i;
 	for (i = 0; i < data_size && len < max_field_size; i++) {
+		if (data[i] == '\r') {
+			data[i] = '\0';
+			continue;
+		}
 		if (inexpr == LEFT) { // ": " bal oldalán vagyunk, változó
 			if (data[i] == ':' && data[i+1] == ' ') {
 				data[i] = '\0';
@@ -52,10 +66,9 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 		}
 
 		if (inexpr == RIGHT) { // ": " jobb oldalán vagyunk, érték
-			if (data[i] == '\r' && data[i+1] == '\n') {
+			if (data[i] == '\n') {
 				data[i] = '\0';
-				data[i+1] = '\0';
-				i += 2;
+				i += 1;
 				field[len++] = data + i;
 				inexpr = LEFT;
 			}
@@ -67,7 +80,6 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 
 	*field_len = len;
 
-debi(len);
 	int z;
 	for (z = 0; z < len; z++) {
 		printf("tokenize_field ### %d - %s\n", z, field[z]);
@@ -89,8 +101,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		size
 	);
 
-	printf("------- s %s s\n", ami_getvar(event, "Event"));
-	printf("\n");
+	// event vizsgálat kerül ide
 }
 
 static void process_input (ami_t *ami) {
@@ -282,13 +293,6 @@ ami_event_t *ami_event_register (ami_t *ami, void *callback, void *userdata, con
 	vsnprintf(el->field_data, sizeof(el->field_data), fmt, ap);
 	va_end(ap);
 
-//~ void tokenize_field (char **field, int max_field_size, int *field_len, char *data, int data_size) {
-//~ int max_field_size = sizeof(el->field) / sizeof(char*) - 1; // el->field tömb elemeinek aszáma
-	//~ ev->field
-	//~ ev->field_size
-	//~ ev->field_data
-	//~ ev->field_data_size
-
 	tokenize_field(
 		el->field,
 		sizeof(el->field) / sizeof(char*) - 1,
@@ -297,7 +301,7 @@ ami_event_t *ami_event_register (ami_t *ami, void *callback, void *userdata, con
 		sizeof(el->field_data)
 	);
 
-
+	// láncolt listába való illesztés kerül ide
 }
 
 int ami_event_unregister(ami_event_t *event) {

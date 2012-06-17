@@ -23,6 +23,18 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	event = &ami->event;
 	bzero(event, sizeof(ami->event)); // ami->event teljes nullázása
 
+	/* Felépítjük az event->field string tömböt, amiben az Asterisk által
+	küldött "változó: érték" párokat mentjük el úgy, hogy "változó", "érték",
+	"változó", "érték", ... A tömböt az ami->inbuf mutatókkal való
+	feldarabolásával és NULL byteok elhelyezésével kapjuk.
+
+	Ha az ami->inbuf tartalma:
+	Response: Success
+	Message: Authentication accepted
+
+	Akkor az ami->field:
+	{"Respone","Success","Message","Authentication accepted"} */
+
 	enum {
 		LEFT,
 		RIGHT,
@@ -32,7 +44,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	int max_field_size = sizeof(event->field) / sizeof(char*) - 1; // event->field tömb mérete (elemeinek száma)
 	int i;
 	for (i = 0; i < size && event->field_size < max_field_size; i++) {
-		if (inexpr == LEFT) { // ": " bal oldalán vagyunk
+		if (inexpr == LEFT) { // ": " bal oldalán vagyunk, változó
 			if (buf[i] == ':' && buf[i+1] == ' ') {
 				buf[i] = '\0';
 				buf[i+1] = '\0';
@@ -42,7 +54,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 			}
 		}
 
-		if (inexpr == RIGHT) { // ": " jobb oldalán vagyunk
+		if (inexpr == RIGHT) { // ": " jobb oldalán vagyunk, érték
 			if (buf[i] == '\r' && buf[i+1] == '\n') {
 				buf[i] = '\0';
 				buf[i+1] = '\0';

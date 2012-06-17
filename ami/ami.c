@@ -66,10 +66,12 @@ static void process_input (ami_t *ami) {
 	// az ami->inbuf -ban van hely. ami->inbuf_pos mutatja, hogy épp meddig terpeszkedik a string
 	int freespace, bytes;
 	char *pos; // ami->inbuf stringben az első "\r\n\r\n" lezáró token előtti pozíció
+	int netsocket_offset = 0;
 
+readnetsocket:
 	freespace = sizeof(ami->inbuf) - ami->inbuf_pos - 1;
 	bytes = (freespace < ami->netsocket->inbuf_len) ? freespace : ami->netsocket->inbuf_len;
-	memmove(ami->inbuf + ami->inbuf_pos, ami->netsocket->inbuf, bytes);
+	memmove(ami->inbuf + ami->inbuf_pos, ami->netsocket->inbuf + netsocket_offset, bytes);
 	ami->inbuf_pos += bytes;
 
 	if (
@@ -83,10 +85,9 @@ static void process_input (ami_t *ami) {
 		return;
 	}
 
-start:
+checkdelim:
 	if ((pos = strstr(ami->inbuf, "\r\n\r\n"))) {
 		int offset = pos - ami->inbuf;
-		//~ debi(pos); debi(ami->inbuf); debi(ami->inbuf_pos); debi(offset);
 
 		parse_input(ami, ami->inbuf, offset + 2); // 2 = egy darab \r\n mérete
 
@@ -94,7 +95,7 @@ start:
 		if (ami->inbuf_pos > (offset + 4)) { // 4 = a "\r\n\r\n" lezaro merete
 			memmove(ami->inbuf, ami->inbuf + offset + 4, ami->inbuf_pos - (offset + 4));
 			ami->inbuf_pos -= (offset + 4);
-			goto start;
+			goto checkdelim;
 		} else { // ha nincs már több adat, akkor string reset
 			ami->inbuf[0] = '\0';
 			ami->inbuf_pos = 0;
@@ -114,6 +115,7 @@ start:
 	// a ponton az egész netsocket kapcsolatot le kéne bontani, hogy a teljes folyamat
 	// újrainduljon. Mert ha csak string reset van, akkor az a következő csomagnál
 	// string nyesedéket eredményezhet, aminek megjósolhatatlan a kimenetele.
+	// TODO: ezt az esetet netsocket_disconnect hívással kell lekezelni!
 	if (!freespace) {
 		con_debug("Buffer overflow, clearing ami->inbuf. ami->inbuf_pos=%d", ami->inbuf_pos);
 		ami->inbuf[0] = '\0'; // string reset
@@ -129,6 +131,20 @@ start:
 	//~ ponton nincs semmilyen műveletre, mert a függvény felépítéséből adódóan a
 	//~ helyzet már le van kezelve.
 	con_debug("fragmented packet from server");
+
+	//~ Ha a függvény elején nem tudtuk átmásolni az összes netsocket->inbuf
+	//~ bájtot az ami->inbuf bufferbe, akkor visszaugrunk a readnetsocket
+	//~ címkéhez és ismét elkezdjük a netsocket->inbuf feldolgozását. Mivel az
+	//~ ami->inbuf buffert időközben feldolgozta a parse_input(), ezért van benne
+	//~ újra hely. A netsocket_offset változó gondoskodik arról, hogy a netsocket
+	//~ ->inbuf buffert ne az elejétől másolja a memmove(), hanem onnan, ahol az
+	//~ előbb félbemaradt.
+	if (bytes < ami->netsocket->inbuf_len) {
+		ami->netsocket->inbuf_len -= bytes;
+		netsocket_offset += bytes;
+		con_debug("goto readnetsocket");
+		goto readnetsocket;
+	}
 }
 
 static void netsocket_callback (netsocket_t *netsocket, int event) {

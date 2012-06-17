@@ -9,7 +9,7 @@
 #endif
 
 #ifndef AMI_BUFSIZ
-#define AMI_BUFSIZ 4096
+#define AMI_BUFSIZ 384
 #endif
 
 typedef struct ami_event_list_t {

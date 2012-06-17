@@ -45,10 +45,10 @@ typedef struct ami_event_t {
 } ami_event_t;
 
 typedef struct ami_t {
-	char host[64];                              // AMI szerver host
-	int port;                                   // AMI szerver port
-	char username[32];                          // AMI szerverhez username
-	char secret[32];                            // AMI szerver password
+	char host[64];                              // Asterisk host
+	int port;                                   // Asterisk Manager Interface port
+	char username[32];                          // AMI User
+	char secret[32];                            // AMI Password
 	netsocket_t *netsocket;                     // Netsocket objektum
 	char disconnect_reason[64];                 // ???
 	void (*callback)(void*);                    // Callback

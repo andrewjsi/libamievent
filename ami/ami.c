@@ -41,7 +41,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	} inexpr = LEFT;
 
 	event->field[event->field_size++] = buf;
-	int max_field_size = sizeof(event->field) / sizeof(char*) - 1; // event->field tömb mérete (elemeinek száma)
+	int max_field_size = sizeof(event->field) / sizeof(char*) - 1; // event->field tömb elemeinek aszáma
 	int i;
 	for (i = 0; i < size && event->field_size < max_field_size; i++) {
 		if (inexpr == LEFT) { // ": " bal oldalán vagyunk, változó

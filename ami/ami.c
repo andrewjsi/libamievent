@@ -1,5 +1,3 @@
-//~ TODO: 1.4-es Asteriskre csatlakozva baszik menni. 1.8 OK.
-
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>

@@ -9,6 +9,7 @@
 #include "ami.h"
 #include "debug.h"
 #include "utlist.h"
+#include "misc.h"
 
 #define CON_DEBUG
 #include "logger.h"
@@ -320,6 +321,35 @@ void ami_connect (ami_t *ami) {
 	ami->netsocket->host = ami->host;
 	ami->netsocket->port = ami->port;
 	netsocket_connect(ami->netsocket);
+}
+
+int ami_printf (ami_t *ami, const char *fmt, ...) {
+	char buf[AMI_BUFSIZ];
+	va_list ap;
+	va_start(ap, fmt);
+	vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+
+//~ printf("BUF: %s :BUF\n", buf);
+
+	char *field[AMI_FIELD_SIZE];
+	int field_size;
+	tokenize_field(
+		field,
+		sizeof(field) / sizeof(char*) - 1,
+		&field_size,
+		buf,
+		sizeof(buf)
+	);
+
+	char packet[AMI_BUFSIZ];
+	int i;
+	strcpy(packet, "");
+	for (i = 0; i < field_size; i += 2)
+		concatf(packet, "%s: %s\r\n", field[i], field[i+1]);
+	concat(packet, "\r\n");
+
+	printf("S %s S\n", packet);
 }
 
 ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char *fmt, ...) {

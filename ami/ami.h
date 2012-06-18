@@ -12,15 +12,21 @@
 #define AMI_BUFSIZ 2048
 #endif
 
+#ifndef AMI_FIELD_SIZE
+#define AMI_FIELD_SIZE 128
+#endif
+
+
+
 // ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!
 typedef struct ami_event_list_t {
     struct ami_event_list_t *prev;
     struct ami_event_list_t *next;
 	void (*callback)(void*);
 	void *userdata;
-	char *field[64];
+	char *field[AMI_FIELD_SIZE];
 	int field_size;
-	char field_data[512];
+	char field_data[AMI_BUFSIZ];
 	char *stack_file;
 	int stack_line;
 	const char *stack_function;
@@ -37,7 +43,7 @@ typedef struct ami_event_t {
 	struct ami_t *ami;
 	int err; // Response esetén 0=SUCCESS 1=minden más
 	//~ char actionid[16]; // Action esetén ide kerül az ActionID
-	char *field[64];
+	char *field[AMI_FIELD_SIZE];
 	int field_size;
 	void (*callback)(void*);
 	void *userdata;
@@ -75,6 +81,8 @@ void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char
 void ami_destroy(ami_t *ami);
 
 void ami_connect (ami_t *ami);
+
+int ami_printf (ami_t *ami, const char *fmt, ...);
 
 ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char *fmt, ...);
 

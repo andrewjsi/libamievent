@@ -8,6 +8,7 @@
 
 #include "ami.h"
 #include "debug.h"
+#include "utlist.h"
 
 #define CON_DEBUG
 #include "logger.h"
@@ -230,7 +231,7 @@ ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop) {
 		con_debug("ami_new() returned NULL");
 		return NULL;
 	}
-	bzero(ami, sizeof(*ami)); // mindent nullázunk
+	bzero(ami, sizeof(*ami)); // minden NULL
 
 	// ha meg van adva a loop paraméter, akkor azt használjuk eseménykezelőnek
 	// ellenkező esetben az alapértelmezett eseménykezelőt
@@ -283,10 +284,10 @@ ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char 
 	ami_event_t *event = malloc(sizeof(ami_event_t));
 
 }
-
+//~ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, char *line, char *function, const char *fmt, ...);
 ami_event_t *ami_event_register (ami_t *ami, void *callback, void *userdata, const char *fmt, ...) {
 	ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
-	bzero(el, sizeof(el));
+	bzero(el, sizeof(el)); // NULL, NULL, NULL :)
 
 	va_list ap;
 	va_start(ap, fmt);
@@ -301,10 +302,37 @@ ami_event_t *ami_event_register (ami_t *ami, void *callback, void *userdata, con
 		sizeof(el->field_data)
 	);
 
-	// láncolt listába való illesztés kerül ide
+	el->callback = callback;
+	el->userdata = userdata;
+
+	DL_APPEND(ami->ami_event_list_head, el);
 }
 
 int ami_event_unregister(ami_event_t *event) {
+
+}
+
+void ami_dump_lists (ami_t *ami) {
+	ami_event_list_t *el;
+	DL_FOREACH(ami->ami_event_list_head, el) {
+		printf(
+			"EVENT %x\n"
+			"  Callback: 0x%x\n"
+			"  Userdata: 0x%x\n"
+			, (int)el, (int)el->callback, (int)el->userdata
+		);
+		int i;
+		for (i = 0; i < el->field_size; i += 2)
+			printf("    %-16s %s\n", el->field[i], el->field[i+1]);
+	}
+
+	//~ void (*callback)(void*);
+	//~ void *userdata;
+	//~ char *field[64];
+	//~ int field_size;
+	//~ char field_data[512];
+    //~ struct ami_event_list_t *prev;
+    //~ struct ami_event_list_t *next;
 
 }
 

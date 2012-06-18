@@ -86,8 +86,10 @@ int main (int argc, char *argv[]) {
 
 	ami_event_unregister(response);
 
-sleep(1);
-	ev_loop(EV_DEFAULT, 0);
+	printf("\n");
+	ami_dump_lists(ami);
+
+	//~ ev_loop(EV_DEFAULT, 0);
 
 	ami_destroy(ami);
 

@@ -41,6 +41,7 @@ typedef struct ami_event_t {
 	int field_size;
 	void (*callback)(void*);
 	void *userdata;
+	ami_event_list_t *invokedby;
 	enum {
 		AMI_EVENT = 1,
 		AMI_RESPONSE,
@@ -48,7 +49,6 @@ typedef struct ami_event_t {
 		AMI_CONNECT,
 		AMI_DISCONNECT,
 	} type;
-
 } ami_event_t;
 
 typedef struct ami_t {

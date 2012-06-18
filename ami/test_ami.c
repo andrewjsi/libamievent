@@ -28,7 +28,6 @@ static void ami_callback (ami_event_t *ame) {
 
 static void ami_event_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
-
 	char *status = ami_getvar(ame, "Status");
 
 	char status2[64];
@@ -44,6 +43,15 @@ static void ami_response_callback (ami_event_t *response) {
 	int err = response->err;
 	char *message = ami_getvar(response, "Message");
 
+}
+
+static void ami_login_response_success (ami_event_t *response) {
+	con_debug("logged in: %s (by %s() %s:%d)",
+		ami_getvar(response, "Message"),
+		response->invokedby->stack_function,
+		response->invokedby->stack_file,
+		response->invokedby->stack_line
+	);
 }
 
 int main (int argc, char *argv[]) {
@@ -73,7 +81,7 @@ int main (int argc, char *argv[]) {
 	ami_event_t *sms_status3 = ami_event_register(ami, ami_event_callback, userdata,
 		"egy\nketto\nharom", message_id);
 
-	ami_event_register(ami, NULL, NULL, "JSS: Hayer");
+	ami_event_register(ami, ami_login_response_success, NULL, "Response: Success");
 
 	//~ ami_event_unregister(sms_status);
 
@@ -90,7 +98,7 @@ int main (int argc, char *argv[]) {
 	printf("\n");
 	ami_dump_lists(ami);
 
-	//~ ev_loop(EV_DEFAULT, 0);
+	ev_loop(EV_DEFAULT, 0);
 
 	ami_destroy(ami);
 

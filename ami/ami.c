@@ -81,12 +81,28 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 
 	*field_len = len;
 
-	int z;
-	for (z = 0; z < len; z++) {
-		printf("tokenize_field ### %d - %s\n", z, field[z]);
-	}
+	//~ int z;
+	//~ for (z = 0; z < len; z++) {
+		//~ printf("tokenize_field ### %d - %s\n", z, field[z]);
+	//~ }
 }
 
+static void invoke_callback (ami_event_t *event) {
+	if (event->callback == NULL)
+		return;
+	//~ obj->in_callback++;
+	con_debug("call %x", (int)event->callback);
+	event->callback(event);
+	con_debug("end %x", (int)event->callback);
+	//~ obj->in_callback--;
+
+	// késleltetett destroy
+	//~ if (obj->destroy_request) {
+		//~ if (!obj->in_callback) {
+			//~ netsocket_destroy(obj);
+		//~ }
+	//~ }
+}
 
 // teszt kedvéért
 static void parse_input (ami_t *ami, char *buf, int size) {
@@ -102,7 +118,33 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		size
 	);
 
-	// event vizsgálat kerül ide
+	ami_event_list_t *el;
+	// végigmegyünk a regisztrált eseményeken :)
+	foreach: DL_FOREACH(ami->ami_event_list_head, el) {
+		int i, n;
+		// minden feltételnek igaznak kell lennie (ezt jobban megfogalmazni)
+		int found = el->field_size / 2 + 1; // minden találatnál dekrementálva lesz
+		// végigmegyünk a megrendelésben szereplő változóneveken
+		for_el: for (i = 0; i < el->field_size; i += 2) {
+			// végigmegyünk a bejövő csomag változónevein (AMI balérték)
+			for_event: for (n = 0; n < event->field_size; n += 2) {
+				// ha a keresett változónév egyezik
+				if (!strcmp(el->field[i], event->field[i])) {
+					// ha a keresett és a kapott változók értékei megegyeznek
+					if (!strcmp(el->field[i+1], event->field[i+1])) {
+						found--;
+					}
+				}
+			}
+		}
+		// ha minden változó megtalálható volt és mindegyik értéke egyezett
+		if (!found) {
+			event->callback = el->callback;
+			event->userdata = el->userdata;
+			event->invokedby = el;
+			invoke_callback(event);
+		}
+	}
 }
 
 static void process_input (ami_t *ami) {

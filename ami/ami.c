@@ -143,6 +143,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 			event->callback = el->callback;
 			event->userdata = el->userdata;
 			event->invokedby = el;
+			event->ami = ami;
 			invoke_callback(event);
 		}
 	}
@@ -268,6 +269,29 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 	}
 }
 
+// reg. feltétel: "Response: Success" és "Response: Error"
+static void event_response (ami_event_t *event) {
+	if (!strcmp(ami_getvar(event, "Response"), "Success")) {
+		event->success = 1;
+		event->err = 0;
+	} else if (!strcmp(ami_getvar(event, "Response"), "Error")) {
+		event->success = 0;
+		event->err = 1;
+	}
+
+	//~ if (!event->ami->authenticated) {
+		//~ if (event->success)
+	//~ }
+
+	event->action_id = atoi(ami_getvar(event, "ActionID"));
+	con_debug("success = %d, action_id = %d", event->success, event->action_id);
+
+	if (event->action_id) {
+		printf("Van eksönájdí\n");
+	}
+
+}
+
 ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop) {
 	ami_t *ami = malloc(sizeof(*ami));
 	if (ami == NULL) {
@@ -339,7 +363,7 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 		sizeof(field) / sizeof(char*) - 1,
 		&field_size,
 		buf,
-		sizeof(buf)
+		strlen(buf)
 	);
 
 	char packet[AMI_BUFSIZ];
@@ -349,7 +373,8 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 		concatf(packet, "%s: %s\r\n", field[i], field[i+1]);
 	concat(packet, "\r\n");
 
-	printf("S %s S\n", packet);
+	if (ami->netsocket)
+	netsocket_printf(ami->netsocket, "%s", packet);
 }
 
 ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char *fmt, ...) {

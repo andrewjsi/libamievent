@@ -9,7 +9,7 @@
 #endif
 
 #ifndef AMI_BUFSIZ
-#define AMI_BUFSIZ 2048
+#define AMI_BUFSIZ 8192
 #endif
 
 #ifndef AMI_FIELD_SIZE
@@ -42,11 +42,12 @@ typedef struct ami_action_list_t {
 typedef struct ami_event_t {
 	struct ami_t *ami;
 	int err; // Response esetén 0=SUCCESS 1=minden más
-	//~ char actionid[16]; // Action esetén ide kerül az ActionID
+	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az Success volt
 	char *field[AMI_FIELD_SIZE];
 	int field_size;
 	void (*callback)(void*);
 	void *userdata;
+	unsigned int action_id;
 	ami_event_list_t *invokedby;
 	enum {
 		AMI_EVENT = 1,
@@ -72,6 +73,7 @@ typedef struct ami_t {
 	char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
 	int inbuf_pos;                              // bejövõ buffer pozíciója
 	struct ami_event_t event;
+	int authenticated;                          // 1 lesz sikeres login után
 } ami_t;
 
 ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop);
@@ -94,6 +96,8 @@ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, ch
 int ami_event_unregister(ami_event_t *event);
 
 char *ami_getvar (ami_event_t *event, char *var);
+
+#define ami_strcpy(event,dest,var) ami_strncpy(event,dest,var,sizeof(dest))
 
 void ami_strncpy (ami_event_t *event, char *dest, char *var, size_t maxsize);
 

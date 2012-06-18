@@ -52,7 +52,7 @@ static void ami_login_response_success (ami_event_t *response) {
 		response->invokedby->stack_file,
 		response->invokedby->stack_line
 	);
-	ami_printf(response->ami, "Action: Listcommands\nActionID: 59");
+	//~ ami_printf(response->ami, "Action: Listcommands\nActionID: 59");
 }
 
 int main (int argc, char *argv[]) {

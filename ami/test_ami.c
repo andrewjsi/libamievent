@@ -73,8 +73,9 @@ int main (int argc, char *argv[]) {
 	ami_event_t *sms_status3 = ami_event_register(ami, ami_event_callback, userdata,
 		"egy\nketto\nharom", message_id);
 
+	ami_event_register(ami, NULL, NULL, "JSS: Hayer");
 
-	ami_event_unregister(sms_status);
+	//~ ami_event_unregister(sms_status);
 
 	char *device = "dongle0";
 	char *pdu = "ABCDEF1234";

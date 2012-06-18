@@ -14,13 +14,16 @@
 
 // ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!
 typedef struct ami_event_list_t {
+    struct ami_event_list_t *prev;
+    struct ami_event_list_t *next;
 	void (*callback)(void*);
 	void *userdata;
 	char *field[64];
 	int field_size;
 	char field_data[512];
-    struct ami_event_list_t *prev;
-    struct ami_event_list_t *next;
+	char *stack_file;
+	int stack_line;
+	const char *stack_function;
 } ami_event_list_t;
 
 typedef struct ami_action_list_t {
@@ -75,10 +78,10 @@ void ami_connect (ami_t *ami);
 
 ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char *fmt, ...);
 
-//~ #define ami_event_register(ami,callback,userdata,...) _ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+#define ami_event_register(ami,callback,userdata,...) _ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
 
 //~ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, char *line, char *function, const char *fmt, ...);
-ami_event_t *ami_event_register (ami_t *ami, void *callback, void *userdata, const char *fmt, ...);
+ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...);
 
 int ami_event_unregister(ami_event_t *event);
 

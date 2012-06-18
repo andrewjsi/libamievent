@@ -39,8 +39,7 @@ typedef struct ami_action_list_t {
 
 typedef struct ami_event_t {
 	struct ami_t *ami;
-	int err; // Response esetén 0=SUCCESS 1=minden más
-	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az Success volt
+	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
 	char *field[AMI_FIELD_SIZE];
 	int field_size;
 	void (*callback)(void*);

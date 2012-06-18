@@ -271,17 +271,44 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 
 // reg. feltétel: "Response: Success" és "Response: Error"
 static void event_response (ami_event_t *event) {
-	if (!strcmp(ami_getvar(event, "Response"), "Success")) {
-		event->success = 1;
-		event->err = 0;
-	} else if (!strcmp(ami_getvar(event, "Response"), "Error")) {
-		event->success = 0;
-		event->err = 1;
+	char *response = ami_getvar(event, "Response");
+	if (!response) {
+		conft("ERROR: no Response variable"); // elvileg lehetetlen
+		return;
 	}
 
-	//~ if (!event->ami->authenticated) {
-		//~ if (event->success)
-	//~ }
+	if (!strcmp(response, "Success")) {
+		event->success = 1;
+	} else if (!strcmp(response, "Error")) {
+		event->success = 0;
+	} else if (!strcmp(response, "Follows")) {
+		con_debug("Response: Follows"); // TODO: cli commands
+		return;
+	} else {
+		conft("unknown Response: %s", response);
+		return;
+	}
+
+	if (!event->ami->authenticated) {
+		if (event->success) { // AUTH accepted
+			conft("logged in");
+			event->ami->authenticated = 1;
+			// CONNECT eventet szétkürtölni
+			return;
+			//~ Bár ez a függvény egyből visszatér, de ezen a ponton aszinkron
+			//~ módon kellene lefuttatni a további események szétkürtölését. Ez a
+			//~ multithread környezetben is jó, mert a többi szálon azonnal
+			//~ megkezdődhet az esemény callback-ek futtatása. Saját szálat
+			//~ tekintve és single-thread környezetben pedig soha nem szabad
+			//~ callback-ből azonnal elkanyarodni az event futtatáshoz, hanem egy
+			//~ event várakozósorba kell betolni az új eventet, és majd ha
+			//~ visszatér a callback meg a várakozósorban lévő többi callback,
+			//~ akkor majd lehet futtatni a következőt. Így elejét vesszük a
+			//~ rejtélyes összeakadásoknak.
+		} else { // AUTH failed
+			netsocket_disconnect(event->ami->netsocket, "authentication failed");
+		}
+	}
 
 	event->action_id = atoi(ami_getvar(event, "ActionID"));
 	con_debug("success = %d, action_id = %d", event->success, event->action_id);

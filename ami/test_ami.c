@@ -40,7 +40,7 @@ static void ami_event_callback (ami_event_t *ame) {
 static void ami_response_callback (ami_event_t *response) {
 	char *userdata = (char*)response->userdata;
 
-	int err = response->err;
+	int succ = response->success;
 	char *message = ami_getvar(response, "Message");
 
 }

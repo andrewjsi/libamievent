@@ -92,9 +92,9 @@ static void invoke_callback (ami_event_t *event) {
 	if (event->callback == NULL)
 		return;
 	//~ obj->in_callback++;
-	con_debug("call %x", (int)event->callback);
+	con_debug("call %x", event->callback);
 	event->callback(event);
-	con_debug("end %x", (int)event->callback);
+	con_debug("end %x", event->callback);
 	//~ obj->in_callback--;
 
 	// késleltetett destroy

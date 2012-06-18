@@ -16,8 +16,6 @@
 #define AMI_FIELD_SIZE 128
 #endif
 
-
-
 // ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!
 typedef struct ami_event_list_t {
     struct ami_event_list_t *prev;

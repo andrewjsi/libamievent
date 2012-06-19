@@ -1,11 +1,16 @@
 #include <stdio.h>
 #include <string.h>
 #include <ev.h>
+#include <stdlib.h>
 
 #include "ami.h"
+#include "debug.h"
+#include "utlist.h"
 
 #define CON_DEBUG
 #include "logger.h"
+
+ev_timer timer;
 
 static void ami_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
@@ -48,16 +53,86 @@ static void ami_response_callback (ami_event_t *response) {
 static void ami_login_response_success (ami_event_t *response) {
 	con_debug("logged in: %s (by %s() %s:%d)",
 		ami_getvar(response, "Message"),
-		response->invokedby->stack_function,
-		response->invokedby->stack_file,
-		response->invokedby->stack_line
+		response->regby_function,
+		response->regby_file,
+		response->regby_line
 	);
 	//~ ami_printf(response->ami, "Action: Listcommands\nActionID: 59");
 }
 
+int tcbt = 3;
+
+static void tcb (EV_P_ ev_io *w, int revents) {
+	printf("tcb\n");
+	//~ ev_timer_again(EV_DEFAULT, &timer);
+	tcbt--;
+	if (tcbt) {
+		ev_timer_start(EV_DEFAULT, &timer);
+		ev_timer_start(EV_DEFAULT, &timer);
+		ev_timer_start(EV_DEFAULT, &timer);
+		ev_timer_start(EV_DEFAULT, &timer);
+		ev_timer_start(EV_DEFAULT, &timer);
+		ev_timer_start(EV_DEFAULT, &timer);
+	}
+}
+
+void utproba () {
+	typedef struct st {
+		struct st *prev;
+		struct st *next;
+		char str[32];
+	} st;
+
+	st *head = NULL;
+	st *el;
+	st *x10, *x15;
+
+	int i;
+	for (i = 0; i < 20; i++) {
+		el = (st*)malloc(sizeof(*el));
+		bzero(el, sizeof(*el));
+
+		sprintf(el->str, "str %d", i);
+		if (i == 10)
+			x10 = el;
+		if (i == 15)
+			x15 = el;
+		DL_APPEND(head, el);
+	}
+
+	st *eltmp;
+	DL_FOREACH_SAFE(head, el, eltmp) {
+		if (el == x10) {
+			st *csere = (st*)malloc(sizeof(st));
+			strcpy(csere->str, "csere1");
+			DL_APPEND(head, csere);
+			csere = (st*)malloc(sizeof(st));
+			strcpy(csere->str, "csere2");
+			DL_APPEND(head, csere);
+
+			DL_DELETE(head, el);
+			free(el);
+		}
+
+		if (el == x15) {
+			DL_DELETE(head, el);
+			free(el);
+		}
+
+	}
+
+	DL_FOREACH_SAFE(head, el, eltmp) {
+		printf("s %s s\n", el->str);
+		DL_DELETE(head, el);
+		free(el);
+	}
+
+	return;
+}
+
 int main (int argc, char *argv[]) {
 	ami_t *ami;
-
+debi(sizeof(ami_event_t));
 	ami = ami_new(ami_callback, NULL, EV_DEFAULT);
 	if (ami == NULL) {
 		con_debug("ami_new() returned NULL");
@@ -98,6 +173,9 @@ int main (int argc, char *argv[]) {
 
 	printf("\n");
 	ami_dump_lists(ami);
+
+	ev_timer_init(&timer, (void*)tcb, 0, 0);
+	ev_timer_start(EV_DEFAULT, &timer);
 
 	ev_loop(EV_DEFAULT, 0);
 

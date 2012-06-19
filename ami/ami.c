@@ -65,8 +65,8 @@ data_size          data mérete
 //~ memóriahiba, hanem csak annyi történik, hogy az utolsó változó-érték pár
 //~ értéke megkapja sortörésekkel együtt a maradék buffert. Ezt úgy lehetne
 //~ megoldani, hogy a függvény nem bal-jobb oldalt vizsgál, hanem egy for ciklus
-//~ NULL-ra állítja a ": " és a "\r" és "\n" karaktereket a teljes data-ban. Majd
-//~ ezután következne a feldarabolás mutatókkal.
+//~ NULL-ra állítja a ": " és a "\r" és "\n" karaktereket a teljes data-ban, majd
+//~ csak ezután következne a feldarabolás mutatókkal.
 void tokenize_field (char **field, int max_field_size, int *field_len, char *data, int data_size) {
 	enum {
 		LEFT,
@@ -265,6 +265,8 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 					netsocket->host,
 					netsocket->disconnect_reason
 				);
+				//~ ami_event_t event;
+				//~ put_event();
 			} else {
 				con_debug("Can't connect to %s[%s]:%d %s",
 					netsocket->host,

@@ -25,9 +25,9 @@ typedef struct ami_event_list_t {
 	char *field[AMI_FIELD_SIZE];
 	int field_size;
 	char field_data[AMI_BUFSIZ];
-	char *stack_file;
-	int stack_line;
-	const char *stack_function;
+	char *regby_file;
+	int regby_line;
+	const char *regby_function;
 } ami_event_list_t;
 
 typedef struct ami_action_list_t {
@@ -38,6 +38,8 @@ typedef struct ami_action_list_t {
 } ami_action_list_t;
 
 typedef struct ami_event_t {
+    struct ami_event_t *prev;
+    struct ami_event_t *next;
 	struct ami_t *ami;
 	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
 	char *field[AMI_FIELD_SIZE];
@@ -45,7 +47,9 @@ typedef struct ami_event_t {
 	void (*callback)(void*);
 	void *userdata;
 	unsigned int action_id;
-	ami_event_list_t *invokedby;
+	char *regby_file;
+	int regby_line;
+	const char *regby_function;
 	enum {
 		AMI_EVENT = 1,
 		AMI_RESPONSE,
@@ -67,9 +71,11 @@ typedef struct ami_t {
 	ami_event_list_t *ami_event_list_head;      // megrendelt események
 	ami_action_list_t *ami_action_list_head;    // kiküldött parancs tárolása a visszajövõ Response üzenethez
 	struct ev_loop *loop;                       // eseményhurok
+	ev_timer need_event_processing;				// azonnali idõzítõ az események kiküldéséhez
 	char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
 	int inbuf_pos;                              // bejövõ buffer pozíciója
-	struct ami_event_t event;
+	struct ami_event_t *event_head;             // esemény várakozósor
+	struct ami_event_t event_tmp;				// itt készítünk új eseményt, amit aztán a várakozósorba másolunk
 	int authenticated;                          // 1 lesz sikeres login után
 } ami_t;
 

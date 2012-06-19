@@ -14,6 +14,30 @@
 #define CON_DEBUG
 #include "logger.h"
 
+// event rögzítése
+void put_event (ami_event_t *event) {
+	ami_event_t *event_copy = (ami_event_t*)malloc(sizeof(ami_event_t));
+	if (!event_copy) {
+		conft("can't allocate event: %s, event lost", strerror(errno));
+		return;
+	}
+
+	//~ event tartalmának másolása az új event_copy számára lefoglalt területre.
+	//~ Emiatt lesz thread-safe a várakozó sor és a callback hívás.
+	memcpy(event_copy, event, sizeof(ami_event_t));
+
+	// bedobjuk a listába az új eseményt
+	DL_APPEND(event->ami->event_head, event_copy);
+
+	//~ Esedékessé tesszük az azonnali (0 sec) időzítőt, aminek hatására az event
+	//~ loop a callback futtatások után azonnal meghívja az invoke_events()
+	//~ függvényt, ami meghivogatja a sorban álló eventekhez tartozó callback
+	//~ eljárásokat. Majd a multithread fejlesztésénél ezen a ponton az
+	//~ ev_timer_start() helyett az ev_async() függvénnyel kell jelezni a másik
+	//~ szálban futó event loop-nak, hogy dolog van.
+	ev_timer_start(event->ami->loop, &event->ami->need_event_processing);
+}
+
 /* Felépítjük az event->field string tömböt, amiben az Asterisk által
 küldött "változó: érték" párokat mentjük el úgy, hogy "változó", "érték",
 "változó", "érték", ... A tömböt az ami->inbuf mutatókkal való
@@ -88,28 +112,9 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 	//~ }
 }
 
-static void invoke_callback (ami_event_t *event) {
-	if (event->callback == NULL)
-		return;
-	//~ obj->in_callback++;
-	con_debug("call %x", event->callback);
-	event->callback(event);
-	con_debug("end %x", event->callback);
-	//~ obj->in_callback--;
-
-	// késleltetett destroy
-	//~ if (obj->destroy_request) {
-		//~ if (!obj->in_callback) {
-			//~ netsocket_destroy(obj);
-		//~ }
-	//~ }
-}
-
-// teszt kedvéért
 static void parse_input (ami_t *ami, char *buf, int size) {
-	ami_event_t *event;
-	event = &ami->event;
-	bzero(event, sizeof(ami->event)); // az előző ami->event kinullázása
+	ami_event_t *event = &ami->event_tmp;
+	bzero(event, sizeof(event));
 
 	tokenize_field(
 		event->field,
@@ -119,16 +124,20 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		size
 	);
 
+	//~ Feltétel rendszer. Ide jön majd egyszer valamikor az a rész, hogy mi
+	//~ alapján vizsgáljuk meg, hogy egy eseményt ki kell -e küldeni vagy sem.
+	//~ Egyszerű strcmp összehasonlítás, reguláris kifejezés, egyedi címzés,  stb.
+
 	ami_event_list_t *el;
 	// végigmegyünk a regisztrált eseményeken :)
-	foreach: DL_FOREACH(ami->ami_event_list_head, el) {
+	DL_FOREACH(ami->ami_event_list_head, el) {
 		int i, n;
 		// minden feltételnek igaznak kell lennie (ezt jobban megfogalmazni)
 		int found = el->field_size / 2 + 1; // minden találatnál dekrementálva lesz
 		// végigmegyünk a megrendelésben szereplő változóneveken
-		for_el: for (i = 0; i < el->field_size; i += 2) {
+		for (i = 0; i < el->field_size; i += 2) {
 			// végigmegyünk a bejövő csomag változónevein (AMI balérték)
-			for_event: for (n = 0; n < event->field_size; n += 2) {
+			for (n = 0; n < event->field_size; n += 2) {
 				// ha a keresett változónév egyezik
 				if (!strcmp(el->field[i], event->field[i])) {
 					// ha a keresett és a kapott változók értékei megegyeznek
@@ -138,13 +147,16 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 				}
 			}
 		}
+
 		// ha minden változó megtalálható volt és mindegyik értéke egyezett
 		if (!found) {
 			event->callback = el->callback;
 			event->userdata = el->userdata;
-			event->invokedby = el;
+			event->regby_file = el->regby_file;
+			event->regby_line = el->regby_line;
+			event->regby_function = el->regby_function;
 			event->ami = ami;
-			invoke_callback(event);
+			put_event(event);
 		}
 	}
 }
@@ -319,6 +331,21 @@ static void event_response (ami_event_t *event) {
 
 }
 
+static void invoke_events (EV_P_ ev_io *w, int revents) {
+	ami_t *ami = w->data;
+
+	ami_event_t *event, *tmp;
+	DL_FOREACH_SAFE(ami->event_head, event, tmp) {
+		if (event->callback == NULL)
+			return;
+		con_debug("call %x", event->callback);
+		event->callback(event);
+		con_debug("end %x", event->callback);
+		DL_DELETE(ami->event_head, event);
+		free(event);
+	}
+}
+
 ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop) {
 	ami_t *ami = malloc(sizeof(*ami));
 	if (ami == NULL) {
@@ -343,6 +370,9 @@ ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop) {
 	}
 	ami->netsocket->host = AMI_DEFAULT_HOST;
 	ami->netsocket->port = AMI_DEFAULT_PORT;
+
+	ami->need_event_processing.data = ami; // ami objektum így kerül az invoke_events-be
+	ev_timer_init(&ami->need_event_processing, (void*)invoke_events, 0, 0);
 
 	return ami;
 }
@@ -428,9 +458,9 @@ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, ch
 
 	el->callback = callback;
 	el->userdata = userdata;
-	el->stack_file = file;
-	el->stack_line = line;
-	el->stack_function = function;
+	el->regby_file = file;
+	el->regby_line = line;
+	el->regby_function = function;
 
 	DL_APPEND(ami->ami_event_list_head, el);
 }
@@ -445,7 +475,7 @@ void ami_dump_event_list_element (ami_event_list_t *el) {
 		"  Callback: 0x%x by %s in %s line %d\n"
 		"  Userdata: 0x%x\n"
 		, (int)el
-		, (int)el->callback, el->stack_function, el->stack_file, el->stack_line
+		, (int)el->callback, el->regby_function, el->regby_file, el->regby_line
 		, (int)el->userdata
 	);
 	int i;

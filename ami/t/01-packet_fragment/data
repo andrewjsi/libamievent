@@ -1,0 +1,8908 @@
+Asterisk Call Manager/1.1
+Response: Success
+Message: Authentication accepted
+
+Event: FullyBooted
+Privilege: system,all
+Status: Fully Booted
+
+Response: Error
+Message: Missing action in request
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPURI
+Value: sip:1212@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPDOMAIN
+Value: 10.27.1.222
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: SIPCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 4
+ChannelStateDesc: Ring
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 1
+Application: Set
+AppData: ~~EXTEN~~=8010617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ~~EXTEN~~
+Value: 8010617808683
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: 8010617808683
+Priority: 2
+Application: Goto
+AppData: sw_1_allowed_not_screened,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_not_screened
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_passed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_passed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed_failed_screen,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed_failed_screen
+Priority: 10
+Application: Goto
+AppData: sw_1_allowed,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_allowed
+Priority: 10
+Application: Goto
+AppData: sw_1_.,10
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 10
+Application: Set
+AppData: DIALNUM="0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALNUM
+Value: "0617808683"
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: sw_1_.
+Priority: 11
+Application: Goto
+AppData: _801.,4
+Uniqueid: 1344222152.12
+
+Event: Newexten
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Context: default
+Extension: _801.
+Priority: 4
+Application: Dial
+AppData: Dongle/dongle0/"0617808683"
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value:
+Uniqueid: 1344222152.12
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Used
+
+Event: Newchannel
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName: dongle0
+AccountCode:
+Exten:
+Context: gsm-in
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENAME
+Value: dongle0
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEPROVIDER
+Value: Telenor HU
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMEI
+Value: 358711036231934
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLEIMSI
+Value: 216012225052711
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DONGLENUMBER
+Value: Unknown
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.13
+
+Event: NewCallerid
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+CallerIDNum: _801.
+CallerIDName:
+Uniqueid: 1344222152.13
+CID-CallingPres: 0 (Presentation Allowed, Not Screened)
+
+Event: Dial
+Privilege: call,all
+SubEvent: Begin
+Channel: SIP/gsm-00000006
+Destination: Dongle/dongle0-0100000006
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+UniqueID: 1344222152.12
+DestUniqueID: 1344222152.13
+Dialstring: dongle0/0617808683
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 3
+ChannelStateDesc: Dialing
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: dialing
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: active
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNAME
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDPEERNUMBER
+Value: dongle0/0617808683
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: Newstate
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 6
+ChannelStateDesc: Up
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum:
+ConnectedLineName:
+Uniqueid: 1344222152.12
+
+Event: NewAccountCode
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+AccountCode:
+OldAccountCode:
+
+Event: Bridge
+Privilege: call,all
+Bridgestate: Link
+Bridgetype: core
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: BRIDGEPEER
+Value: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPEER
+Value: SIP/gsm-00000006
+Uniqueid: 1344222152.13
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: Dongle/dongle0-0100000006
+Variable: BRIDGEPVTCALLID
+Value: 7b043b95031739f7086d65f20dcb3781@172.16.16.80
+Uniqueid: 1344222152.13
+
+Event: RTCPSent
+Privilege: reporting,all
+To: 172.16.16.80:12941
+OurSSRC: 10095441
+SentNTP: 1344222157.3826737152
+SentRTP: 39680
+SentPackets: 248
+SentOctets: 39680
+ReportBlock:
+FractionLost: 0
+CumulativeLoss: 0
+IAJitter: 0.0008
+TheirLastSR: 0
+DLSR: 23.6620 (sec)
+
+Event: RTCPReceived
+Privilege: reporting,all
+From: 10.100.100.202:12941
+PT: 200(Sender Report)
+ReceptionReports: 1
+SenderSSRC: 0
+FractionLost: 0
+PacketsLost: 0
+HighestSequence: 47630
+SequenceNumberCycles: 0
+IAJitter: 51
+LastSR: 0.0000000000
+DLSR: 23.6660(sec)
+
+Event: DongleStatus
+Privilege: call,all
+Device: dongle0
+Status: Free
+
+Event: DongleCallStateChange
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+NewState: released
+
+Event: DongleCEND
+Privilege: call,all
+Device: dongle0
+CallIdx: 1
+Duration: 5
+EndStatus: 104
+CCCause: 16
+
+Event: Unlink
+Privilege: call,all
+Channel1: SIP/gsm-00000006
+Channel2: Dongle/dongle0-0100000006
+Uniqueid1: 1344222152.12
+Uniqueid2: 1344222152.13
+CallerID1: 1212
+CallerID2: _801.
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: ANSWEREDTIME
+Value: 5
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALEDTIME
+Value: 8
+Uniqueid: 1344222152.12
+
+Event: Newstate
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: _801.
+CallerIDName:
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Uniqueid: 1344222152.13
+
+Event: Hangup
+Privilege: call,all
+Channel: Dongle/dongle0-0100000006
+Uniqueid: 1344222152.13
+CallerIDNum: _801.
+CallerIDName: <unknown>
+ConnectedLineNum: 1212
+ConnectedLineName: JSI
+Cause: 16
+Cause-txt: Normal Clearing
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: DIALSTATUS
+Value: ANSWER
+Uniqueid: 1344222152.12
+
+Event: Dial
+Privilege: call,all
+SubEvent: End
+Channel: SIP/gsm-00000006
+UniqueID: 1344222152.12
+DialStatus: ANSWER
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSJITTER
+Value: minrxjitter=0.000000;maxrxjitter=0.000000;avgrxjitter=0.000000;stdevrxjitter=0.000000;reported_minjitter=0.000000;reported_maxjitter=0.000000;reported_avgjitter=0.000000;reported_stdevjitter=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSLOSS
+Value: minrxlost=0.000000;maxrxlost=0.000000;avgrxlost=0.000000;stdevrxlost=0.000000;reported_minlost=0.000000;reported_maxlost=0.000000;reported_avglost=0.000000;reported_stdevlost=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOSRTT
+Value: minrtt=0.000000;maxrtt=0.000000;avgrtt=0.000000;stdevrtt=0.000000;
+Uniqueid: 1344222152.12
+
+Event: VarSet
+Privilege: dialplan,all
+Channel: SIP/gsm-00000006
+Variable: RTPAUDIOQOS
+Value: ssrc=10095441;themssrc=1865479805;lp=0;rxjitter=0.000678;rxcount=374;txjitter=0.000000;txcount=384;rlp=0;rtt=0.000000
+Uniqueid: 1344222152.12
+
+Event: Hangup
+Privilege: call,all
+Channel: SIP/gsm-00000006
+Uniqueid: 1344222152.12
+CallerIDNum: 1212
+CallerIDName: JSI
+ConnectedLineNum: <unknown>
+ConnectedLineName: <unknown>
+Cause: 16
+Cause-txt: Normal Clearing
+
+

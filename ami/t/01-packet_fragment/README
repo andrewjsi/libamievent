@@ -1,0 +1,2 @@
+Fragmentációs problémára készült teszt AMI szerver. Ez a szerver a data-ból
+olvassa, és szakaszosan írja ki a kliensnek az AMI adatokat.

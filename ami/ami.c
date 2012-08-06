@@ -124,6 +124,11 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		size
 	);
 
+	//~ int z;
+	//~ for (z = 0; z < event->field_size; z++) {
+		//~ printf("%d - %s\n", z, event->field[z]);
+	//~ }
+
 	//~ Feltétel rendszer. Ide jön majd egyszer valamikor az a rész, hogy mi
 	//~ alapján vizsgáljuk meg, hogy egy eseményt ki kell -e küldeni vagy sem.
 	//~ Egyszerű strcmp összehasonlítás, reguláris kifejezés, egyedi címzés,  stb.

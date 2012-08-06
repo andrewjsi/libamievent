@@ -60,22 +60,6 @@ static void ami_login_response_success (ami_event_t *response) {
 	//~ ami_printf(response->ami, "Action: Listcommands\nActionID: 59");
 }
 
-int tcbt = 3;
-
-static void tcb (EV_P_ ev_io *w, int revents) {
-	printf("tcb\n");
-	//~ ev_timer_again(EV_DEFAULT, &timer);
-	tcbt--;
-	if (tcbt) {
-		ev_timer_start(EV_DEFAULT, &timer);
-		ev_timer_start(EV_DEFAULT, &timer);
-		ev_timer_start(EV_DEFAULT, &timer);
-		ev_timer_start(EV_DEFAULT, &timer);
-		ev_timer_start(EV_DEFAULT, &timer);
-		ev_timer_start(EV_DEFAULT, &timer);
-	}
-}
-
 void utproba () {
 	typedef struct st {
 		struct st *prev;
@@ -132,7 +116,6 @@ void utproba () {
 
 int main (int argc, char *argv[]) {
 	ami_t *ami;
-debi(sizeof(ami_event_t));
 	ami = ami_new(ami_callback, NULL, EV_DEFAULT);
 	if (ami == NULL) {
 		con_debug("ami_new() returned NULL");
@@ -168,14 +151,10 @@ debi(sizeof(ami_event_t));
 		"Action: DongleSendPDU\nDevice: %s\nPDU: %s", device, pdu);
 
 	ami_action(ami, NULL, NULL, "Originate 1212 1853");
-
 	ami_event_unregister(response);
 
 	printf("\n");
 	ami_dump_lists(ami);
-
-	ev_timer_init(&timer, (void*)tcb, 0, 0);
-	ev_timer_start(EV_DEFAULT, &timer);
 
 	ev_loop(EV_DEFAULT, 0);
 

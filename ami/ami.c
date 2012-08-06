@@ -106,6 +106,7 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 
 	*field_len = len;
 
+	// AMI bal és jobb értékek dumpolása
 	//~ int z;
 	//~ for (z = 0; z < len; z++) {
 		//~ printf("tokenize_field ### %d - %s\n", z, field[z]);
@@ -123,15 +124,6 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		buf,
 		size
 	);
-
-	//~ int z;
-	//~ for (z = 0; z < event->field_size; z++) {
-		//~ printf("%d - %s\n", z, event->field[z]);
-	//~ }
-
-	//~ Feltétel rendszer. Ide jön majd egyszer valamikor az a rész, hogy mi
-	//~ alapján vizsgáljuk meg, hogy egy eseményt ki kell -e küldeni vagy sem.
-	//~ Egyszerű strcmp összehasonlítás, reguláris kifejezés, egyedi címzés,  stb.
 
 	ami_event_list_t *el;
 	// végigmegyünk a regisztrált eseményeken :)
@@ -479,7 +471,7 @@ int ami_event_unregister(ami_event_t *event) {
 void ami_dump_event_list_element (ami_event_list_t *el) {
 	printf(
 		"EVENT %x\n"
-		"  Callback: 0x%x by %s in %s line %d\n"
+		"  Callback: 0x%x by %s() in %s line %d\n"
 		"  Userdata: 0x%x\n"
 		, (int)el
 		, (int)el->callback, el->regby_function, el->regby_file, el->regby_line

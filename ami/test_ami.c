@@ -114,6 +114,13 @@ void utproba () {
 	return;
 }
 
+void event_dial (ami_event_t *event) {
+	printf("From: %s (%s) To: %s\n",
+		ami_getvar(event, "CallerIDNum"),
+		ami_getvar(event, "CallerIDName"),
+		ami_getvar(event, "Dialstring"));
+}
+
 int main (int argc, char *argv[]) {
 	ami_t *ami;
 	ami = ami_new(ami_callback, NULL, EV_DEFAULT);
@@ -141,6 +148,8 @@ int main (int argc, char *argv[]) {
 		"egy\nketto\nharom", message_id);
 
 	ami_event_register(ami, ami_login_response_success, NULL, "Response: Success");
+
+	ami_event_register(ami, event_dial, NULL, "Event: Dial");
 
 	//~ ami_event_unregister(sms_status);
 

@@ -501,6 +501,9 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 	el->regby_function = function;
 
 	DL_APPEND(ami->ami_event_list_head, el);
+	con_debug("EVENT registered callback: 0x%x by %s() in %s line %d",
+	          (int)el->callback, el->regby_function, el->regby_file, el->regby_line);
+
 	return el;
 }
 

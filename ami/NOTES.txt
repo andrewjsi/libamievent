@@ -1,3 +1,9 @@
+TODO:
+-ami.c-ben ami_event_list_t átnevezése valami kultúráltabb típusnévre, mert ez az API-ban megjelenik
+-időzítőt betenni, hogy ha megszakad a kapcsolat az Asteriskkel, akkor ping timeout legyen
+-időzítőt betenni az authentikációnál is akár
+
+
 SMS küldése
 	action: DongleSendPDU
 	ActionID: 59

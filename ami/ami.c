@@ -113,6 +113,7 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 	//~ }
 }
 
+// bejövő Response es Event feldolgozása
 static void parse_input (ami_t *ami, char *buf, int size) {
 	ami_event_t *event = &ami->event_tmp;
 	bzero(event, sizeof(event));
@@ -125,35 +126,99 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		size
 	);
 
-	ami_event_list_t *el;
-	// végigmegyünk a regisztrált eseményeken :)
-	DL_FOREACH(ami->ami_event_list_head, el) {
-		int i, n;
-		// minden feltételnek igaznak kell lennie (ezt jobban megfogalmazni)
-		int found = el->field_size / 2 + 1; // minden találatnál dekrementálva lesz
-		// végigmegyünk a megrendelésben szereplő változóneveken
-		for (i = 0; i < el->field_size; i += 2) {
-			// végigmegyünk a bejövő csomag változónevein (AMI balérték)
-			for (n = 0; n < event->field_size; n += 2) {
-				// ha a keresett változónév egyezik
-				if (!strcmp(el->field[i], event->field[i])) {
-					// ha a keresett és a kapott változók értékei megegyeznek
-					if (!strcmp(el->field[i+1], event->field[i+1])) {
-						found--;
+	char *response = ami_getvar(event, "Response");
+	// ha van response, akkor Response vagy CLI Response erkezett
+	if (response) {
+		char *action_id_str = ami_getvar(event, "ActionID");
+		if (action_id_str == NULL) {
+			con_debug("Missing ActionID in Response!");
+			return;
+		}
+		event->action_id = atoi(action_id_str);
+
+		if (!strcmp(response, "Success")) {
+			event->success = 1;
+		} else if (!strcmp(response, "Error")) {
+			event->success = 0;
+		} else if (!strcmp(response, "Follows")) {
+			con_debug("CLI Response not implemented yet...");
+			return;
+		}
+
+		con_debug("RESPONSE - success = %d, action_id = %d", event->success, event->action_id);
+
+		ami_event_list_t *el;
+		ami_event_list_t *eltmp;
+		DL_FOREACH_SAFE(ami->ami_event_list_head, el, eltmp) {
+			// event->action_id  - Asterisktől érkezett ActionID
+			// el->action_id     - adatbázisban szereplő ActionID
+			if (event->action_id == el->action_id) {
+				event->callback = el->callback;
+				event->userdata = el->userdata;
+				event->regby_file = el->regby_file;
+				event->regby_line = el->regby_line;
+				event->regby_function = el->regby_function;
+				event->ami = ami;
+				event->type = AMI_RESPONSE;
+				put_event(event);
+				DL_DELETE(ami->ami_event_list_head, el);
+				return;
+			}
+		}
+		con_debug("Received ActionID=%d, but %d not found in ami_event_list_head!", event->action_id, event->action_id);
+
+	// ha nem volt response, akkor event erkezett
+	} else { // if (response)
+
+		ami_event_list_t *el;
+		// végigmegyünk a regisztrált eseményeken :)
+		DL_FOREACH(ami->ami_event_list_head, el) {
+			int i, n;
+			// minden feltételnek igaznak kell lennie (ezt jobban megfogalmazni)
+			int found = el->field_size / 2 + 1; // minden találatnál dekrementálva lesz
+			// végigmegyünk a megrendelésben szereplő változóneveken
+			for (i = 0; i < el->field_size; i += 2) {
+				// végigmegyünk a bejövő csomag változónevein (AMI balérték)
+				for (n = 0; n < event->field_size; n += 2) {
+					// ha a keresett változónév egyezik
+					if (!strcmp(el->field[i], event->field[i])) {
+						// ha a keresett és a kapott változók értékei megegyeznek
+						if (!strcmp(el->field[i+1], event->field[i+1])) {
+							found--;
+						}
 					}
 				}
 			}
-		}
 
-		// ha minden változó megtalálható volt és mindegyik értéke egyezett
-		if (!found) {
-			event->callback = el->callback;
-			event->userdata = el->userdata;
-			event->regby_file = el->regby_file;
-			event->regby_line = el->regby_line;
-			event->regby_function = el->regby_function;
-			event->ami = ami;
-			put_event(event);
+			// ha minden változó megtalálható volt és mindegyik értéke egyezett
+			if (!found) {
+				event->callback = el->callback;
+				event->userdata = el->userdata;
+				event->regby_file = el->regby_file;
+				event->regby_line = el->regby_line;
+				event->regby_function = el->regby_function;
+				event->type = AMI_EVENT;
+				event->ami = ami;
+				put_event(event);
+			}
+		} // DL_FOREACH
+	}
+}
+static void response_login (ami_event_t *response) {
+	con_debug("auth reply: success=%d %s (by %s() %s:%d)",
+		response->success,
+		ami_getvar(response, "Message"),
+		response->regby_function,
+		response->regby_file,
+		response->regby_line
+	);
+
+	if (!response->ami->authenticated) {
+		if (response->success) { // AUTH accepted
+			response->ami->authenticated = 1;
+			// CONNECT eventet szétkürtölni
+		} else { // AUTH failed
+			netsocket_disconnect(response->ami->netsocket, "authentication failed");
 		}
 	}
 }
@@ -177,8 +242,10 @@ readnetsocket:
 	{
 		ami->inbuf[0] = '\0';
 		ami->inbuf_pos = 0;
-		con_debug("Received \"Asterisk Call Manager\" header");
-		netsocket_printf(ami->netsocket, "action: login\r\nusername: jsi\r\nsecret: pwd\r\n\r\n");
+		con_debug("Received \"Asterisk Call Manager\" header, sending auth...");
+		ami_action(ami, response_login, NULL,
+		           "Action: Login\nUsername: %s\nSecret: %s\n",
+		           ami->username, ami->secret);
 		return;
 	}
 
@@ -280,63 +347,13 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 	}
 }
 
-// reg. feltétel: "Response: Success" és "Response: Error"
-static void event_response (ami_event_t *event) {
-	char *response = ami_getvar(event, "Response");
-	if (!response) {
-		conft("ERROR: no Response variable"); // elvileg lehetetlen
-		return;
-	}
-
-	if (!strcmp(response, "Success")) {
-		event->success = 1;
-	} else if (!strcmp(response, "Error")) {
-		event->success = 0;
-	} else if (!strcmp(response, "Follows")) {
-		con_debug("Response: Follows"); // TODO: cli commands
-		return;
-	} else {
-		conft("unknown Response: %s", response);
-		return;
-	}
-
-	if (!event->ami->authenticated) {
-		if (event->success) { // AUTH accepted
-			conft("logged in");
-			event->ami->authenticated = 1;
-			// CONNECT eventet szétkürtölni
-			return;
-			//~ Bár ez a függvény egyből visszatér, de ezen a ponton aszinkron
-			//~ módon kellene lefuttatni a további események szétkürtölését. Ez a
-			//~ multithread környezetben is jó, mert a többi szálon azonnal
-			//~ megkezdődhet az esemény callback-ek futtatása. Saját szálat
-			//~ tekintve és single-thread környezetben pedig soha nem szabad
-			//~ callback-ből azonnal elkanyarodni az event futtatáshoz, hanem egy
-			//~ event várakozósorba kell betolni az új eventet, és majd ha
-			//~ visszatér a callback meg a várakozósorban lévő többi callback,
-			//~ akkor majd lehet futtatni a következőt. Így elejét vesszük a
-			//~ rejtélyes összeakadásoknak.
-		} else { // AUTH failed
-			netsocket_disconnect(event->ami->netsocket, "authentication failed");
-		}
-	}
-
-	event->action_id = atoi(ami_getvar(event, "ActionID"));
-	con_debug("success = %d, action_id = %d", event->success, event->action_id);
-
-	if (event->action_id) {
-		printf("Van eksönájdí\n");
-	}
-
-}
-
 static void invoke_events (EV_P_ ev_io *w, int revents) {
 	ami_t *ami = w->data;
 
 	ami_event_t *event, *tmp;
 	DL_FOREACH_SAFE(ami->event_head, event, tmp) {
 		if (event->callback == NULL)
-			return;
+			return; // TODO: lehet, hogy itt a return helyett a ciklust kene ujrakezdeni
 		con_debug("call %x", event->callback);
 		event->callback(event);
 		con_debug("end %x", event->callback);
@@ -433,12 +450,34 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 	netsocket_printf(ami->netsocket, "%s", packet);
 }
 
-ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char *fmt, ...) {
-	ami_event_t *event = malloc(sizeof(ami_event_t));
+ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...) {
+	ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
+	bzero(el, sizeof(el)); // NULL, NULL, NULL :)
 
+	char buf[AMI_BUFSIZ];
+	va_list ap;
+	va_start(ap, fmt);
+	vsnprintf(buf, sizeof(buf), fmt, ap);
+	va_end(ap);
+	buf[AMI_BUFSIZ-1] = '\0'; // védelem
+
+	ami->action_id++; // új ActionID
+
+	el->callback = callback;
+	el->userdata = userdata;
+	el->action_id = ami->action_id;
+	el->regby_file = file;
+	el->regby_line = line;
+	el->regby_function = function;
+
+	ami_printf(ami, "Async: 1\nActionID: %d\n%s", ami->action_id, buf);
+
+	DL_APPEND(ami->ami_event_list_head, el);
+	return el;
 }
+
 //~ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, char *line, char *function, const char *fmt, ...);
-ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...) {
+ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...) {
 	ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
 	bzero(el, sizeof(el)); // NULL, NULL, NULL :)
 
@@ -462,9 +501,10 @@ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, ch
 	el->regby_function = function;
 
 	DL_APPEND(ami->ami_event_list_head, el);
+	return el;
 }
 
-int ami_event_unregister(ami_event_t *event) {
+int ami_event_unregister(ami_event_list_t *el) {
 
 }
 

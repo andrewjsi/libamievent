@@ -28,14 +28,8 @@ typedef struct ami_event_list_t {
 	char *regby_file;
 	int regby_line;
 	const char *regby_function;
+	unsigned int action_id;
 } ami_event_list_t;
-
-typedef struct ami_action_list_t {
-	void (*callback)(void*);
-	void *userdata;
-    struct ami_action_list_t *prev;
-    struct ami_action_list_t *next;
-} ami_action_list_t;
 
 typedef struct ami_event_t {
     struct ami_event_t *prev;
@@ -69,7 +63,6 @@ typedef struct ami_t {
 	void (*callback)(void*);                    // Callback
 	void *userdata;                             // Callback-nek átadott általános mutató
 	ami_event_list_t *ami_event_list_head;      // megrendelt események
-	ami_action_list_t *ami_action_list_head;    // kiküldött parancs tárolása a visszajövõ Response üzenethez
 	struct ev_loop *loop;                       // eseményhurok
 	ev_timer need_event_processing;				// azonnali idõzítõ az események kiküldéséhez
 	char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
@@ -77,6 +70,7 @@ typedef struct ami_t {
 	struct ami_event_t *event_head;             // esemény várakozósor
 	struct ami_event_t event_tmp;				// itt készítünk új eseményt, amit aztán a várakozósorba másolunk
 	int authenticated;                          // 1 lesz sikeres login után
+	unsigned int action_id;						// soron következõ használható ActionID
 } ami_t;
 
 ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop);
@@ -89,14 +83,13 @@ void ami_connect (ami_t *ami);
 
 int ami_printf (ami_t *ami, const char *fmt, ...);
 
-ami_event_t *ami_action (ami_t *ami, void *callback, void *userdata, const char *fmt, ...);
+#define ami_action(ami,callback,userdata,...) _ami_action(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...);
 
 #define ami_event_register(ami,callback,userdata,...) _ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
+ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...);
 
-//~ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, char *line, char *function, const char *fmt, ...);
-ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...);
-
-int ami_event_unregister(ami_event_t *event);
+int ami_event_unregister(ami_event_list_t *el);
 
 char *ami_getvar (ami_event_t *event, char *var);
 

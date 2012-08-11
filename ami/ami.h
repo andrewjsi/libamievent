@@ -38,6 +38,8 @@ typedef struct ami_event_t {
 	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
 	char *field[AMI_FIELD_SIZE];
 	int field_size;
+	char data[AMI_BUFSIZ];
+	int data_size;
 	void (*callback)(void*);
 	void *userdata;
 	unsigned int action_id;

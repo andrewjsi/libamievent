@@ -107,10 +107,10 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 	*field_len = len;
 
 	// AMI bal és jobb értékek dumpolása
-	//~ int z;
-	//~ for (z = 0; z < len; z++) {
-		//~ printf("tokenize_field ### %d - %s\n", z, field[z]);
-	//~ }
+	int z;
+	for (z = 0; z < len; z++) {
+		 printf("tokenize_field ### %d - %s\n", z, field[z]);
+	}
 }
 
 // bejövő Response es Event feldolgozása
@@ -118,11 +118,14 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	ami_event_t *event = &ami->event_tmp;
 	bzero(event, sizeof(event));
 
+	memcpy(event->data, buf, size);
+	event->data_size = size;
+
 	tokenize_field(
 		event->field,
 		sizeof(event->field) / sizeof(char*) - 1,
 		&event->field_size,
-		buf,
+		event->data,
 		size
 	);
 

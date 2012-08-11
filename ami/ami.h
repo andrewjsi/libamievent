@@ -22,9 +22,9 @@ typedef struct ami_event_list_t {
     struct ami_event_list_t *next;
 	void (*callback)(void*);
 	void *userdata;
-	char *field[AMI_FIELD_SIZE];
+	int field[AMI_FIELD_SIZE];
 	int field_size;
-	char field_data[AMI_BUFSIZ];
+	char data[AMI_BUFSIZ];
 	char *regby_file;
 	int regby_line;
 	const char *regby_function;
@@ -36,7 +36,7 @@ typedef struct ami_event_t {
     struct ami_event_t *next;
 	struct ami_t *ami;
 	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
-	char *field[AMI_FIELD_SIZE];
+	int field[AMI_FIELD_SIZE];
 	int field_size;
 	char data[AMI_BUFSIZ];
 	int data_size;

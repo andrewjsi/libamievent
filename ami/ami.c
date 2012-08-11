@@ -67,14 +67,14 @@ data_size          data mérete
 //~ megoldani, hogy a függvény nem bal-jobb oldalt vizsgál, hanem egy for ciklus
 //~ NULL-ra állítja a ": " és a "\r" és "\n" karaktereket a teljes data-ban, majd
 //~ csak ezután következne a feldarabolás mutatókkal.
-void tokenize_field (char **field, int max_field_size, int *field_len, char *data, int data_size) {
+void tokenize_field (int *field, int max_field_size, int *field_len, char *data, int data_size) {
 	enum {
 		LEFT,
 		RIGHT,
 	} inexpr = LEFT;
 
 	int len = 0; // visszatéréskor ezt mentjük el a *field_len -be
-	field[len++] = data;
+	field[len++] = 0; // első pozíció a data legeleje, tehát 0
 	int i;
 	for (i = 0; i < data_size && len < max_field_size; i++) {
 		if (data[i] == '\r') {
@@ -86,7 +86,7 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 				data[i] = '\0';
 				data[i+1] = '\0';
 				i += 2;
-				field[len++] = data + i;
+				field[len++] = i;
 				inexpr = RIGHT;
 			}
 		}
@@ -95,7 +95,7 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 			if (data[i] == '\n') {
 				data[i] = '\0';
 				i += 1;
-				field[len++] = data + i;
+				field[len++] = i;
 				inexpr = LEFT;
 			}
 		}
@@ -109,7 +109,7 @@ void tokenize_field (char **field, int max_field_size, int *field_len, char *dat
 	// AMI bal és jobb értékek dumpolása
 	int z;
 	for (z = 0; z < len; z++) {
-		 printf("tokenize_field ### %d - %s\n", z, field[z]);
+		 printf("tokenize_field ### %d - %s\n", z, &data[field[z]]);
 	}
 }
 
@@ -184,9 +184,9 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 				// végigmegyünk a bejövő csomag változónevein (AMI balérték)
 				for (n = 0; n < event->field_size; n += 2) {
 					// ha a keresett változónév egyezik
-					if (!strcmp(el->field[i], event->field[i])) {
+					if (!strcmp(&el->data[el->field[i]], &event->data[event->field[i]])) {
 						// ha a keresett és a kapott változók értékei megegyeznek
-						if (!strcmp(el->field[i+1], event->field[i+1])) {
+						if (!strcmp(&el->data[el->field[i+1]], &event->data[event->field[i+1]])) {
 							found--;
 						}
 					}
@@ -432,7 +432,7 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 
 //~ printf("BUF: %s :BUF\n", buf);
 
-	char *field[AMI_FIELD_SIZE];
+	int field[AMI_FIELD_SIZE];
 	int field_size;
 	tokenize_field(
 		field,
@@ -446,7 +446,7 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 	int i;
 	strcpy(packet, "");
 	for (i = 0; i < field_size; i += 2)
-		concatf(packet, "%s: %s\r\n", field[i], field[i+1]);
+		concatf(packet, "%s: %s\r\n", &buf[field[i]], &buf[field[i+1]]);
 	concat(packet, "\r\n");
 
 	if (ami->netsocket)
@@ -486,15 +486,15 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 
 	va_list ap;
 	va_start(ap, fmt);
-	vsnprintf(el->field_data, sizeof(el->field_data), fmt, ap);
+	vsnprintf(el->data, sizeof(el->data), fmt, ap);
 	va_end(ap);
 
 	tokenize_field(
 		el->field,
 		sizeof(el->field) / sizeof(char*) - 1,
 		&el->field_size,
-		el->field_data,
-		sizeof(el->field_data)
+		el->data,
+		sizeof(el->data)
 	);
 
 	el->callback = callback;
@@ -525,7 +525,7 @@ void ami_dump_event_list_element (ami_event_list_t *el) {
 	);
 	int i;
 	for (i = 0; i < el->field_size; i += 2)
-		printf("    %-16s %s\n", el->field[i], el->field[i+1]);
+		printf("    %-16s %s\n", &el->data[el->field[i]], &el->data[el->field[i+1]]);
 }
 
 void ami_dump_lists (ami_t *ami) {
@@ -538,9 +538,9 @@ void ami_dump_lists (ami_t *ami) {
 char *ami_getvar (ami_event_t *event, char *var) {
 	int i;
 	for (i = 0; i < event->field_size; i += 2) {
-		if (!strcmp(event->field[i], var)) {
-			if (event->field[i+1] != NULL) {
-				return event->field[i+1];
+		if (!strcmp(&event->data[event->field[i]], var)) {
+			if (&event->data[event->field[i+1]] != NULL) {
+				return &event->data[event->field[i+1]];
 			} else {
 				return ""; // TODO: jó ez? Nem NULL kéne ide is?
 			}

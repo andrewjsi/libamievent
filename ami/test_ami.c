@@ -11,6 +11,7 @@
 #include "logger.h"
 
 ev_timer timer;
+ami_t *ami;
 
 static void ami_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
@@ -121,21 +122,38 @@ void event_dial (ami_event_t *event) {
 		ami_getvar(event, "Dialstring"));
 }
 
+void event_fullybooted (ami_event_t *event) {
+	printf("*** Fully booted ***\n");
+}
+
+void response_dongleshowdevices (ami_event_t *event) {
+	printf("dongle_response\n");
+}
+
+static void timer_dstatus (EV_P_ ev_timer *w, int revents) {
+	ami_action(ami, response_dongleshowdevices, NULL, "Action: DongleShowDevices");
+}
+
+
 int main (int argc, char *argv[]) {
-	ami_t *ami;
 	ami = ami_new(ami_callback, NULL, EV_DEFAULT);
 	if (ami == NULL) {
 		con_debug("ami_new() returned NULL");
 		return 1;
 	}
 
+	char host[128];
+
 	if (argc < 2) {
-		printf("usage: %s <host>\n", argv[0]);
-		return 1;
+		//~ printf("usage: %s <host>\n", argv[0]);
+		printf("Default host used!\n");
+		strcpy(host, "10.27.1.222");
+	} else {
+		strcpy(host, argv[1]);
 	}
 
-	printf("Connecting to %s ...\n", argv[1]);
-	ami_credentials(ami, "jsi", "pwd", argv[1], "5038");
+	printf("Connecting to %s ...\n", host);
+	ami_credentials(ami, "jsi", "pwd", host, "5038");
 	ami_connect(ami);
 
 	char *userdata = "juzeradat";
@@ -149,7 +167,10 @@ int main (int argc, char *argv[]) {
 
 	ami_event_register(ami, ami_login_response_success, NULL, "Response: Success");
 
-	ami_event_register(ami, event_dial, NULL, "Event: Dial");
+	ami_event_register(ami, event_dial, NULL, "Event: Dial\n");
+
+	ami_event_register(ami, event_fullybooted, NULL, "Event: FullyBooted");
+	ami_event_register(ami, event_fullybooted, NULL, "Event: FullyBooted\nPrivilege: system,all");
 
 	//~ ami_event_unregister(sms_status);
 
@@ -161,6 +182,11 @@ int main (int argc, char *argv[]) {
 
 	ami_action(ami, NULL, NULL, "Originate 1212 1853");
 	ami_event_unregister(response);
+
+	ev_timer tmr;
+	ev_timer_init(&tmr, timer_dstatus, 1, 1);
+	ev_timer_start(EV_DEFAULT, &tmr);
+
 
 	printf("\n");
 	ami_dump_lists(ami);

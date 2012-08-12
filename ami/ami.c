@@ -68,6 +68,15 @@ data_size          data mérete
 //~ NULL-ra állítja a ": " és a "\r" és "\n" karaktereket a teljes data-ban, majd
 //~ csak ezután következne a feldarabolás mutatókkal.
 void tokenize_field (int *field, int max_field_size, int *field_len, char *data, int data_size) {
+
+	int kk;
+	printf("----- DATA START ------\n");
+	for (kk = 0; kk < data_size; kk++) {
+		putchar(data[kk]);
+	}
+	printf("----- DATA END ------\n");
+
+
 	enum {
 		LEFT,
 		RIGHT,
@@ -107,10 +116,7 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 	*field_len = len;
 
 	// AMI bal és jobb értékek dumpolása
-	int z;
-	for (z = 0; z < len; z++) {
-		 printf("tokenize_field ### %d - %s\n", z, &data[field[z]]);
-	}
+	int z; for (z = 0; z < len; z++) printf("tokenize_field ### %d - %s\n", z, &data[field[z]]); printf("\n");
 }
 
 // bejövő Response es Event feldolgozása
@@ -171,40 +177,47 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		con_debug("Received ActionID=%d, but %d not found in ami_event_list_head!", event->action_id, event->action_id);
 
 	// ha nem volt response, akkor event erkezett
-	} else { // if (response)
+	} else {
 
+//~ printf("##### PARSE_INPUT EVENT #####\n");
 		ami_event_list_t *el;
-		// végigmegyünk a regisztrált eseményeken :)
+		// végigmegyünk a regisztrált eseményeken
 		DL_FOREACH(ami->ami_event_list_head, el) {
-			int i, n;
-			// minden feltételnek igaznak kell lennie (ezt jobban megfogalmazni)
-			int found = el->field_size / 2 + 1; // minden találatnál dekrementálva lesz
-			// végigmegyünk a megrendelésben szereplő változóneveken
-			for (i = 0; i < el->field_size; i += 2) {
-				// végigmegyünk a bejövő csomag változónevein (AMI balérték)
-				for (n = 0; n < event->field_size; n += 2) {
-					// ha a keresett változónév egyezik
-					if (!strcmp(&el->data[el->field[i]], &event->data[event->field[i]])) {
-						// ha a keresett és a kapott változók értékei megegyeznek
-						if (!strcmp(&el->data[el->field[i+1]], &event->data[event->field[i+1]])) {
-							found--;
+			// regisztrációban definiált változó=érték párok száma
+			int need_found = el->field_size / 2; // minden találatnál dekrementálva lesz
+			if (need_found) { // ha van mit keresnünk
+//~ printf(" REG need_found=%d by %s:%d\n", need_found, el->regby_file, el->regby_line);
+				int n, i;
+				// végigmegyünk a regisztráció változó=érték párjain
+				for (n = 0; n < el->field_size; n += 2) {
+//~ printf("  _reg_ %s=%s\n", &el->data[el->field[n]], &el->data[el->field[n+1]]);
+					// végigmegyünk a bejövő csomag változó=érték párjain
+					for (i = 0; i < event->field_size; i += 2) {
+//~ printf("   _eve_ %s=%s\n", &event->data[event->field[i]], &event->data[event->field[i+1]]);
+						// ha egyezik a regisztrált változó neve a csomag változó nevével
+						if (!strcmp(&el->data[el->field[n]], &event->data[event->field[i]])) {
+							// ha egyezik a regisztrált változó értéke a csomag változó értékével
+							if (!strcmp(&el->data[el->field[n+1]], &event->data[event->field[i+1]])) {
+//~ printf("      !found\n");
+								need_found--;
+							}
 						}
 					}
 				}
+//~ printf(" FIN need_found=%d\n", need_found);
+				// ha minden változó megtalálható volt és mindegyik értéke egyezett
+				if (need_found == 0) {
+					event->callback = el->callback;
+					event->userdata = el->userdata;
+					event->regby_file = el->regby_file;
+					event->regby_line = el->regby_line;
+					event->regby_function = el->regby_function;
+					event->type = AMI_EVENT;
+					event->ami = ami;
+					put_event(event);
+				}
 			}
-
-			// ha minden változó megtalálható volt és mindegyik értéke egyezett
-			if (!found) {
-				event->callback = el->callback;
-				event->userdata = el->userdata;
-				event->regby_file = el->regby_file;
-				event->regby_line = el->regby_line;
-				event->regby_function = el->regby_function;
-				event->type = AMI_EVENT;
-				event->ami = ami;
-				put_event(event);
-			}
-		} // DL_FOREACH
+		}
 	}
 }
 static void response_login (ami_event_t *response) {
@@ -430,7 +443,7 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 	vsnprintf(buf, sizeof(buf), fmt, ap);
 	va_end(ap);
 
-//~ printf("BUF: %s :BUF\n", buf);
+//~ printf("~~~ %s ~~~\n", buf);
 
 	int field[AMI_FIELD_SIZE];
 	int field_size;
@@ -475,6 +488,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 
 	ami_printf(ami, "Async: 1\nActionID: %d\n%s", ami->action_id, buf);
 
+	con_debug("registered action id #%d", el->action_id);
 	DL_APPEND(ami->ami_event_list_head, el);
 	return el;
 }

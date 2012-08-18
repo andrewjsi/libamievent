@@ -12,6 +12,7 @@
 
 ev_timer timer;
 ami_t *ami;
+int dstatus_n = 10;
 
 static void ami_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
@@ -132,6 +133,11 @@ void response_dongleshowdevices (ami_event_t *event) {
 
 static void timer_dstatus (EV_P_ ev_timer *w, int revents) {
 	ami_action(ami, response_dongleshowdevices, NULL, "Action: DongleShowDevices");
+	dstatus_n--;
+	if (dstatus_n <= 0) {
+		printf("***** DISABLING DSTATUS TIMER ******\n");
+		ev_timer_stop(EV_DEFAULT, w);
+	}
 }
 
 
@@ -177,11 +183,11 @@ int main (int argc, char *argv[]) {
 	char *device = "dongle0";
 	char *pdu = "ABCDEF1234";
 
-	ami_event_list_t *response = ami_action(ami, ami_response_callback, userdata,
-		"Action: DongleSendPDU\nDevice: %s\nPDU: %s", device, pdu);
+	//~ ami_event_list_t *response = ami_action(ami, ami_response_callback, userdata,
+		//~ "Action: DongleSendPDU\nDevice: %s\nPDU: %s", device, pdu);
 
 	ami_action(ami, NULL, NULL, "Originate 1212 1853");
-	ami_event_unregister(response);
+	//~ ami_event_unregister(response);
 
 	ev_timer tmr;
 	ev_timer_init(&tmr, timer_dstatus, 1, 1);

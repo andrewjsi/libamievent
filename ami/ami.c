@@ -68,15 +68,6 @@ data_size          data mérete
 //~ NULL-ra állítja a ": " és a "\r" és "\n" karaktereket a teljes data-ban, majd
 //~ csak ezután következne a feldarabolás mutatókkal.
 void tokenize_field (int *field, int max_field_size, int *field_len, char *data, int data_size) {
-
-	int kk;
-	printf("----- DATA START ------\n");
-	for (kk = 0; kk < data_size; kk++) {
-		putchar(data[kk]);
-	}
-	printf("----- DATA END ------\n");
-
-
 	enum {
 		LEFT,
 		RIGHT,
@@ -121,6 +112,13 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 
 // bejövő Response es Event feldolgozása
 static void parse_input (ami_t *ami, char *buf, int size) {
+	int kk;
+	printf("----- PARSE INPUT BUF START ------\n");
+	for (kk = 0; kk < size; kk++) {
+		putchar(buf[kk]);
+	}
+	printf("----- PARSE INPUT BUF END ------\n");
+
 	ami_event_t *event = &ami->event_tmp;
 	bzero(event, sizeof(event));
 
@@ -171,6 +169,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 				event->type = AMI_RESPONSE;
 				put_event(event);
 				DL_DELETE(ami->ami_event_list_head, el);
+				free(el);
 				return;
 			}
 		}
@@ -179,7 +178,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	// ha nem volt response, akkor event erkezett
 	} else {
 
-//~ printf("##### PARSE_INPUT EVENT #####\n");
+printf("##### PARSE_INPUT EVENT #####\n");
 		ami_event_list_t *el;
 		// végigmegyünk a regisztrált eseményeken
 		DL_FOREACH(ami->ami_event_list_head, el) {
@@ -240,6 +239,13 @@ static void response_login (ami_event_t *response) {
 }
 
 static void process_input (ami_t *ami) {
+	printf("----- NETSOCKET INBUF START -----\n");
+	int kk;
+	for (kk = 0; kk < ami->netsocket->inbuf_len; kk++) {
+		putchar(ami->netsocket->inbuf[kk]);
+	}
+	printf("----- NETSOCKET INBUF END -----\n");
+
 	// netsocket->inbuf hozzáfűzése az ami->inbuf stringhez egészen addig, amíg
 	// az ami->inbuf -ban van hely. ami->inbuf_pos mutatja, hogy épp meddig terpeszkedik a string
 	int freespace, bytes;
@@ -277,7 +283,7 @@ checkdelim:
 			ami->inbuf_pos -= (offset + 4);
 			goto checkdelim;
 		} else { // ha nincs már több adat, akkor string reset
-			ami->inbuf[0] = '\0';
+			bzero(ami->inbuf, sizeof(ami->inbuf));
 			ami->inbuf_pos = 0;
 			return;
 		}
@@ -463,6 +469,9 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 	concat(packet, "\r\n");
 
 	if (ami->netsocket)
+printf("----- NETSOCKET WRITE START ------\n");
+printf("%s", packet);
+printf("----- NETSOCKET WRITE END ------\n");
 	netsocket_printf(ami->netsocket, "%s", packet);
 }
 

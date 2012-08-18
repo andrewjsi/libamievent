@@ -7,11 +7,11 @@ TODO:
 -időzítőt betenni, hogy ha megszakad a kapcsolat az Asteriskkel, akkor ping timeout legyen
 -időzítőt betenni, ami törlődik a sikeres authentikációnál
 -Asterisk Call Manager/1.1 fejléc megérkezése előtt senki nem írhat az AMI socketre, mert ez lesz:
-    Asterisk Call Manager/1.1
-    Response: Error
-    ActionID: 1
-    Message: Missing action in request
-
+  Asterisk Call Manager/1.1
+  Response: Error
+  ActionID: 1
+  Message: Missing action in request
+-CLI response és az olyan több csomagos válaszok, mint pl. a DongleShowDevices kezelése
 
 
 SMS küldése

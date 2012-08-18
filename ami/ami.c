@@ -107,18 +107,18 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 	*field_len = len;
 
 	// AMI bal és jobb értékek dumpolása
-	int z; for (z = 0; z < len; z++) printf("tokenize_field ### %d - %s\n", z, &data[field[z]]); printf("\n");
+	//~ int z; for (z = 0; z < len; z++) printf("tokenize_field ### %d - %s\n", z, &data[field[z]]); printf("\n");
 }
 
 // bejövő Response es Event feldolgozása
 static void parse_input (ami_t *ami, char *buf, int size) {
-	int kk;
-	printf("----- PARSE INPUT BUF START ------\n");
-	for (kk = 0; kk < size; kk++) {
-		putchar(buf[kk]);
-	}
-	printf("----- PARSE INPUT BUF END ------\n");
-
+	//~ int kk;
+	//~ printf("----- PARSE INPUT BUF START ------\n");
+	//~ for (kk = 0; kk < size; kk++) {
+		//~ putchar(buf[kk]);
+	//~ }
+	//~ printf("----- PARSE INPUT BUF END ------\n");
+//~
 	ami_event_t *event = &ami->event_tmp;
 	bzero(event, sizeof(event));
 
@@ -178,7 +178,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	// ha nem volt response, akkor event erkezett
 	} else {
 
-printf("##### PARSE_INPUT EVENT #####\n");
+//~ printf("##### PARSE_INPUT EVENT #####\n");
 		ami_event_list_t *el;
 		// végigmegyünk a regisztrált eseményeken
 		DL_FOREACH(ami->ami_event_list_head, el) {
@@ -219,6 +219,7 @@ printf("##### PARSE_INPUT EVENT #####\n");
 		}
 	}
 }
+
 static void response_login (ami_event_t *response) {
 	con_debug("auth reply: success=%d %s (by %s() %s:%d)",
 		response->success,
@@ -239,12 +240,12 @@ static void response_login (ami_event_t *response) {
 }
 
 static void process_input (ami_t *ami) {
-	printf("----- NETSOCKET INBUF START -----\n");
-	int kk;
-	for (kk = 0; kk < ami->netsocket->inbuf_len; kk++) {
-		putchar(ami->netsocket->inbuf[kk]);
-	}
-	printf("----- NETSOCKET INBUF END -----\n");
+	//~ printf("----- NETSOCKET INBUF START -----\n");
+	//~ int kk;
+	//~ for (kk = 0; kk < ami->netsocket->inbuf_len; kk++) {
+		//~ putchar(ami->netsocket->inbuf[kk]);
+	//~ }
+	//~ printf("----- NETSOCKET INBUF END -----\n");
 
 	// netsocket->inbuf hozzáfűzése az ami->inbuf stringhez egészen addig, amíg
 	// az ami->inbuf -ban van hely. ami->inbuf_pos mutatja, hogy épp meddig terpeszkedik a string
@@ -316,7 +317,7 @@ checkdelim:
 	//~ gyakorlatban ritka, de különleges helyzetben néha előfordul. Ezen a
 	//~ ponton nincs semmilyen műveletre, mert a függvény felépítéséből adódóan a
 	//~ helyzet már le van kezelve.
-	con_debug("fragmented packet from server");
+	//~ con_debug("fragmented packet from server");
 
 	//~ Ha a függvény elején nem tudtuk átmásolni az összes netsocket->inbuf
 	//~ bájtot az ami->inbuf bufferbe, akkor visszaugrunk a readnetsocket
@@ -469,9 +470,9 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 	concat(packet, "\r\n");
 
 	if (ami->netsocket)
-printf("----- NETSOCKET WRITE START ------\n");
-printf("%s", packet);
-printf("----- NETSOCKET WRITE END ------\n");
+//~ printf("----- NETSOCKET WRITE START ------\n");
+//~ printf("%s", packet);
+//~ printf("----- NETSOCKET WRITE END ------\n");
 	netsocket_printf(ami->netsocket, "%s", packet);
 }
 

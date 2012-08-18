@@ -9,11 +9,11 @@
 #endif
 
 #ifndef AMI_BUFSIZ
-#define AMI_BUFSIZ 8192
+#define AMI_BUFSIZ 4096
 #endif
 
 #ifndef AMI_FIELD_SIZE
-#define AMI_FIELD_SIZE 128
+#define AMI_FIELD_SIZE 64
 #endif
 
 // ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!

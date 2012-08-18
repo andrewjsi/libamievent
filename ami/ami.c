@@ -477,9 +477,6 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 }
 
 ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...) {
-	ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
-	bzero(el, sizeof(el)); // NULL, NULL, NULL :)
-
 	char buf[AMI_BUFSIZ];
 	va_list ap;
 	va_start(ap, fmt);
@@ -487,21 +484,24 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 	va_end(ap);
 	buf[AMI_BUFSIZ-1] = '\0'; // védelem
 
-	ami->action_id++; // új ActionID
-
-	el->callback = callback;
-	el->userdata = userdata;
-	el->action_id = ami->action_id;
-	el->regby_file = file;
-	el->regby_line = line;
-	el->regby_function = function;
-
-	ami_printf(ami, "Async: 1\nActionID: %d\n%s", ami->action_id, buf);
-
-	con_debug("registered action id #%d", el->action_id);
-	// TODO: ha nincs callback, akkor kihagyni az action regisztralasat es az ActionID-t!
-	DL_APPEND(ami->ami_event_list_head, el);
-	return el;
+	if (callback != NULL) {
+		ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
+		bzero(el, sizeof(el)); // NULL, NULL, NULL :)
+		el->callback = callback;
+		el->userdata = userdata;
+		el->regby_file = file;
+		el->regby_line = line;
+		el->regby_function = function;
+		ami->action_id++; // új ActionID
+		el->action_id = ami->action_id;
+		ami_printf(ami, "Async: 1\nActionID: %d\n%s", ami->action_id, buf);
+		con_debug("registered action id #%d", el->action_id);
+		DL_APPEND(ami->ami_event_list_head, el);
+		return el;
+	} else {
+		ami_printf(ami, "Async: 1\n%s", buf);
+		return NULL;
+	}
 }
 
 //~ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, char *line, char *function, const char *fmt, ...);

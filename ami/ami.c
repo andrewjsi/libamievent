@@ -489,6 +489,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 	ami_printf(ami, "Async: 1\nActionID: %d\n%s", ami->action_id, buf);
 
 	con_debug("registered action id #%d", el->action_id);
+	// TODO: ha nincs callback, akkor kihagyni az action regisztralasat es az ActionID-t!
 	DL_APPEND(ami->ami_event_list_head, el);
 	return el;
 }

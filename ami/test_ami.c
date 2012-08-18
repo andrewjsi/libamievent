@@ -12,7 +12,7 @@
 
 ev_timer timer;
 ami_t *ami;
-int dstatus_n = 10;
+int dstatus_n = 100;
 
 static void ami_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
@@ -123,6 +123,12 @@ void event_dial (ami_event_t *event) {
 		ami_getvar(event, "Dialstring"));
 }
 
+void event_rtcpreceived (ami_event_t *event) {
+	printf("*** RTCP received: IAJitter=%s DLSR=%s\n",
+		ami_getvar(event, "IAJitter"),
+		ami_getvar(event, "DLSR"));
+}
+
 void event_fullybooted (ami_event_t *event) {
 	printf("*** Fully booted ***\n");
 }
@@ -174,6 +180,7 @@ int main (int argc, char *argv[]) {
 	ami_event_register(ami, ami_login_response_success, NULL, "Response: Success");
 
 	ami_event_register(ami, event_dial, NULL, "Event: Dial\n");
+	ami_event_register(ami, event_rtcpreceived, NULL, "Event: RTCPReceived\n");
 
 	ami_event_register(ami, event_fullybooted, NULL, "Event: FullyBooted");
 	ami_event_register(ami, event_fullybooted, NULL, "Event: FullyBooted\nPrivilege: system,all");

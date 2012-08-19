@@ -16,6 +16,14 @@
 #define AMI_FIELD_SIZE 64
 #endif
 
+enum ami_event_type {
+	AMI_EVENT = 1,
+	AMI_RESPONSE,
+	AMI_CLIRESPONSE,
+	AMI_CONNECT,
+	AMI_DISCONNECT,
+};
+
 // ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!
 typedef struct ami_event_list_t {
     struct ami_event_list_t *prev;
@@ -29,6 +37,7 @@ typedef struct ami_event_list_t {
 	int regby_line;
 	const char *regby_function;
 	unsigned int action_id;
+	enum ami_event_type type;
 } ami_event_list_t;
 
 typedef struct ami_event_t {
@@ -46,13 +55,7 @@ typedef struct ami_event_t {
 	char *regby_file;
 	int regby_line;
 	const char *regby_function;
-	enum {
-		AMI_EVENT = 1,
-		AMI_RESPONSE,
-		AMI_CLIRESPONSE,
-		AMI_CONNECT,
-		AMI_DISCONNECT,
-	} type;
+	enum ami_event_type type;
 } ami_event_t;
 
 typedef struct ami_t {

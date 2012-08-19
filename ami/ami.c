@@ -541,10 +541,10 @@ int ami_event_unregister(ami_event_list_t *el) {
 
 void ami_dump_event_list_element (ami_event_list_t *el) {
 	printf(
-		"EVENT %x\n"
+		"EVENT %x type=%s\n"
 		"  Callback: 0x%x by %s() in %s line %d\n"
 		"  Userdata: 0x%x\n"
-		, (int)el
+		, (int)el, type2name(el->type)
 		, (int)el->callback, el->regby_function, el->regby_file, el->regby_line
 		, (int)el->userdata
 	);

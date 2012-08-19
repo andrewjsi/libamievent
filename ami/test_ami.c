@@ -11,8 +11,10 @@
 #include "logger.h"
 
 ev_timer timer;
+ev_timer timer_reconnect;
+
 ami_t *ami;
-int dstatus_n = 100;
+int dstatus_n = 2;
 
 static void ami_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
@@ -135,9 +137,19 @@ void event_fullybooted (ami_event_t *event) {
 
 void response_dongleshowdevices (ami_event_t *event) {
 	printf("dongle_response\n");
+	//~ printf("Logging off.....\n");
+	//~ ami_action(ami, NULL, NULL, "Action: Logoff");
+}
+
+void reconnect_ami (ami_event_t *event) {
+	printf("*** Reconnecting... ***\n");
+	ev_timer_stop(EV_DEFAULT, &timer_reconnect);
+	ami_connect(ami);
 }
 
 static void timer_dstatus (EV_P_ ev_timer *w, int revents) {
+	if (!ami->authenticated)
+		return;
 	ami_action(ami, response_dongleshowdevices, NULL, "Action: DongleShowDevices");
 	dstatus_n--;
 	if (dstatus_n <= 0) {
@@ -146,6 +158,33 @@ static void timer_dstatus (EV_P_ ev_timer *w, int revents) {
 	}
 }
 
+void event_connect (ami_event_t *event) {
+	printf("*** CONNECTED ***\n");
+	printf("  semmi   = %s\n  host    = %s\n  ip      = %s\n  port    = %s\n",
+		ami_getvar(event, "semmi"),
+		ami_getvar(event, "Host"),
+		ami_getvar(event, "IP"),
+		ami_getvar(event, "Port"));
+}
+
+void event_disconnect (ami_event_t *event) {
+	printf("*** DISCONNECTED ***\n");
+	printf("  reason  = %s\n  host    = %s\n  ip      = %s\n  port    = %s\n",
+		ami_getvar(event, "Reason"),
+		ami_getvar(event, "Host"),
+		ami_getvar(event, "IP"),
+		ami_getvar(event, "Port"));
+	ev_timer_again(EV_DEFAULT, &timer_reconnect);
+	ev_timer_start(EV_DEFAULT, &timer_reconnect);
+}
+
+void event_dial123 (ami_event_t *event) {
+	ami_action(ami, NULL, NULL, "Action: Logoff");
+}
+
+void event_dial124 (ami_event_t *event) {
+	ami_action(ami, NULL, NULL, "Action: Hangup\nChannel: %s", ami_getvar(event, "Channel"));
+}
 
 int main (int argc, char *argv[]) {
 	ami = ami_new(ami_callback, NULL, EV_DEFAULT);
@@ -193,13 +232,21 @@ int main (int argc, char *argv[]) {
 	//~ ami_event_list_t *response = ami_action(ami, ami_response_callback, userdata,
 		//~ "Action: DongleSendPDU\nDevice: %s\nPDU: %s", device, pdu);
 
-	ami_action(ami, NULL, NULL, "Originate 1212 1853");
+	//~ ami_action(ami, NULL, NULL, "Originate 1212 1853");
 	//~ ami_event_unregister(response);
 
 	ev_timer tmr;
 	ev_timer_init(&tmr, timer_dstatus, 1, 1);
 	ev_timer_start(EV_DEFAULT, &tmr);
 
+	ev_timer_init(&timer_reconnect, (void*)reconnect_ami, 3, 3);
+	//~ ev_timer_start(EV_DEFAULT, &timer_reconnect);
+
+	ami_event_register(ami, event_connect, NULL, "Connect");
+	ami_event_register(ami, event_disconnect, NULL, "Disconnect");
+
+	ami_event_register(ami, event_dial123, NULL, "Event: Dial\nDialstring: dongle0/123");
+	ami_event_register(ami, event_dial124, NULL, "Event: Dial\nDialstring: dongle0/124");
 
 	printf("\n");
 	ami_dump_lists(ami);

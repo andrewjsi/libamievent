@@ -107,7 +107,7 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 	*field_len = len;
 
 	// AMI bal és jobb értékek dumpolása
-	//~ int z; for (z = 0; z < len; z++) printf("tokenize_field ### %d - %s\n", z, &data[field[z]]); printf("\n");
+	int z; for (z = 0; z < len; z++) printf("tokenize_field ### %d - %s\n", z, &data[field[z]]); printf("\n");
 }
 
 static char *type2name (enum ami_event_type type) {
@@ -298,12 +298,12 @@ static void response_login (ami_event_t *response) {
 }
 
 static void process_input (ami_t *ami) {
-	//~ printf("----- NETSOCKET INBUF START -----\n");
-	//~ int kk;
-	//~ for (kk = 0; kk < ami->netsocket->inbuf_len; kk++) {
-		//~ putchar(ami->netsocket->inbuf[kk]);
-	//~ }
-	//~ printf("----- NETSOCKET INBUF END -----\n");
+	printf("----- NETSOCKET INBUF START -----\n");
+	int kk;
+	for (kk = 0; kk < ami->netsocket->inbuf_len; kk++) {
+	    putchar(ami->netsocket->inbuf[kk]);
+	}
+	printf("----- NETSOCKET INBUF END -----\n");
 
 	// netsocket->inbuf hozzáfűzése az ami->inbuf stringhez egészen addig, amíg
 	// az ami->inbuf -ban van hely. ami->inbuf_pos mutatja, hogy épp meddig terpeszkedik a string

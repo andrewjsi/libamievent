@@ -134,7 +134,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 	);
 
 	char *response = ami_getvar(event, "Response");
-	// ha van response, akkor Response vagy CLI Response erkezett
+	//// RESPONSE //// TODO: CLI_RESPONSE
 	if (response) {
 		char *action_id_str = ami_getvar(event, "ActionID");
 		if (action_id_str == NULL) {
@@ -175,9 +175,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		}
 		con_debug("Received ActionID=%d, but %d not found in ami_event_list_head!", event->action_id, event->action_id);
 
-	// ha nem volt response, akkor event erkezett
+	//// EVENT ////
 	} else {
-
 //~ printf("##### PARSE_INPUT EVENT #####\n");
 		ami_event_list_t *el;
 		// végigmegyünk a regisztrált eseményeken
@@ -370,6 +369,7 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 	}
 }
 
+// hívja az ami->need_event_processing azonnali időzítő
 static void invoke_events (EV_P_ ev_io *w, int revents) {
 	ami_t *ami = w->data;
 

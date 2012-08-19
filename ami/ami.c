@@ -110,6 +110,57 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 	//~ int z; for (z = 0; z < len; z++) printf("tokenize_field ### %d - %s\n", z, &data[field[z]]); printf("\n");
 }
 
+static char *type2name (enum ami_event_type type) {
+	switch (type) {
+		case AMI_EVENT:        return "EVENT"       ; break;
+		case AMI_RESPONSE:     return "RESPONSE"    ; break;
+		case AMI_CLIRESPONSE:  return "CLIRESPONSE" ; break;
+		case AMI_CONNECT:      return "CONNECT"     ; break;
+		case AMI_DISCONNECT:   return "DISCONNECT"  ; break;
+		default: return "UNKNOWN";
+	}
+}
+
+// belső esemény kiváltása (AMI_CONNECT, AMI_DISCONNECT, stb...)
+static void generate_local_event (ami_t *ami, enum ami_event_type type, const char *fmt, ...) {
+	ami_event_t event_tmp; // ideiglenes event // TODO: ha működik, akkor bevezetni az ami->event_tmp helyett lent is
+	ami_event_t *event = &event_tmp;
+	bzero(event, sizeof(event));
+
+	//~ char buf[AMI_BUFSIZ];
+	va_list ap;
+	va_start(ap, fmt);
+	vsnprintf(event->data, sizeof(event->data), fmt, ap);
+	va_end(ap);
+	event->data[AMI_BUFSIZ-1] = '\0'; // védelem // TODO: kell ez?
+	event->data_size = strlen(event->data);
+
+//~ printf("~~~ %s ~~~\n", event->data);
+
+	tokenize_field(
+		event->field,
+		sizeof(event->field) / sizeof(char*) - 1,
+		&event->field_size,
+		event->data,
+		event->data_size
+	);
+
+	ami_event_list_t *el;
+	// végigmegyünk a regisztrált eseményeken
+	DL_FOREACH(ami->ami_event_list_head, el) {
+		if (el->type == type) {
+			event->callback = el->callback;
+			event->userdata = el->userdata;
+			event->regby_file = el->regby_file;
+			event->regby_line = el->regby_line;
+			event->regby_function = el->regby_function;
+			event->ami = ami;
+			event->type = el->type;
+			put_event(event);
+		}
+	}
+}
+
 // bejövő Response es Event feldolgozása
 static void parse_input (ami_t *ami, char *buf, int size) {
 	//~ int kk;
@@ -220,6 +271,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 }
 
 static void response_login (ami_event_t *response) {
+	ami_t *ami = response->ami;
+
 	con_debug("auth reply: success=%d %s (by %s() %s:%d)",
 		response->success,
 		ami_getvar(response, "Message"),
@@ -231,9 +284,15 @@ static void response_login (ami_event_t *response) {
 	if (!response->ami->authenticated) {
 		if (response->success) { // AUTH accepted
 			response->ami->authenticated = 1;
-			// CONNECT eventet szétkürtölni
+			// TODO: itt kell a connect timeout időzítőt törölni
+			generate_local_event(ami,
+				AMI_CONNECT,
+				"Host: %s\nIP: %s\nPort: %d",
+				ami->host,
+				ami->netsocket->ip,
+				ami->port);
 		} else { // AUTH failed
-			netsocket_disconnect(response->ami->netsocket, "authentication failed");
+			netsocket_disconnect_withevent(response->ami->netsocket, "authentication failed");
 		}
 	}
 }
@@ -346,13 +405,24 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 			break;
 
 		case NETSOCKET_EVENT_DISCONNECT:
+			// TODO: itt kell alaphelyzetbe állítani az ami-t.
+			// disconnect esemény szétkűrtölése előtt
+			ami->authenticated = 0;
+
+			generate_local_event(ami,
+				AMI_DISCONNECT,
+				"Host: %s\nIP: %s\nPort: %d\nReason: %s",
+				netsocket->host,
+				netsocket->ip,
+				netsocket->port,
+				netsocket->disconnect_reason
+			);
+
 			if (netsocket->connected) {
 				con_debug("Disconnected from %s: %s",
 					netsocket->host,
 					netsocket->disconnect_reason
 				);
-				//~ ami_event_t event;
-				//~ put_event();
 			} else {
 				con_debug("Can't connect to %s[%s]:%d %s",
 					netsocket->host,
@@ -514,19 +584,30 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 	vsnprintf(el->data, sizeof(el->data), fmt, ap);
 	va_end(ap);
 
-	tokenize_field(
-		el->field,
-		sizeof(el->field) / sizeof(char*) - 1,
-		&el->field_size,
-		el->data,
-		sizeof(el->data)
-	);
-
 	el->callback = callback;
 	el->userdata = userdata;
 	el->regby_file = file;
 	el->regby_line = line;
 	el->regby_function = function;
+
+	// ha belső eseményre iratkozunk fel, akkor azt a type-ban jelöljük
+	if (!strcmp(el->data, "Connect")) {
+		el->type = AMI_CONNECT;
+
+	} else if (!strcmp(el->data, "Disconnect")) {
+		el->type = AMI_DISCONNECT;
+	// ellenkező esetben AMI_EVENT a type és feldaraboljuk a tokeneket
+
+	} else {
+		el->type = AMI_EVENT;
+		tokenize_field(
+			el->field,
+			sizeof(el->field) / sizeof(char*) - 1,
+			&el->field_size,
+			el->data,
+			sizeof(el->data)
+		);
+	}
 
 	DL_APPEND(ami->ami_event_list_head, el);
 	con_debug("EVENT registered callback: 0x%x by %s() in %s line %d",

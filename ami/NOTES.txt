@@ -12,7 +12,10 @@ TODO:
   ActionID: 1
   Message: Missing action in request
 -CLI response és az olyan több csomagos válaszok, mint pl. a DongleShowDevices kezelése
-
+-ami_action-t ne lehessen regisztrálni, amíg nincs connected állapot
+ (vigyázni a beépített authentication ami_action-re!)
+-ami_connect legyen hatástlan, ha már épp kapcsolódik vagy kapcsolódva van
+-ami_event_unregister megírása
 
 SMS küldése
 	action: DongleSendPDU

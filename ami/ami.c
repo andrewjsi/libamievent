@@ -375,11 +375,11 @@ static void invoke_events (EV_P_ ev_io *w, int revents) {
 
 	ami_event_t *event, *tmp;
 	DL_FOREACH_SAFE(ami->event_head, event, tmp) {
-		if (event->callback == NULL)
-			return; // TODO: lehet, hogy itt a return helyett a ciklust kene ujrakezdeni
-		con_debug("call %x", event->callback);
-		event->callback(event);
-		con_debug("end %x", event->callback);
+		if (event->callback != NULL) {
+			con_debug("call %x", event->callback);
+			event->callback(event);
+			con_debug("end %x", event->callback);
+		}
 		DL_DELETE(ami->event_head, event);
 		free(event);
 	}
@@ -473,7 +473,7 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 //~ printf("----- NETSOCKET WRITE START ------\n");
 //~ printf("%s", packet);
 //~ printf("----- NETSOCKET WRITE END ------\n");
-	netsocket_printf(ami->netsocket, "%s", packet);
+	return netsocket_printf(ami->netsocket, "%s", packet);
 }
 
 ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...) {

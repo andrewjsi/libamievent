@@ -65,8 +65,6 @@ typedef struct ami_t {
 	char secret[32];                            // AMI Password
 	netsocket_t *netsocket;                     // Netsocket objektum
 	char disconnect_reason[64];                 // ???
-	void (*callback)(void*);                    // Callback
-	void *userdata;                             // Callback-nek átadott általános mutató
 	ami_event_list_t *ami_event_list_head;      // megrendelt események
 	struct ev_loop *loop;                       // eseményhurok
 	ev_timer need_event_processing;				// azonnali idõzítõ az események kiküldéséhez
@@ -78,7 +76,7 @@ typedef struct ami_t {
 	unsigned int action_id;						// soron következõ használható ActionID
 } ami_t;
 
-ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop);
+ami_t *ami_new (struct ev_loop *loop);
 
 void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char *port);
 

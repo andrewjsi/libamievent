@@ -16,25 +16,6 @@ ev_timer timer_reconnect;
 ami_t *ami;
 int dstatus_n = 2;
 
-static void ami_callback (ami_event_t *ame) {
-	char *userdata = (char*)ame->userdata;
-
-	switch (ame->type) {
-		case AMI_DISCONNECT:
-			conft("Disconnected from %s (%s)\n", ame->ami->netsocket->host, ame->ami->disconnect_reason);
-			// schedule_reconnect();
-			break;
-
-		case AMI_CONNECT:
-			conft("Connected yeahhhh\n");
-			break;
-
-		default:
-			conft("Broaf\n");
-			break;
-	}
-}
-
 static void ami_event_callback (ami_event_t *ame) {
 	char *userdata = (char*)ame->userdata;
 	char *status = ami_getvar(ame, "Status");
@@ -187,7 +168,7 @@ void event_dial124 (ami_event_t *event) {
 }
 
 int main (int argc, char *argv[]) {
-	ami = ami_new(ami_callback, NULL, EV_DEFAULT);
+	ami = ami_new(EV_DEFAULT);
 	if (ami == NULL) {
 		con_debug("ami_new() returned NULL");
 		return 1;

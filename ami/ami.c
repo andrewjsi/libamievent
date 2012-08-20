@@ -455,7 +455,7 @@ static void invoke_events (EV_P_ ev_io *w, int revents) {
 	}
 }
 
-ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop) {
+ami_t *ami_new (struct ev_loop *loop) {
 	ami_t *ami = malloc(sizeof(*ami));
 	if (ami == NULL) {
 		con_debug("ami_new() returned NULL");
@@ -470,9 +470,6 @@ ami_t *ami_new (void *callback, void *userdata, struct ev_loop *loop) {
 	// default értékek
 	strncpy(ami->host, AMI_DEFAULT_HOST, sizeof(ami->host) - 1);
 	ami->port = AMI_DEFAULT_PORT;
-
-	ami->callback = callback;
-	ami->userdata = userdata;
 
 	if (!(ami->netsocket = netsocket_new(netsocket_callback, ami, ami->loop))) {
 		con_debug("netsocket_new returned NULL");

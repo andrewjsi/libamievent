@@ -16,6 +16,8 @@ TODO:
  (vigyázni a beépített authentication ami_action-re!)
 -ami_connect legyen hatástlan, ha már épp kapcsolódik vagy kapcsolódva van
 -ami_event_unregister megírása
+-ami dump events: response kulonvalasztasa
+-event es response kulonvalasztasa keresesnel
 
 CLI formátum:
 action: command

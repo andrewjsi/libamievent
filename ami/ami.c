@@ -524,6 +524,10 @@ void ami_connect (ami_t *ami) {
 	netsocket_connect(ami->netsocket);
 }
 
+void ami_connect_delayed (ami_t *ami, int delay) {
+
+}
+
 int ami_printf (ami_t *ami, const char *fmt, ...) {
 	char buf[AMI_BUFSIZ];
 	va_list ap;

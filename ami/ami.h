@@ -36,6 +36,7 @@ typedef struct ami_event_list_t {
 	char *regby_file;
 	int regby_line;
 	const char *regby_function;
+	const char *regby_cbname;
 	unsigned int action_id;
 	enum ami_event_type type;
 } ami_event_list_t;
@@ -55,6 +56,7 @@ typedef struct ami_event_t {
 	char *regby_file;
 	int regby_line;
 	const char *regby_function;
+	const char *regby_cbname;
 	enum ami_event_type type;
 } ami_event_t;
 
@@ -86,11 +88,13 @@ void ami_connect (ami_t *ami);
 
 int ami_printf (ami_t *ami, const char *fmt, ...);
 
-#define ami_action(ami,callback,userdata,...) _ami_action(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
-ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...);
+#define ami_action(ami,callback,userdata,...) \
+	_ami_action(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, #callback, __VA_ARGS__)
+ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *fmt, ...);
 
-#define ami_event_register(ami,callback,userdata,...) _ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, __VA_ARGS__)
-ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *fmt, ...);
+#define ami_event_register(ami, callback, userdata, ...) \
+	_ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, #callback, __VA_ARGS__)
+ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *fmt, ...);
 
 int ami_event_unregister(ami_event_list_t *el);
 

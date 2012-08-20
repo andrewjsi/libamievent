@@ -17,6 +17,17 @@ TODO:
 -ami_connect legyen hatástlan, ha már épp kapcsolódik vagy kapcsolódva van
 -ami_event_unregister megírása
 
+CLI formátum:
+action: command
+command: sip show domains
+
+Response: Follows
+Privilege: Command
+SIP Domain support not enabled.
+
+--END COMMAND--
+
+
 SMS küldése
 	action: DongleSendPDU
 	ActionID: 59

@@ -1,3 +1,9 @@
+// debug infók (kommentezd, ha nem kell)
+//~ #define CON_DEBUG
+
+// csomagok dumpolása stdout-ra (kommentezd, ha nem kell)
+//~ #define AMI_DEBUG_PACKET_DUMP
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -10,9 +16,8 @@
 #include "debug.h"
 #include "utlist.h"
 #include "misc.h"
-
-#define CON_DEBUG
 #include "logger.h"
+
 
 // event rögzítése
 void put_event (ami_event_t *event) {
@@ -107,7 +112,12 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 	*field_len = len;
 
 	// AMI bal és jobb értékek dumpolása
-	int z; for (z = 0; z < len; z++) printf("tokenize_field ### %d - %s\n", z, &data[field[z]]); printf("\n");
+#ifdef AMI_DEBUG_PACKET_DUMP
+	int z;
+	for (z = 0; z < len; z++)
+		printf("tokenize_field ### %d - %s\n", z, &data[field[z]]);
+	printf("\n");
+#endif
 }
 
 static char *type2name (enum ami_event_type type) {
@@ -301,18 +311,19 @@ static void response_login (ami_event_t *response) {
 }
 
 static void process_input (ami_t *ami) {
-	printf("----- NETSOCKET INBUF START -----\n");
-	int kk;
-	for (kk = 0; kk < ami->netsocket->inbuf_len; kk++) {
-	    putchar(ami->netsocket->inbuf[kk]);
-	}
-	printf("----- NETSOCKET INBUF END -----\n");
-
 	// netsocket->inbuf hozzáfűzése az ami->inbuf stringhez egészen addig, amíg
 	// az ami->inbuf -ban van hely. ami->inbuf_pos mutatja, hogy épp meddig terpeszkedik a string
 	int freespace, bytes;
 	char *pos; // ami->inbuf stringben az első "\r\n\r\n" lezáró token előtti pozíció
 	int netsocket_offset = 0;
+
+#ifdef AMI_DEBUG_PACKET_DUMP
+	int pdi;
+	printf("----- NETSOCKET INBUF START -----\n");
+	for (pdi = 0; pdi < ami->netsocket->inbuf_len; pdi++)
+	    putchar(ami->netsocket->inbuf[pdi]);
+	printf("----- NETSOCKET INBUF END -----\n");
+#endif
 
 readnetsocket:
 	freespace = sizeof(ami->inbuf) - ami->inbuf_pos - 1;
@@ -539,11 +550,16 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 		concatf(packet, "%s: %s\r\n", &buf[field[i]], &buf[field[i+1]]);
 	concat(packet, "\r\n");
 
-	if (ami->netsocket)
-//~ printf("----- NETSOCKET WRITE START ------\n");
-//~ printf("%s", packet);
-//~ printf("----- NETSOCKET WRITE END ------\n");
-	return netsocket_printf(ami->netsocket, "%s", packet);
+	if (ami->netsocket != NULL) {
+#ifdef AMI_DEBUG_PACKET_DUMP
+		printf("----- NETSOCKET WRITE START ------\n");
+		printf("%s", packet);
+		printf("----- NETSOCKET WRITE END ------\n");
+#endif
+		return netsocket_printf(ami->netsocket, "%s", packet);
+	} else {
+		return -1;
+	}
 }
 
 ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *fmt, ...) {

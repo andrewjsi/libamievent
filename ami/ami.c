@@ -72,6 +72,8 @@ data_size          data mérete
 //~ megoldani, hogy a függvény nem bal-jobb oldalt vizsgál, hanem egy for ciklus
 //~ NULL-ra állítja a ": " és a "\r" és "\n" karaktereket a teljes data-ban, majd
 //~ csak ezután következne a feldarabolás mutatókkal.
+//~
+//~ aug 21: A fent leirt hiba sz'tem nem hiba.
 void tokenize_field (int *field, int max_field_size, int *field_len, char *data, int data_size) {
 	enum {
 		LEFT,
@@ -174,13 +176,6 @@ static void generate_local_event (ami_t *ami, enum ami_event_type type, const ch
 
 // bejövő Response es Event feldolgozása
 static void parse_input (ami_t *ami, char *buf, int size) {
-	//~ int kk;
-	//~ printf("----- PARSE INPUT BUF START ------\n");
-	//~ for (kk = 0; kk < size; kk++) {
-		//~ putchar(buf[kk]);
-	//~ }
-	//~ printf("----- PARSE INPUT BUF END ------\n");
-//~
 	ami_event_t *event = &ami->event_tmp;
 	bzero(event, sizeof(event));
 
@@ -335,7 +330,7 @@ readnetsocket:
 		!strcmp(ami->inbuf, "Asterisk Call Manager/1.1\r\n") ||
 		!strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n"))
 	{
-		ami->inbuf[0] = '\0';
+		bzero(ami->inbuf, sizeof(ami->inbuf));
 		ami->inbuf_pos = 0;
 		con_debug("Received \"Asterisk Call Manager\" header, sending auth...");
 		ami_action(ami, response_login, NULL,
@@ -377,7 +372,7 @@ checkdelim:
 	// TODO: ezt az esetet netsocket_disconnect hívással kell lekezelni!
 	if (!freespace) {
 		con_debug("Buffer overflow, clearing ami->inbuf. ami->inbuf_pos=%d", ami->inbuf_pos);
-		ami->inbuf[0] = '\0'; // string reset
+		bzero(ami->inbuf, sizeof(ami->inbuf));
 		ami->inbuf_pos = 0;
 		return;
 	}

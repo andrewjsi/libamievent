@@ -6,7 +6,7 @@
 #include "ami.h"
 #include "debug.h"
 
-//~ #define CON_DEBUG
+#define CON_DEBUG
 #include "logger.h"
 
 ami_t *ami;
@@ -42,9 +42,9 @@ int main (int argc, char *argv[]) {
 	ami_event_register(ami, event_disconnect, NULL, "Disconnect");
 	ami_event_register(ami, event_connect, NULL, "Connect");
 
-	printf("\n");
-	ami_dump_lists(ami);
-
+	//~ printf("\n");
+	//~ ami_dump_lists(ami);
+con_debug("Entering the main loop");
 	ev_loop(EV_DEFAULT, 0);
 
 	ami_destroy(ami);

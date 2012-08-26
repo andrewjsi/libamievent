@@ -1,3 +1,6 @@
+#ifndef AMI_H_INCLUDED
+#define AMI_H_INCLUDED
+
 #include "netsocket.h"
 
 // TODO: doksiba AMI_DEBUG_PACKET_DUMP
@@ -108,3 +111,5 @@ char *ami_getvar (ami_event_t *event, char *var);
 void ami_strncpy (ami_event_t *event, char *dest, char *var, size_t maxsize);
 
 void ami_dump_lists (ami_t *ami);
+
+#endif // #ifndef AMI_H_INCLUDED

@@ -3,7 +3,7 @@ CC = gcc
 CFLAGS = -ggdb -I../libc-jss
 
 LIBS = -lev -lm
-OBJ=ami.o ../libc-jss/netsocket.o ../libc-jss/logger.o ../libc-jss/misc.o
+OBJ=ami.o originate.o ../libc-jss/netsocket.o ../libc-jss/logger.o ../libc-jss/misc.o
 
 all: clean compile
 

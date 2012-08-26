@@ -11,16 +11,36 @@
 
 ami_t *ami;
 
+void response_originate (ami_event_t *event) {
+	printf("Originate sikeres: uniqueid=%s\n", ami_getvar(event, "Uniqueid"));
+}
+
 // Event: Connect
 void event_connect (ami_event_t *event) {
 	printf("Connected to %s:%s\n",
 		ami_getvar(event, "Host"),
 		ami_getvar(event, "Port"));
+
+	printf("Sending originate...\n");
+	ami_action(ami, response_originate, NULL,
+		"Action: Originate\n"
+		"Channel: SIP/gsm/80106206620300\n"
+		"Context: default\n"
+		"Exten: 1801\n"
+		"Priority: 1\n"
+	);
 }
 
 // Event: Disconnect
 void event_disconnect (ami_event_t *event) {
 	ami_connect(event->ami);
+}
+
+void event_originateresponse (ami_event_t *event) {
+	printf("OriginateResponse! channel=%s uniqueid=%s\n",
+		ami_getvar(event, "Channel"),
+		ami_getvar(event, "Uniqueid")
+	);
 }
 
 int main (int argc, char *argv[]) {
@@ -41,6 +61,8 @@ int main (int argc, char *argv[]) {
 
 	ami_event_register(ami, event_disconnect, NULL, "Disconnect");
 	ami_event_register(ami, event_connect, NULL, "Connect");
+	ami_event_register(ami, event_originateresponse, NULL, "Event: OriginateResponse");
+
 
 	//~ printf("\n");
 	//~ ami_dump_lists(ami);

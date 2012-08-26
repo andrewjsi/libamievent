@@ -190,9 +190,10 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		size
 	);
 
-	char *response = ami_getvar(event, "Response");
+	char *var_response = ami_getvar(event, "Response");
+	char *var_event = ami_getvar(event, "Event");
 	//// RESPONSE //// TODO: CLI_RESPONSE
-	if (response) {
+	if (!strlen(var_event)) {
 		char *action_id_str = ami_getvar(event, "ActionID");
 		if (action_id_str == NULL) {
 			con_debug("Missing ActionID in Response!");
@@ -200,11 +201,11 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		}
 		event->action_id = atoi(action_id_str);
 
-		if (!strcmp(response, "Success")) {
+		if (!strcmp(var_response, "Success")) {
 			event->success = 1;
-		} else if (!strcmp(response, "Error")) {
+		} else if (!strcmp(var_response, "Error")) {
 			event->success = 0;
-		} else if (!strcmp(response, "Follows")) {
+		} else if (!strcmp(var_response, "Follows")) {
 			con_debug("CLI Response not implemented yet...");
 			return;
 		}
@@ -581,7 +582,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 		ami->action_id++; // új ActionID
 		el->action_id = ami->action_id;
 		ami_printf(ami, "Async: 1\nActionID: %d\n%s", ami->action_id, buf);
-		con_debug("registered action #%d, callback %s()", el->action_id, el->regby_cbname);
+		con_debug("registered action #%d, callback: %s()", el->action_id, el->regby_cbname);
 		DL_APPEND(ami->ami_event_list_head, el);
 		return el;
 	} else {
@@ -669,7 +670,7 @@ char *ami_getvar (ami_event_t *event, char *var) {
 			}
 		}
 	}
-	return NULL;
+	return "";
 }
 
 void ami_strncpy (ami_event_t *event, char *dest, char *var, size_t maxsize) {

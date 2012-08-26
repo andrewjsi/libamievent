@@ -78,6 +78,7 @@ typedef struct ami_t {
 	struct ami_event_t event_tmp;				// itt készítünk új eseményt, amit aztán a várakozósorba másolunk
 	int authenticated;                          // 1 lesz sikeres login után
 	unsigned int action_id;						// soron következõ használható ActionID
+	char uuid[16];                              // AMI sajat belso ID
 } ami_t;
 
 ami_t *ami_new (struct ev_loop *loop);

@@ -465,6 +465,21 @@ static void invoke_events (EV_P_ ev_io *w, int revents) {
 	}
 }
 
+// 6 byte-os random hexa stringet masol az ami->uuid bufferbe
+// TODO: egy rendes, unique ID-t visszaado fuggvenyt irni ehelyett a random vacak helyett
+void generate_uuid (ami_t *ami) {
+	struct timeval tv;
+	int num;
+	char tmp[16];
+
+	gettimeofday(&tv, NULL);
+	srand(tv.tv_usec * tv.tv_sec);
+	num = rand();
+	snprintf(tmp, sizeof(tmp), "%x", num);
+	tmp[6] = '\0';
+	strncpy(ami->uuid, tmp, sizeof(ami->uuid));
+}
+
 ami_t *ami_new (struct ev_loop *loop) {
 	ami_t *ami = malloc(sizeof(*ami));
 	if (ami == NULL) {
@@ -472,6 +487,9 @@ ami_t *ami_new (struct ev_loop *loop) {
 		return NULL;
 	}
 	bzero(ami, sizeof(*ami)); // minden NULL
+
+	// AMI UUID
+	generate_uuid(ami);
 
 	// ha meg van adva a loop paraméter, akkor azt használjuk eseménykezelőnek
 	// ellenkező esetben az alapértelmezett eseménykezelőt

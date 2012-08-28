@@ -1,6 +1,6 @@
 CC = gcc
 # Wall-t visszakapcsolni!
-CFLAGS = -ggdb -I../libc-jss
+CFLAGS = -Wall -ggdb -I../libc-jss
 
 LIBS = -lev -lm
 OBJ=ami.o originate.o ../libc-jss/netsocket.o ../libc-jss/logger.o ../libc-jss/misc.o

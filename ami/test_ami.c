@@ -27,14 +27,6 @@ static void ami_event_callback (ami_event_t *ame) {
 	//~ ami_event_unregister(ame);
 }
 
-static void ami_response_callback (ami_event_t *response) {
-	char *userdata = (char*)response->userdata;
-
-	int succ = response->success;
-	char *message = ami_getvar(response, "Message");
-
-}
-
 static void ami_login_response_success (ami_event_t *response) {
 	con_debug("logged in: %s (by %s() %s:%d)",
 		ami_getvar(response, "Message"),

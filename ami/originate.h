@@ -5,6 +5,7 @@
 
 typedef struct ami_ori_t {
 	ami_t *ami;
+	ami_event_list_t *event_gotuuid;
 	char uuid[16];
 } ami_ori_t;
 

@@ -1,8 +1,8 @@
 // debug infók (kommentezd, ha nem kell)
-//~ #define CON_DEBUG
+#define CON_DEBUG
 
 // csomagok dumpolása stdout-ra (kommentezd, ha nem kell)
-//~ #define AMI_DEBUG_PACKET_DUMP
+#define AMI_DEBUG_PACKET_DUMP
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -11,6 +11,7 @@
 #include <ev.h>
 #include <stdio.h> // TODO: kell ez?
 #include <stdarg.h>
+#include <sys/time.h> // gettimeofday()
 
 #include "ami.h"
 #include "debug.h"
@@ -157,7 +158,7 @@ static void generate_local_event (ami_t *ami, enum ami_event_type type, const ch
 		event->data_size
 	);
 
-	ami_event_list_t *el;
+	ami_event_list_t *el = NULL;
 	// végigmegyünk a regisztrált eseményeken
 	DL_FOREACH(ami->ami_event_list_head, el) {
 		if (el->type == type) {
@@ -212,8 +213,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 
 		con_debug("RESPONSE - success = %d, action_id = %d", event->success, event->action_id);
 
-		ami_event_list_t *el;
-		ami_event_list_t *eltmp;
+		ami_event_list_t *el = NULL;
+		ami_event_list_t *eltmp = NULL;
 		DL_FOREACH_SAFE(ami->ami_event_list_head, el, eltmp) {
 			// event->action_id  - Asterisktől érkezett ActionID
 			// el->action_id     - adatbázisban szereplő ActionID
@@ -599,12 +600,12 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 		el->regby_cbname = cbname;
 		ami->action_id++; // új ActionID
 		el->action_id = ami->action_id;
-		ami_printf(ami, "Async: 1\nActionID: %d\n%s", ami->action_id, buf);
+		ami_printf(ami, "ActionID: %d\n%s", ami->action_id, buf);
 		con_debug("registered action #%d, callback: %s()", el->action_id, el->regby_cbname);
 		DL_APPEND(ami->ami_event_list_head, el);
 		return el;
 	} else {
-		ami_printf(ami, "Async: 1\n%s", buf);
+		ami_printf(ami, "%s", buf);
 		return NULL;
 	}
 }
@@ -654,6 +655,7 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 
 int ami_event_unregister(ami_event_list_t *el) {
 
+	return 0;
 }
 
 void ami_dump_event_list_element (ami_event_list_t *el) {

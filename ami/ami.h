@@ -103,7 +103,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 	_ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, #callback, __VA_ARGS__)
 ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *fmt, ...);
 
-int ami_event_unregister(ami_event_list_t *el);
+void ami_event_unregister(ami_t *ami, ami_event_list_t *el);
 
 char *ami_getvar (ami_event_t *event, char *var);
 
@@ -112,5 +112,7 @@ char *ami_getvar (ami_event_t *event, char *var);
 void ami_strncpy (ami_event_t *event, char *dest, char *var, size_t maxsize);
 
 void ami_dump_lists (ami_t *ami);
+
+void ami_event_dump (ami_event_t *el);
 
 #endif // #ifndef AMI_H_INCLUDED

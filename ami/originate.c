@@ -40,7 +40,32 @@ static void event_gotuuid_cb (ami_event_t *event) {
 }
 
 static void response_originate (ami_event_t *event) {
+	ami_ori_t *ami_ori = (ami_ori_t*)event->userdata;
+	ami_t *ami = ami_ori->ami;
 
+	ami_event_dump(event);
+
+	char *uniqueid = ami_getvar(event, "Uniqueid");
+printf("*** ORIGINATE RESPONSE\n");
+	if (strlen(uniqueid)) {
+		printf("RESPONSE szinten megvan az uniqueid ==== %s\n", uniqueid);
+		ami_event_unregister(ami, ami_ori->event_varsetuuid);
+		ami_ori->event_varsetuuid = NULL;
+	}
+}
+
+// megrendelt AMI eventek lemondása
+void cleanup_events (ami_ori_t *ami_ori) {
+	ami_t *ami = ami_ori->ami;
+
+	ami_event_unregister(ami, ami_ori->event_originateresponse);
+	ami_ori->event_originateresponse = NULL;
+
+	ami_event_unregister(ami, ami_ori->event_varsetuuid);
+	ami_ori->event_varsetuuid = NULL;
+
+	ami_event_unregister(ami, ami_ori->action_originate);
+	ami_ori->action_originate = NULL;
 }
 
 ami_ori_t *ami_originate (ami_t *ami, const char *fmt, ...) {
@@ -63,7 +88,7 @@ ami_ori_t *ami_originate (ami_t *ami, const char *fmt, ...) {
 	// AMI UUID
 	generate_uuid(ami_ori->uuid, sizeof(ami_ori->uuid));
 
-	ami_ori->event_gotuuid = ami_event_register(ami_ori->ami, event_gotuuid_cb, ami_ori,
+	ami_ori->event_varsetuuid = ami_event_register(ami_ori->ami, event_gotuuid_cb, ami_ori,
 		"Event: VarSet\n"
 		"Variable: ami_originate_id\n"
 		"Value: %s\n"
@@ -71,7 +96,7 @@ ami_ori_t *ami_originate (ami_t *ami, const char *fmt, ...) {
 	);
 
 	con_debug("sending originate with id %s", ami_ori->uuid);
-	ami_action(ami, response_originate, ami_ori,
+	ami_ori->action_originate = ami_action(ami, response_originate, ami_ori,
 		"Action: Originate\n"
 		"Async: 1\n"
 		"Variable: ami_originate_id=%s\n"
@@ -82,7 +107,7 @@ ami_ori_t *ami_originate (ami_t *ami, const char *fmt, ...) {
 	return ami_ori;
 }
 
-void ami_originate_free(ami_ori_t *ami) {
+void ami_originate_destroy (ami_ori_t *ami_ori) {
 
 }
 

@@ -2,7 +2,7 @@
 //~ #define CON_DEBUG
 
 // csomagok dumpolása stdout-ra (kommentezd, ha nem kell)
-#define AMI_DEBUG_PACKET_DUMP
+//~ #define AMI_DEBUG_PACKET_DUMP
 
 #include <stdlib.h>
 #include <unistd.h>
@@ -700,21 +700,53 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 	}
 
 	DL_APPEND(ami->ami_event_list_head, el);
-	con_debug("EVENT registered callback: %s by %s() in %s line %d",
+	con_debug("EVENT registered, callback: %s by %s() in %s line %d",
 	          el->regby_cbname, el->regby_function, el->regby_file, el->regby_line);
 
 	return el;
 }
 
-int ami_event_unregister(ami_event_list_t *el) {
+void ami_event_unregister(ami_t *ami, ami_event_list_t *el) {
+	if (el == NULL) {
+		con_debug("attempting to unregister NULL pointer event!")
+		return;
+	}
+	con_debug("EVENT unregistered, callback: %s", el->regby_cbname);
+	DL_DELETE(ami->ami_event_list_head, el);
+	free(el);
+}
 
-	return 0;
+    //~ struct ami_event_t *prev;
+    //~ struct ami_event_t *next;
+	//~ struct ami_t *ami;
+	//~ int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
+	//~ int field[AMI_FIELD_SIZE];
+	//~ int field_size;
+	//~ char data[AMI_BUFSIZ];
+	//~ int data_size;
+	//~ void (*callback)(void*);
+	//~ void *userdata;
+	//~ unsigned int action_id;
+	//~ char *regby_file;
+	//~ int regby_line;
+	//~ const char *regby_function;
+	//~ const char *regby_cbname;
+	//~ enum ami_event_type type;
+void ami_event_dump (ami_event_t *event) {
+	printf("%08lx\n", (uint64_t)event);
+
+	printf(
+		"EVENT %x type=%s\n"
+		"  Callback: %s() /0x%x/ by %s() in %s line %d\n"
+		, (int)event, type2name(event->type)
+		, event->regby_cbname, (int)event->callback, event->regby_function, event->regby_file, event->regby_line
+	);
 }
 
 void ami_dump_event_list_element (ami_event_list_t *el) {
 	printf(
 		"EVENT %x type=%s\n"
-		"  Callback: %s /0x%x/ by %s() in %s line %d\n"
+		"  Callback: %s() /0x%x/ by %s() in %s line %d\n"
 		"  Userdata: 0x%x\n"
 		, (int)el, type2name(el->type)
 		, el->regby_cbname, (int)el->callback, el->regby_function, el->regby_file, el->regby_line

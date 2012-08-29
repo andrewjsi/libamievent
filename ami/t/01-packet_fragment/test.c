@@ -16,6 +16,7 @@
 #include <arpa/inet.h>
 #include <fcntl.h>
 #include <stdarg.h>
+#include <sys/time.h>
 
 #define PORT 5038
 
@@ -30,6 +31,14 @@ int main(int argc, char *argv[])
      int sockfd, newsockfd, clilen;
      struct sockaddr_in serv_addr, cli_addr;
 
+	if (argc < 2) {
+		printf("usage: %s <data file>\n", argv[0]);
+		return 1;
+	}
+
+	char *datafile = argv[1];
+
+again:
      sockfd = socket(AF_INET, SOCK_STREAM, 0);
      if (sockfd < 0)
         error("ERROR opening socket");
@@ -64,24 +73,61 @@ int main(int argc, char *argv[])
      //~ n = write(newsockfd,"I got your message",18);
      //~ if (n < 0) error("ERROR writing to socket");
 
-	int seq[] = {27, 55, 50, 60, 70, 80, 90, 100, 200, 300, 0}; // 0 kell a végére!
+
+	//~ int seq[] = {27, 55, 50, 1560, 70, 1200, 90, 100, 200, 374, 0}; // 0 kell a végére!
+
+	int seq[5002];
+	struct timeval tv;
+
+	gettimeofday(&tv, NULL);
+	srand(tv.tv_usec * tv.tv_sec);
+	int rr;
+	for (rr = 0; rr < 5000; rr++) {
+		seq[rr] = rand();
+		seq[rr] = seq[rr] % 2000;
+		seq[rr]++;
+	}
+	seq[5001] = 0;
+	printf("int seq[] = {");
+	for (rr = 0; rr < 5001; rr++) {
+		printf("%d, ", seq[rr]);
+	}
+	printf("};\n");
+
+
+
 	int seqn;
 	char buf[4096];
 	FILE *f;
 	int rv;
 
-	f = fopen("data", "r");
+	f = fopen(datafile, "r");
+	if (f == NULL) {
+		perror("fopen");
+		return 1;
+	}
 
 	for (seqn = 0; seq[seqn] != 0; seqn++) {
 		//~ printf("Reading %d bytes\n", seq[seqn]);
 		rv = fread(buf, 1, seq[seqn], f);
+		if (rv <= 0) {
+			perror("fread");
+			break;
+		}
 		write(1, buf, rv); // STDOUT
-		write(newsockfd, buf, rv);
-		sleep(3);
+		if (send(newsockfd, buf, rv, MSG_NOSIGNAL) < 0) {
+			perror("send");
+			break;
+		}
+		//~ sleep(2);
+		usleep(10000); // 100ms
 	}
+
+	printf("\n\n");
 
 	close(newsockfd);
 	close(sockfd);
+	goto again;
 	return 0;
 
 }

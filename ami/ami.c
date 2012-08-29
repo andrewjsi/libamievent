@@ -738,11 +738,11 @@ void ami_event_unregister(ami_t *ami, ami_event_list_t *el) {
 	//~ enum ami_event_type type;
 void ami_event_dump (ami_event_t *event) {
 	printf(
-		"EVENT 0x%lx type=%s\n"
+		"Incoming %s /0x%lx/\n"
 		"  Registered by %s() in %s line %d\n"
 		"  Callback: %s() /0x%lx/, Userdata: %s /0x%lx/\n"
 		"  success=%d action_id=%d data_size=%d field_size=%d\n"
-		, (unsigned long)event, type2name(event->type)
+		, type2name(event->type), (unsigned long)event
 		, event->regby_function, event->regby_file, event->regby_line
 		, event->regby_cbname, (unsigned long)event->callback, event->regby_udname, (unsigned long)event->userdata
 		, event->success, event->action_id, event->data_size, event->field_size
@@ -755,11 +755,11 @@ void ami_event_dump (ami_event_t *event) {
 
 void ami_dump_event_list_element (ami_event_list_t *el) {
 	printf(
-		"EVENT 0x%lx type=%s\n"
+		"Registered %s /0x%lx/\n"
 		"  Registered by %s() in %s line %d\n"
 		"  Callback: %s() /0x%lx/, Userdata: %s /0x%lx/\n"
 		"  action_id=%d field_size=%d\n"
-		, (unsigned long)el, type2name(el->type)
+		, type2name(el->type), (unsigned long)el
 		, el->regby_function, el->regby_file, el->regby_line
 		, el->regby_cbname, (unsigned long)el->callback, el->regby_udname, (unsigned long)el->userdata
 		, el->action_id, el->field_size

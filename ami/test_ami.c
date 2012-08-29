@@ -27,16 +27,6 @@ int dstatus_n = 2;
 	//~ ami_event_unregister(ame);
 //~ }
 
-static void ami_login_response_success (ami_event_t *response) {
-	con_debug("logged in: %s (by %s() %s:%d)",
-		ami_getvar(response, "Message"),
-		response->regby_function,
-		response->regby_file,
-		response->regby_line
-	);
-	//~ ami_printf(response->ami, "Action: Listcommands\nActionID: 59");
-}
-
 void utproba () {
 	typedef struct st {
 		struct st *prev;
@@ -188,8 +178,6 @@ int main (int argc, char *argv[]) {
 
 	//~ ami_event_list_t *sms_status3 = ami_event_register(ami, ami_event_callback, userdata,
 		//~ "egy\nketto\nharom", message_id);
-
-	ami_event_register(ami, ami_login_response_success, NULL, "Response: Success");
 
 	ami_event_register(ami, event_dial, NULL, "Event: Dial\n");
 	ami_event_register(ami, event_rtcpreceived, NULL, "Event: RTCPReceived\n");

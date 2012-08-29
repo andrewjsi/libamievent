@@ -5,7 +5,8 @@
 
 typedef struct ami_ori_t {
 	ami_t *ami;
-	char uuid[16];
+	char uuid[16];                                // ami_ori objektum saját egyedi azonosítója ActionID-hez
+	char uniqueid[32];                            // Asterisk híváshoz rendelt Uniqueid
 	ami_event_list_t *action_originate;
 	ami_event_list_t *event_originateresponse;
 	ami_event_list_t *event_varsetuuid;

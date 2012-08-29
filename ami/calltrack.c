@@ -25,7 +25,7 @@ void event_connect (ami_event_t *event) {
 	);
 
 	ami_originate(event->ami,
-		"Channel: Dongle/dongle0/0614698989\n"
+		"Channel: Dongle/dongle0/06206620300\n"
 		"Context: default\n"
 		"Exten: 1801\n"
 		"Priority: 1\n"

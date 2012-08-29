@@ -32,11 +32,22 @@ static void generate_uuid (char *dst, size_t size) {
 	strncpy(dst, tmp, size);
 }
 
+static void dumpi (ami_event_t *event) {
+	ami_event_dump(event);
+}
+
+static void got_uniqueid (ami_ori_t *ami_ori, char *uniqueid) {
+	ami_t *ami = ami_ori->ami;
+	//~ strncpy(ami_ori->uniqueid, uniqueid, sizeof(ami_ori->uniqueid) - 1);
+	ami_event_register(ami, dumpi, NULL, "Uniqueid: %s", uniqueid);
+}
+
 static void event_gotuuid_cb (ami_event_t *event) {
-	//~ ami_ori_t *ami_ori = (ami_ori_t*)event->userdata;
+	ami_ori_t *ami_ori = (ami_ori_t*)event->userdata;
 	char *uniqueid = ami_getvar(event, "Uniqueid");
 
 	printf("Megvan az uniqueid ==== %s\n", uniqueid);
+	got_uniqueid(ami_ori, uniqueid);
 }
 
 static void response_originate (ami_event_t *event) {
@@ -49,6 +60,7 @@ static void response_originate (ami_event_t *event) {
 printf("*** ORIGINATE RESPONSE\n");
 	if (strlen(uniqueid)) {
 		printf("RESPONSE szinten megvan az uniqueid ==== %s\n", uniqueid);
+		got_uniqueid(ami_ori, uniqueid);
 		ami_event_unregister(ami, ami_ori->event_varsetuuid);
 		ami_ori->event_varsetuuid = NULL;
 	}

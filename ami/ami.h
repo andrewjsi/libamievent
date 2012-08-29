@@ -82,6 +82,7 @@ typedef struct ami_t {
 	int authenticated;                          // 1 lesz sikeres login után
 	unsigned int action_id;						// soron következõ használható ActionID
 	char uuid[16];                              // AMI sajat belso ID
+	int cli_actionid;                           // process_input() itt jegyzi meg a Response: Follows ActionID-t
 } ami_t;
 
 ami_t *ami_new (struct ev_loop *loop);

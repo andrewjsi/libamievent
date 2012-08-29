@@ -75,6 +75,9 @@ data_size          data mérete
 //~ csak ezután következne a feldarabolás mutatókkal.
 //~
 //~ aug 21: A fent leirt hiba sz'tem nem hiba.
+//~
+//~ aug 29: mi lenne, ha az utolsó változó-érték pár nem kapná meg a teljes buffert?
+//~ vagy eleve netsocket_disconnect és feltakarítás kellene ide?
 void tokenize_field (int *field, int max_field_size, int *field_len, char *data, int data_size) {
 	enum {
 		LEFT,
@@ -173,6 +176,16 @@ static void generate_local_event (ami_t *ami, enum ami_event_type type, const ch
 			put_event(event);
 		}
 	}
+}
+
+static void parse_cliresponse (ami_t *ami, int actionid, char *buf, int size) {
+	printf("***** CLI RESPONSE START *****\n");
+	printf("***** ActionID = %d\n", actionid);
+	int i;
+	for (i = 0; i < size; i++) {
+		putchar(buf[i]);
+	}
+	printf("***** CLI RESPONSE END *****\n\n");
 }
 
 // bejövő Response es Event feldolgozása
@@ -308,12 +321,6 @@ static void response_login (ami_event_t *response) {
 }
 
 static void process_input (ami_t *ami) {
-	// netsocket->inbuf hozzáfűzése az ami->inbuf stringhez egészen addig, amíg
-	// az ami->inbuf -ban van hely. ami->inbuf_pos mutatja, hogy épp meddig terpeszkedik a string
-	int freespace, bytes;
-	char *pos; // ami->inbuf stringben az első "\r\n\r\n" lezáró token előtti pozíció
-	int netsocket_offset = 0;
-
 #ifdef AMI_DEBUG_PACKET_DUMP
 	int pdi;
 	printf("----- NETSOCKET INBUF START -----\n");
@@ -322,84 +329,127 @@ static void process_input (ami_t *ami) {
 	printf("----- NETSOCKET INBUF END -----\n");
 #endif
 
-readnetsocket:
-	freespace = sizeof(ami->inbuf) - ami->inbuf_pos - 1;
-	bytes = (freespace < ami->netsocket->inbuf_len) ? freespace : ami->netsocket->inbuf_len;
-	memmove(ami->inbuf + ami->inbuf_pos, ami->netsocket->inbuf + netsocket_offset, bytes);
-	ami->inbuf_pos += bytes;
+/*
+      0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20
+      E  v  e  n  t  :     D  i  a  l \r \n \r \n  A  c  t  i  o  n
+     \r \n \r \n
 
-	if (
-		!strcmp(ami->inbuf, "Asterisk Call Manager/1.1\r\n") ||
-		!strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n"))
-	{
-		bzero(ami->inbuf, sizeof(ami->inbuf));
-		ami->inbuf_pos = 0;
-		con_debug("Received \"Asterisk Call Manager\" header, sending auth...");
-		ami_action(ami, response_login, NULL,
-		           "Action: Login\nUsername: %s\nSecret: %s\n",
-		           ami->username, ami->secret);
-		return;
-	}
+	"Response: Follows\r\nPrivilege: Command\r\nActionID: %d\r\n"
+	"--END COMMAND--\r\n\r\n"
+*/
 
-checkdelim:
-	if ((pos = strstr(ami->inbuf, "\r\n\r\n"))) {
-		int offset = pos - ami->inbuf;
+	// byte-onként végigmegyünk a netsocket bufferen
+	int i;
+	for (i = 0; i < ami->netsocket->inbuf_len; i++) {
+		// buffer overflow védelem
+		if (ami->inbuf_pos >= sizeof(ami->inbuf) - 1) {
+			printf("ELFOGYOTT A BUFFER!!!\n"); // TODO: netsocket_disconnect és feltakarítás
+			break;
+		}
 
-		parse_input(ami, ami->inbuf, offset + 2); // 2 = egy darab \r\n mérete
+		// byte másolása netsocketből ami->inbuf -ba
+		ami->inbuf[ami->inbuf_pos] = ami->netsocket->inbuf[i];
 
-		// ha maradt még feldolgozandó adat, akkor azt a string elejére mozgatjuk
-		if (ami->inbuf_pos > (offset + 4)) { // 4 = a "\r\n\r\n" lezaro merete
-			memmove(ami->inbuf, ami->inbuf + offset + 4, ami->inbuf_pos - (offset + 4));
-			ami->inbuf_pos -= (offset + 4);
-			goto checkdelim;
-		} else { // ha nincs már több adat, akkor string reset
+		/* AMI header vizsgalata. Biztonsagi okokbol ha mar authentikalt
+		allapotban vagyunk, akkor ezt a vizsgalatot kihagyjuk */
+		if (!ami->authenticated &&
+			(!strcmp(ami->inbuf, "Asterisk Call Manager/1.1\r\n") ||
+			!strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n")))
+		{
+			bzero(ami->inbuf, sizeof(ami->inbuf));
+			ami->inbuf_pos = 0;
+			con_debug("Received \"Asterisk Call Manager\" header, sending auth...");
+			ami_action(ami, response_login, NULL,
+			           "Action: Login\nUsername: %s\nSecret: %s\n",
+			           ami->username, ami->secret);
 			bzero(ami->inbuf, sizeof(ami->inbuf));
 			ami->inbuf_pos = 0;
 			return;
 		}
-	}
 
-	// Az ami->inbuf -ban lévő szabad hely kiszámolása újra. Tehát arra vagyunk
-	// kiváncsiak, hogy miután megpróbáltuk feldolgozni a csomagot, van -e még
-	// szabad hely. Ha nincs, az nem jó! A gyakorlatban ez az eset akkor
-	// következik be, ha az Asterisk az AMI_BUFSIZ makróban beállított buffer
-	// méretnél több adatot küld \r\n\r\n lezáró nélkül.
-	freespace = sizeof(ami->inbuf) - ami->inbuf_pos - 1;
+		// ha épp egy "Response: Follows" belsejében vagyunk
+		if (ami->cli_actionid > 0) {
+			// keressük a csomag végét
+			#define Q "--END COMMAND--\r\n\r\n"
+			#define QSIZE 19
+			if (ami->inbuf_pos >= QSIZE - 1) {
+				if (!strncmp(Q, &ami->inbuf[ami->inbuf_pos - (QSIZE - 1)], QSIZE)) {
+					// megtaláltuk, mehet a feldolgozóba
+					parse_cliresponse(ami, ami->cli_actionid, ami->inbuf, ami->inbuf_pos - 18);
+					bzero(ami->inbuf, sizeof(ami->inbuf));
+					ami->inbuf_pos = 0;
+					ami->cli_actionid = 0;
+					continue;
+				}
+			}
+			#undef Q
+			#undef QSIZE
 
-	// Ha ide kerülünk, akkor gáz van, mert elfogyott a szabad hely, de még nincs elegendő
-	// adat a bufferben ahhoz, hogy az üzenetet feldolgozzuk. Elképzelhető, hogy ezen
-	// a ponton az egész netsocket kapcsolatot le kéne bontani, hogy a teljes folyamat
-	// újrainduljon. Mert ha csak string reset van, akkor az a következő csomagnál
-	// string nyesedéket eredményezhet, aminek megjósolhatatlan a kimenetele.
-	// TODO: ezt az esetet netsocket_disconnect hívással kell lekezelni!
-	if (!freespace) {
-		con_debug("Buffer overflow, clearing ami->inbuf. ami->inbuf_pos=%d", ami->inbuf_pos);
-		bzero(ami->inbuf, sizeof(ami->inbuf));
-		ami->inbuf_pos = 0;
-		return;
-	}
+			// folytatjuk tovább a beolvasást
+			ami->inbuf_pos++;
+			continue;
+		}
 
-	//~ Ha ide jut a program, akkor az aktuális csomag fragmentálódott. Tehát,
-	//~ amikor már van valami a bufferben, de még nem jött lezáró, azaz akkor,
-	//~ amikor még nincs elegendő adat a csomag feldolgozásához. A töredék-csomag
-	//~ a következő socket olvasásig a bufferben marad. Ez az eset a
-	//~ gyakorlatban ritka, de különleges helyzetben néha előfordul. Ezen a
-	//~ ponton nincs semmilyen műveletre, mert a függvény felépítéséből adódóan a
-	//~ helyzet már le van kezelve.
-	//~ con_debug("fragmented packet from server");
+		/* Egy "Action: Command" csomagra (ami_cli() okozza) egy "Response:
+		Follows" válaszcsomag érkezik. Az ilyen csomagoknak speciális
+		formátuma van, ezért ezeket teljesen külön kell kezelni. Ezek a
+		csomagok a parse_input() helyett a parse_cliresponse() függvénynek
+		kerülnek át feldolgozásra. Az alábbi sscanf() megoldás megvizsgálja,
+		hogy az éppen beolvasás alatt álló csomag ilyen speciális "Response:
+		Follows" csomag lesz -e, illetve kiszedi belőle az ActionID-t. A
+		sscanf() az ami->inbuf baloldali illeszkedését vizsgálja és ha
+		tudja, akkor az ami->cli_actionid változóba menti el a kapott
+		ActionID-t. */
+		if (sscanf(ami->inbuf, "Response: Follows\r\nPrivilege: Command\r\nActionID: %d\r\n", &ami->cli_actionid) > 0) {
+			// az ami->inbuf jobboldali illeszkedését az strncmp()-vel vizsgáljuk
+			#define Q "\r\n"
+			#define QSIZE 2 // Q mérete
+			if (ami->inbuf_pos >= QSIZE - 1) {
+				// ha illeszkedik jobbról a \r\n, akkor tovább olvassuk az adatokat
+				if (!strncmp(Q, &ami->inbuf[ami->inbuf_pos - (QSIZE - 1)], QSIZE)) {
+					bzero(ami->inbuf, sizeof(ami->inbuf));
+					ami->inbuf_pos = 0;
+					continue; // ezen a ponton az ami->cli_actionid -ben ott figyel az ActionID
+				}
+			}
+			#undef Q
+			#undef QSIZE
 
-	//~ Ha a függvény elején nem tudtuk átmásolni az összes netsocket->inbuf
-	//~ bájtot az ami->inbuf bufferbe, akkor visszaugrunk a readnetsocket
-	//~ címkéhez és ismét elkezdjük a netsocket->inbuf feldolgozását. Mivel az
-	//~ ami->inbuf buffert időközben feldolgozta a parse_input(), ezért van benne
-	//~ újra hely. A netsocket_offset változó gondoskodik arról, hogy a netsocket
-	//~ ->inbuf buffert ne az elejétől másolja a memmove(), hanem onnan, ahol az
-	//~ előbb félbemaradt.
-	if (bytes < ami->netsocket->inbuf_len) {
-		ami->netsocket->inbuf_len -= bytes;
-		netsocket_offset += bytes;
-		con_debug("goto readnetsocket");
-		goto readnetsocket;
+			/* Ide akkor kerülünk, ha a sscanf() (bal oldal) illeszkedett, de az
+			strncmp() (jobb oldal) nem. Ebben az esetben elképzelhető, hogy
+			a sscanf() hibásan kiolvassa az ActionID egy töredékét, ezért
+			biztos ami biztos, kinullázzuk. ezen a ponton lehetséges, hogy a
+			sscanf() az ActinID csak egy töredékét szedte ki, ezért nullázunk. */
+			ami->cli_actionid = 0;
+
+			// folytatjuk tovább a beolvasást
+			ami->inbuf_pos++;
+			continue;
+		}
+
+		/* Ha van elég adat, hogy az ami->inbuf -ban 3 byte-ot visszaléphessünk,
+		akkor megvizsgáljuk, hogy vajon éppen egy csomag lezárásánál állunk
+		-e, azaz az ami->inbuf legutolsó 4 byte-ja megegyezik ezzel:
+		"\r\n\r\n". Ha igen, akkor az azt jelenti, hogy az ami->inbuf pont
+		egy teljes csomagot tartalmaz, amit elküldünk a parse_input()-nak,
+		majd kinullázzuk a teljes ami->inbuf buffert és az ami->inbuf_pos
+		pozicionáló változót. Ezután folytatjuk a következő csomag byte-
+		onkénti olvasását. Ha már nincs a netsocket->inbuf -ban feldolgozandó
+		cucc, akkor a for ciklus kilép és majd a következő körben
+		folytatódik az olvasás. */
+		#define Q "\r\n\r\n"
+		#define QSIZE 4
+		if (ami->inbuf_pos >= QSIZE - 1) {
+			if (!strncmp(Q, &ami->inbuf[ami->inbuf_pos - (QSIZE - 1)], QSIZE)) {
+				parse_input(ami, ami->inbuf, ami->inbuf_pos - 1); // -1 azért, hogy ne menjen át a legutolsó \r\n-ből az \r (érthető?)
+				bzero(ami->inbuf, sizeof(ami->inbuf));
+				ami->inbuf_pos = 0;
+				continue; // ne jusson el az ami->inbuf_pos++ -ig :)
+			}
+		}
+		#undef Q
+		#undef QSIZE
+		ami->inbuf_pos++;
 	}
 }
 

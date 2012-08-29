@@ -229,6 +229,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		ami_event_list_t *el = NULL;
 		ami_event_list_t *eltmp = NULL;
 		DL_FOREACH_SAFE(ami->ami_event_list_head, el, eltmp) {
+			if (el->type != AMI_RESPONSE)
+			    continue;
 			// event->action_id  - Asterisktől érkezett ActionID
 			// el->action_id     - adatbázisban szereplő ActionID
 			if (event->action_id == el->action_id) {
@@ -254,6 +256,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		ami_event_list_t *el;
 		// végigmegyünk a regisztrált eseményeken
 		DL_FOREACH(ami->ami_event_list_head, el) {
+			if (el->type != AMI_EVENT)
+			    continue;
 			// regisztrációban definiált változó=érték párok száma
 			int need_found = el->field_size / 2; // minden találatnál dekrementálva lesz
 			if (need_found) { // ha van mit keresnünk
@@ -644,6 +648,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 		bzero(el, sizeof(el)); // NULL, NULL, NULL :)
 		el->callback = callback;
 		el->userdata = userdata;
+		el->type = AMI_RESPONSE;
 		el->regby_file = file;
 		el->regby_line = line;
 		el->regby_function = function;

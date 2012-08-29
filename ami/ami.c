@@ -1,5 +1,5 @@
 // debug infók (kommentezd, ha nem kell)
-#define CON_DEBUG
+//~ #define CON_DEBUG
 
 // csomagok dumpolása stdout-ra (kommentezd, ha nem kell)
 #define AMI_DEBUG_PACKET_DUMP
@@ -206,7 +206,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 
 	char *var_response = ami_getvar(event, "Response");
 	char *var_event = ami_getvar(event, "Event");
-	//// RESPONSE //// TODO: CLI_RESPONSE
+	/* * * RESPONSE * * */
 	if (!strlen(var_event)) {
 		char *action_id_str = ami_getvar(event, "ActionID");
 		if (action_id_str == NULL) {
@@ -219,8 +219,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 			event->success = 1;
 		} else if (!strcmp(var_response, "Error")) {
 			event->success = 0;
-		} else if (!strcmp(var_response, "Follows")) {
-			con_debug("CLI Response not implemented yet...");
+		} else {
+			con_debug("Unknown Response value: %s", var_response);
 			return;
 		}
 
@@ -229,7 +229,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		ami_event_list_t *el = NULL;
 		ami_event_list_t *eltmp = NULL;
 		DL_FOREACH_SAFE(ami->ami_event_list_head, el, eltmp) {
-			if (el->type != AMI_RESPONSE)
+			if (el->type != AMI_RESPONSE) // csak az AMI_RESPONSE típusú eseményeket vizsgáljuk
 			    continue;
 			// event->action_id  - Asterisktől érkezett ActionID
 			// el->action_id     - adatbázisban szereplő ActionID
@@ -250,13 +250,13 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 		}
 		con_debug("Received ActionID=%d, but %d not found in ami_event_list_head!", event->action_id, event->action_id);
 
-	//// EVENT ////
+	/* * * EVENT * * */
 	} else {
 //~ printf("##### PARSE_INPUT EVENT #####\n");
 		ami_event_list_t *el;
 		// végigmegyünk a regisztrált eseményeken
 		DL_FOREACH(ami->ami_event_list_head, el) {
-			if (el->type != AMI_EVENT)
+			if (el->type != AMI_EVENT) // csak az AMI_EVENT típusú eseményeket vizsgáljuk
 			    continue;
 			// regisztrációban definiált változó=érték párok száma
 			int need_found = el->field_size / 2; // minden találatnál dekrementálva lesz
@@ -604,8 +604,6 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 	vsnprintf(buf, sizeof(buf), fmt, ap);
 	va_end(ap);
 
-//~ printf("~~~ %s ~~~\n", buf);
-
 	int field[AMI_FIELD_SIZE];
 	int field_size;
 	tokenize_field(
@@ -741,7 +739,7 @@ char *ami_getvar (ami_event_t *event, char *var) {
 			if (&event->data[event->field[i+1]] != NULL) {
 				return &event->data[event->field[i+1]];
 			} else {
-				return ""; // TODO: jó ez? Nem NULL kéne ide is?
+				return "";
 			}
 		}
 	}

@@ -16,16 +16,16 @@ ev_timer timer_reconnect;
 ami_t *ami;
 int dstatus_n = 2;
 
-static void ami_event_callback (ami_event_t *ame) {
-	char *userdata = (char*)ame->userdata;
-	char *status = ami_getvar(ame, "Status");
-
-	char status2[64];
-	strncpy(status2, ami_getvar(ame, "Status"), 64);
-	ami_strncpy(ame, status2, "Status", 64);
-
+//~ static void ami_event_callback (ami_event_t *ame) {
+	//~ char *userdata = (char*)ame->userdata;
+	//~ char *status = ami_getvar(ame, "Status");
+	//~
+	//~ char status2[64];
+	//~ strncpy(status2, ami_getvar(ame, "Status"), 64);
+	//~ ami_strncpy(ame, status2, "Status", 64);
+//~
 	//~ ami_event_unregister(ame);
-}
+//~ }
 
 static void ami_login_response_success (ami_event_t *response) {
 	con_debug("logged in: %s (by %s() %s:%d)",
@@ -180,14 +180,14 @@ int main (int argc, char *argv[]) {
 	ami_credentials(ami, "jsi", "pwd", host, "5038");
 	ami_connect(ami);
 
-	char *userdata = "juzeradat";
-	char *message_id = "V59";
+	//~ char *userdata = "juzeradat";
+	//~ char *message_id = "V59";
 
-	ami_event_list_t *sms_status = ami_event_register(ami, ami_event_callback, userdata,
-		"Event: DongleSMSStatus\nID: %s", message_id);
+	//~ ami_event_list_t *sms_status = ami_event_register(ami, ami_event_callback, userdata,
+		//~ "Event: DongleSMSStatus\nID: %s", message_id);
 
-	ami_event_list_t *sms_status3 = ami_event_register(ami, ami_event_callback, userdata,
-		"egy\nketto\nharom", message_id);
+	//~ ami_event_list_t *sms_status3 = ami_event_register(ami, ami_event_callback, userdata,
+		//~ "egy\nketto\nharom", message_id);
 
 	ami_event_register(ami, ami_login_response_success, NULL, "Response: Success");
 
@@ -199,8 +199,8 @@ int main (int argc, char *argv[]) {
 
 	//~ ami_event_unregister(sms_status);
 
-	char *device = "dongle0";
-	char *pdu = "ABCDEF1234";
+	//~ char *device = "dongle0";
+	//~ char *pdu = "ABCDEF1234";
 
 	//~ ami_event_list_t *response = ami_action(ami, ami_response_callback, userdata,
 		//~ "Action: DongleSendPDU\nDevice: %s\nPDU: %s", device, pdu);

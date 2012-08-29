@@ -171,6 +171,7 @@ static void generate_local_event (ami_t *ami, enum ami_event_type type, const ch
 			event->regby_line = el->regby_line;
 			event->regby_function = el->regby_function;
 			event->regby_cbname = el->regby_cbname;
+			event->regby_udname = el->regby_udname;
 			event->ami = ami;
 			event->type = el->type;
 			put_event(event);
@@ -240,6 +241,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 				event->regby_line = el->regby_line;
 				event->regby_function = el->regby_function;
 				event->regby_cbname = el->regby_cbname;
+				event->regby_udname = el->regby_udname;
 				event->ami = ami;
 				event->type = AMI_RESPONSE;
 				put_event(event);
@@ -288,6 +290,7 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 					event->regby_line = el->regby_line;
 					event->regby_function = el->regby_function;
 					event->regby_cbname = el->regby_cbname;
+					event->regby_udname = el->regby_udname;
 					event->type = AMI_EVENT;
 					event->ami = ami;
 					put_event(event);
@@ -633,7 +636,7 @@ int ami_printf (ami_t *ami, const char *fmt, ...) {
 	}
 }
 
-ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *fmt, ...) {
+ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *udname, const char *fmt, ...) {
 	char buf[AMI_BUFSIZ];
 	va_list ap;
 	va_start(ap, fmt);
@@ -651,6 +654,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 		el->regby_line = line;
 		el->regby_function = function;
 		el->regby_cbname = cbname;
+		el->regby_udname = udname;
 		ami->action_id++; // új ActionID
 		el->action_id = ami->action_id;
 		ami_printf(ami, "ActionID: %d\n%s", ami->action_id, buf);
@@ -663,8 +667,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 	}
 }
 
-//~ ami_event_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, char *line, char *function, const char *fmt, ...);
-ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *fmt, ...) {
+ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *udname, const char *fmt, ...) {
 	ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
 	bzero(el, sizeof(el)); // NULL, NULL, NULL :)
 
@@ -679,6 +682,7 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 	el->regby_line = line;
 	el->regby_function = function;
 	el->regby_cbname = cbname;
+	el->regby_udname = udname;
 
 	// ha belső eseményre iratkozunk fel, akkor azt a type-ban jelöljük
 	if (!strcmp(el->data, "Connect")) {
@@ -711,7 +715,7 @@ void ami_event_unregister(ami_t *ami, ami_event_list_t *el) {
 		con_debug("attempting to unregister NULL pointer event!")
 		return;
 	}
-	con_debug("EVENT unregistered, callback: %s", el->regby_cbname);
+	con_debug("EVENT unregistered, callback: %s()", el->regby_cbname);
 	DL_DELETE(ami->ami_event_list_head, el);
 	free(el);
 }
@@ -733,28 +737,37 @@ void ami_event_unregister(ami_t *ami, ami_event_list_t *el) {
 	//~ const char *regby_cbname;
 	//~ enum ami_event_type type;
 void ami_event_dump (ami_event_t *event) {
-	printf("%08lx\n", (uint64_t)event);
-
 	printf(
-		"EVENT %x type=%s\n"
-		"  Callback: %s() /0x%x/ by %s() in %s line %d\n"
-		, (int)event, type2name(event->type)
-		, event->regby_cbname, (int)event->callback, event->regby_function, event->regby_file, event->regby_line
+		"EVENT 0x%lx type=%s\n"
+		"  Registered by %s() in %s line %d\n"
+		"  Callback: %s() /0x%lx/, Userdata: %s /0x%lx/\n"
+		"  success=%d action_id=%d data_size=%d field_size=%d\n"
+		, (unsigned long)event, type2name(event->type)
+		, event->regby_function, event->regby_file, event->regby_line
+		, event->regby_cbname, (unsigned long)event->callback, event->regby_udname, (unsigned long)event->userdata
+		, event->success, event->action_id, event->data_size, event->field_size
 	);
+	int i;
+	for (i = 0; i < event->field_size; i += 2)
+		printf("    %-16s %s\n", &event->data[event->field[i]], &event->data[event->field[i+1]]);
+	printf("\n");
 }
 
 void ami_dump_event_list_element (ami_event_list_t *el) {
 	printf(
-		"EVENT %x type=%s\n"
-		"  Callback: %s() /0x%x/ by %s() in %s line %d\n"
-		"  Userdata: 0x%x\n"
-		, (int)el, type2name(el->type)
-		, el->regby_cbname, (int)el->callback, el->regby_function, el->regby_file, el->regby_line
-		, (int)el->userdata
+		"EVENT 0x%lx type=%s\n"
+		"  Registered by %s() in %s line %d\n"
+		"  Callback: %s() /0x%lx/, Userdata: %s /0x%lx/\n"
+		"  action_id=%d field_size=%d\n"
+		, (unsigned long)el, type2name(el->type)
+		, el->regby_function, el->regby_file, el->regby_line
+		, el->regby_cbname, (unsigned long)el->callback, el->regby_udname, (unsigned long)el->userdata
+		, el->action_id, el->field_size
 	);
 	int i;
 	for (i = 0; i < el->field_size; i += 2)
 		printf("    %-16s %s\n", &el->data[el->field[i]], &el->data[el->field[i+1]]);
+	printf("\n");
 }
 
 void ami_dump_lists (ami_t *ami) {

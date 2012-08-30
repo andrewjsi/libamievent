@@ -323,7 +323,7 @@ static void response_login (ami_event_t *response) {
 				ami->netsocket->ip,
 				ami->port);
 		} else { // AUTH failed
-			netsocket_disconnect_withevent(response->ami->netsocket, "authentication failed");
+			netsocket_disconnect_withevent(response->ami->netsocket, "Authentication failed");
 		}
 	}
 }
@@ -685,10 +685,11 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 	el->regby_cbname = cbname;
 	el->regby_udname = udname;
 
-	// ha belső eseményre iratkozunk fel, akkor azt a type-ban jelöljük
+	// belső esemény: Connect
 	if (!strcmp(el->data, "Connect")) {
 		el->type = AMI_CONNECT;
 
+	// belső esemény: Disconnect
 	} else if (!strcmp(el->data, "Disconnect")) {
 		el->type = AMI_DISCONNECT;
 

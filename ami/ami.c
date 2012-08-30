@@ -481,7 +481,7 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 				AMI_DISCONNECT,
 				"Host: %s\nIP: %s\nPort: %d\nReason: %s",
 				netsocket->host,
-				netsocket->ip,
+				(netsocket->ip) ? netsocket->ip : "",
 				netsocket->port,
 				netsocket->disconnect_reason
 			);

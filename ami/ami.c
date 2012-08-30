@@ -141,7 +141,7 @@ static char *type2name (enum ami_event_type type) {
 static void generate_local_event (ami_t *ami, enum ami_event_type type, const char *fmt, ...) {
 	ami_event_t event_tmp; // ideiglenes event // TODO: ha működik, akkor bevezetni az ami->event_tmp helyett lent is
 	ami_event_t *event = &event_tmp;
-	bzero(event, sizeof(event));
+	bzero(event, sizeof(*event));
 
 	//~ char buf[AMI_BUFSIZ];
 	va_list ap;
@@ -192,7 +192,7 @@ static void parse_cliresponse (ami_t *ami, int actionid, char *buf, int size) {
 // bejövő Response es Event feldolgozása
 static void parse_input (ami_t *ami, char *buf, int size) {
 	ami_event_t *event = &ami->event_tmp;
-	bzero(event, sizeof(event));
+	bzero(event, sizeof(*event));
 
 	memcpy(event->data, buf, size);
 	event->data_size = size;
@@ -647,7 +647,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 
 	if (callback != NULL) {
 		ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
-		bzero(el, sizeof(el)); // NULL, NULL, NULL :)
+		bzero(el, sizeof(*el)); // NULL, NULL, NULL :)
 		el->callback = callback;
 		el->userdata = userdata;
 		el->type = AMI_RESPONSE;
@@ -670,7 +670,7 @@ ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char 
 
 ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *udname, const char *fmt, ...) {
 	ami_event_list_t *el = malloc(sizeof(ami_event_list_t));
-	bzero(el, sizeof(el)); // NULL, NULL, NULL :)
+	bzero(el, sizeof(*el)); // NULL, NULL, NULL :)
 
 	va_list ap;
 	va_start(ap, fmt);

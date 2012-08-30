@@ -262,8 +262,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 			    continue;
 			// regisztrációban definiált változó=érték párok száma
 			int need_found = el->field_size / 2; // minden találatnál dekrementálva lesz
-			if (need_found) { // ha van mit keresnünk
-//~ printf(" REG need_found=%d by %s:%d\n", need_found, el->regby_file, el->regby_line);
+//~ printf(" REG need_found=%d allevents=%d by %s:%d\n", need_found, el->allevents, el->regby_file, el->regby_line);
+			if (need_found || el->allevents) { // ha van mit keresnünk
 				int n, i;
 				// végigmegyünk a regisztráció változó=érték párjain
 				for (n = 0; n < el->field_size; n += 2) {
@@ -283,7 +283,8 @@ static void parse_input (ami_t *ami, char *buf, int size) {
 				}
 //~ printf(" FIN need_found=%d\n", need_found);
 				// ha minden változó megtalálható volt és mindegyik értéke egyezett
-				if (need_found == 0) {
+				// vagy "*" volt megadva a regisztrációnál (allevents)
+				if (need_found == 0 || el->allevents) {
 					event->callback = el->callback;
 					event->userdata = el->userdata;
 					event->regby_file = el->regby_file;
@@ -690,8 +691,13 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 
 	} else if (!strcmp(el->data, "Disconnect")) {
 		el->type = AMI_DISCONNECT;
-	// ellenkező esetben AMI_EVENT a type és feldaraboljuk a tokeneket
 
+	// Minden Asterisk esemény szűrés nélkül
+	} else if (!strcmp(el->data, "*")) {
+		el->type = AMI_EVENT;
+		el->allevents = 1;
+
+	// Asterisk esemény, feltételek feldarabolása
 	} else {
 		el->type = AMI_EVENT;
 		tokenize_field(

@@ -45,6 +45,7 @@ typedef struct ami_event_list_t {
 	const char *regby_udname;
 	unsigned int action_id;
 	enum ami_event_type type;
+	int allevents; // 1 lesz, ha a megrendelo szures nelkul az osszes AMI esemenyt keri
 } ami_event_list_t;
 
 typedef struct ami_event_t {

@@ -7,10 +7,11 @@ OBJ=ami.o originate.o ../libc-jss/netsocket.o ../libc-jss/logger.o ../libc-jss/m
 
 all: clean compile
 
-compile: $(OBJ) test_ami.o calltrack.o
+compile: $(OBJ) test_ami.o calltrack.o amilog.o
 	$(CC) $(CFLAGS) -o test_ami test_ami.o $(OBJ) $(LIBS)
 	$(CC) $(CFLAGS) -o calltrack calltrack.o $(OBJ) $(LIBS)
+	$(CC) $(CFLAGS) -o amilog amilog.o $(OBJ) $(LIBS)
 
 clean:
-	rm -rf $(OBJ) test_ami.o calltrack.o test_ami calltrack core
+	rm -rf $(OBJ) test_ami.o calltrack.o amilog.o test_ami calltrack core amilog
 

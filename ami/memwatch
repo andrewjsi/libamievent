@@ -1,3 +1,5 @@
 #!/bin/sh
 
-watch -n 1 'ps -e -orss=,args= | sort -b -k1,1n | pr -TW$COLUMNS |grep test_ami | grep -v grep'
+watch -n 1 'ps -e -orss=,args= | sort -b -k1,1n | pr -TW$COLUMNS |grep -E "test_ami|test_mysql" | grep -v grep'
+
+

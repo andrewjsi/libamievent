@@ -94,7 +94,9 @@ again:
 	}
 	printf("};\n");
 
-
+	// az auth accepted kompletten erkezzen meg, mert ha nem, akkor a
+	// kulonbozo teszteknel nem erkeznek meg az adatok
+	seq[0] = 82;
 
 	int seqn;
 	char buf[4096];
@@ -125,6 +127,7 @@ again:
 
 	printf("\n\n");
 
+	usleep(100000);
 	close(newsockfd);
 	close(sockfd);
 	goto again;

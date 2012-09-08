@@ -51,7 +51,7 @@ void event_all (ami_event_t *event) {
 			fprintf(ftarget, ", ");
 	}
 	fprintf(ftarget, "}\n");
-
+	fflush(ftarget);
 }
 
 void event_disconnect (ami_event_t *event) {

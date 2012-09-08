@@ -1,0 +1,32 @@
+Asterisk Call Manager/1.1
+Response: Success
+Message: Authentication accepted
+
+Event: FullyBooted
+Privilege: system,all
+Status: Fully Booted
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum: 1212
+CallerIDName: JSI1
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid: 1344222152.12
+
+Event: Newchannel
+Privilege: call,all
+Channel: SIP/gsm-00000006
+ChannelState: 0
+ChannelStateDesc: Down
+CallerIDNum:
+CallerIDName:
+AccountCode:
+Exten: 8010617808683
+Context: default
+Uniqueid:
+

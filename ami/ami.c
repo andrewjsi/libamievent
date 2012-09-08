@@ -78,6 +78,10 @@ data_size          data mérete
 //~
 //~ aug 29: mi lenne, ha az utolsó változó-érték pár nem kapná meg a teljes buffert?
 //~ vagy eleve netsocket_disconnect és feltakarítás kellene ide?
+//~
+//~ A függvény nem kezeli azt az esetet, amikor az AMI változó-érték párnak nincs
+//~ értéke és nincs a változó utáni kettőspont után szóköz, hanem egyből újsor
+//~ karakter. Ilyen eset áll fenn az RTCPSent esemény ReportBlock változójában.
 void tokenize_field (int *field, int max_field_size, int *field_len, char *data, int data_size) {
 	enum {
 		LEFT,
@@ -87,11 +91,13 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 	int len = 0; // visszatéréskor ezt mentjük el a *field_len -be
 	field[len++] = 0; // első pozíció a data legeleje, tehát 0
 	int i;
-	for (i = 0; i < data_size && len < max_field_size; i++) {
-		if (data[i] == '\r') {
+
+	// összes \r karakter nullázása
+	for (i = 0; i < data_size; i++)
+		if (data[i] == '\r')
 			data[i] = '\0';
-			continue;
-		}
+
+	for (i = 0; i < data_size && len < max_field_size; i++) {
 		if (inexpr == LEFT) { // ": " bal oldalán vagyunk, változó
 			if (data[i] == ':' && data[i+1] == ' ') {
 				data[i] = '\0';
@@ -121,7 +127,7 @@ void tokenize_field (int *field, int max_field_size, int *field_len, char *data,
 #ifdef AMI_DEBUG_PACKET_DUMP
 	int z;
 	for (z = 0; z < len; z++)
-		printf("tokenize_field ### %d - %s\n", z, &data[field[z]]);
+		printf("tokenize_field ### %d - (%s)\n", z, &data[field[z]]);
 	printf("\n");
 #endif
 }

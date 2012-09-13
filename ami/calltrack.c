@@ -12,9 +12,33 @@
 #include "logger.h"
 
 ami_t *ami;
+char dialstring[64];
 
-void response_originate (ami_event_t *event) {
-	printf("Originate sikeres: uniqueid=%s\n", ami_getvar(event, "Uniqueid"));
+void originate_event (ori_t *ori, ami_event_t *event) {
+	switch (ori->state) {
+		case DIALING:
+			printf("Tárcsázás...\n");
+			break;
+
+		case RINGING:
+			printf("Kicsöng\n");
+			break;
+
+		case ANSWERED:
+			printf("Felvette\n");
+			break;
+
+		case HANGUP:
+			printf("Hívás bontva (%d) (%s)\n", ori->hangupcause, ori->hangupcausetxt);
+			exit(0);
+			break;
+
+		case UNKNOWN:
+			printf("Ismeretlen ori->state !!!\n");
+			break;
+
+	}
+
 }
 
 // Event: Connect
@@ -24,11 +48,13 @@ void event_connect (ami_event_t *event) {
 		ami_getvar(event, "Port")
 	);
 
-	ami_originate(event->ami,
-		"Channel: Dongle/dongle0/06206620300\n"
+	printf("Calling %s\n", dialstring);
+	ami_originate(event->ami, originate_event, NULL,
+		"Channel: %s\n"
 		"Context: default\n"
-		"Exten: 1801\n"
+		"Exten: 42\n"
 		"Priority: 1\n"
+		, dialstring
 	);
 
 }
@@ -54,10 +80,15 @@ int main (int argc, char *argv[]) {
 	}
 
 	char host[128];
-	if (argc < 2)
-		strcpy(host, "10.27.1.222");
+	if (argc > 1)
+		strncpy(host, argv[1], sizeof(host));
 	else
-		strcpy(host, argv[1]);
+		strcpy(host, "192.168.15.200");
+
+	if (argc > 2)
+		strncpy(dialstring, argv[2], sizeof(dialstring));
+	else
+		strcpy(dialstring, "DAHDI/g1/2480999");
 
 	ami_credentials(ami, "jsi", "pwd", host, "5038");
 	ami_connect(ami);

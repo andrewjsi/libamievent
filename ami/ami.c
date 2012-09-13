@@ -451,6 +451,29 @@ static void process_input (ami_t *ami) {
 		onkénti olvasását. Ha már nincs a netsocket->inbuf -ban feldolgozandó
 		cucc, akkor a for ciklus kilép és majd a következő körben
 		folytatódik az olvasás. */
+
+		/* TODO: Logikailag nem korrekt ez a megoldás! Segfault veszély
+		ami_event_unregister() után. A process_input() és parse_input()
+		páros a teljes netsocket->inbuf -ban lévő cuccot egyetlen egy körben
+		feldolgozza. Ebben egyszerre több csomag is lehet. Az érdekes
+		eseményeket a put_event() a saját listájába tolja és csak a
+		következő körben lesz callback hívás. Tegyük fel, hogy egyszerre 2
+		csomag érkezik. Az első csomagban lévő esemény callback függvénye
+		megrendel egy új eseményt, amire történetesen pont a második csomag
+		illeszkedne. De mivel a megrendelés előtt már megtörtént az
+		összehasonlítás, feldolgozás, ezért erről a második eseményről le
+		fog maradni a hívó. Másképpen szólva egy-egy megrendelésnek (vagy
+		lemondásnak) csak a teljes put_event() által karbantartott lista
+		(callback lista) lefuttatása után lesz hatása. Ez eseményről való
+		lemaradást okozhat, illetve lemondásnál segfaultot is, ugyanis ha
+		történik egy ami_event_unregister() akkor ezután még a put_event()
+		által karbantartott listából lefuthat a (már lemondott) callback.
+		Ötlet: valami olyan megoldás kéne, hogy még itt a process_input /
+		parse_input szintjén ha fennakad a szűrőn egy esemény, akkor a
+		put_event() regisztráció után álljon le a parse_input() és az event
+		loop hívja meg a need_event_processing-et. És majd csak ezután
+		folytatódjon a parse_input() vizsgálódása. */
+
 		#define Q "\r\n\r\n"
 		#define QSIZE 4
 		if (ami->inbuf_pos >= QSIZE - 1) {
@@ -733,22 +756,6 @@ void ami_event_unregister(ami_t *ami, ami_event_list_t *el) {
 	free(el);
 }
 
-    //~ struct ami_event_t *prev;
-    //~ struct ami_event_t *next;
-	//~ struct ami_t *ami;
-	//~ int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
-	//~ int field[AMI_FIELD_SIZE];
-	//~ int field_size;
-	//~ char data[AMI_BUFSIZ];
-	//~ int data_size;
-	//~ void (*callback)(void*);
-	//~ void *userdata;
-	//~ unsigned int action_id;
-	//~ char *regby_file;
-	//~ int regby_line;
-	//~ const char *regby_function;
-	//~ const char *regby_cbname;
-	//~ enum ami_event_type type;
 void ami_event_dump (ami_event_t *event) {
 	printf(
 		"Incoming %s /0x%lx/\n"

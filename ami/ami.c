@@ -461,18 +461,24 @@ static void process_input (ami_t *ami) {
 		csomag érkezik. Az első csomagban lévő esemény callback függvénye
 		megrendel egy új eseményt, amire történetesen pont a második csomag
 		illeszkedne. De mivel a megrendelés előtt már megtörtént az
-		összehasonlítás, feldolgozás, ezért erről a második eseményről le
-		fog maradni a hívó. Másképpen szólva egy-egy megrendelésnek (vagy
-		lemondásnak) csak a teljes put_event() által karbantartott lista
-		(callback lista) lefuttatása után lesz hatása. Ez eseményről való
-		lemaradást okozhat, illetve lemondásnál segfaultot is, ugyanis ha
-		történik egy ami_event_unregister() akkor ezután még a put_event()
-		által karbantartott listából lefuthat a (már lemondott) callback.
-		Ötlet: valami olyan megoldás kéne, hogy még itt a process_input /
+		összehasonlítás, szűrés és a futtatandó események kiválasztása,
+		ezért erről a második eseményről le fog maradni a hívó. Másképpen
+		szólva egy-egy megrendelésnek (vagy lemondásnak) csak a teljes
+		put_event() által karbantartott lista (callback lista) lefuttatása
+		után lesz hatása. Ez eseményről való lemaradást okozhat, illetve
+		lemondásnál segfaultot is, ugyanis ha történik egy
+		ami_event_unregister() akkor ezután még a put_event() által
+		karbantartott listából lefuthat a (már lemondott) callback. Ötlet:
+		valami olyan megoldás kéne, hogy még itt a process_input /
 		parse_input szintjén ha fennakad a szűrőn egy esemény, akkor a
 		put_event() regisztráció után álljon le a parse_input() és az event
 		loop hívja meg a need_event_processing-et. És majd csak ezután
-		folytatódjon a parse_input() vizsgálódása. */
+		folytatódjon a parse_input() vizsgálódása. Vaaagy... egy merészebb
+		ötlet. A bejövő AMI buffer visszamenőleg addig legyen eltárolva,
+		amíg az invoke_events még foglalkozik a callback hívásokkal.
+		Multithread környezetben az invoke_events a megrendelő szálában fog
+		futni. Elképzelhető, hogy az invoke_events-ből kellene vizsgálni
+		azt, hogy az éppen bejövő AMI eseményt kell -e futtatni.  */
 
 		#define Q "\r\n\r\n"
 		#define QSIZE 4

@@ -29,7 +29,7 @@ Asterisk 1.4 esetén
 
 Asterisk 1.6 és magasabb esetén
 1. > Action Originate, benne egy Variable: ami_originate_id = ori->oid
-2. < a visszajövő Response nem tartalmaz érdemi információt
+2. < a visszajövő Response nem tartalmaz érdemi információt, nem foglalkozunk vele
 3. < Event Varset tartalmazza a fent megadott ami_origate_id-t, Channelt- és UniqueID-t
 
 A továbbiakban Newstate esemény mutatja a hívás állapotát és a Hangup pedig

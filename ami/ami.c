@@ -754,7 +754,7 @@ ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdat
 
 void ami_event_unregister(ami_t *ami, ami_event_list_t *el) {
 	if (el == NULL) {
-		con_debug("attempting to unregister NULL pointer event!")
+		con_debug("attempting to unregister NULL pointer event!");
 		return;
 	}
 	con_debug("EVENT unregistered, callback: %s()", el->regby_cbname);

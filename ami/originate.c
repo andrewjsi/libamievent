@@ -179,6 +179,7 @@ static void event_originateresponse_failure_cb (ami_event_t *event) {
 
 	char *reason = ami_getvar(event, "Reason");
 	con_debug("Action Originate failed, Reason=%s", reason);
+	printf("debdebdeb reason = %s\n", reason);
 }
 
 // megrendelt AMI eventek lemondása

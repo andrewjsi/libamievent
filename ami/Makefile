@@ -17,3 +17,7 @@ clean:
 	rm -rf $(OBJ) test_ami.o calltrack.o amilog.o test_ami calltrack core amilog volcon
 
 volcon.o: volcon.c volcon_config.h
+
+install: compile
+	install -s volcon /usr/local/bin
+

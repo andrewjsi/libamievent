@@ -3,7 +3,7 @@
 #include <ev.h>
 #include <stdlib.h>
 #include <time.h>
-#include <alsa/asoundlib.h>
+#include <unistd.h>
 
 #include "volcon_config.h"
 #include "ami.h"
@@ -19,6 +19,7 @@ char *host;
 ami_t *ami;
 int volume_high = 90;
 int volume_low = 30;
+
 enum {
 	HIGH,
 	LOW,
@@ -42,58 +43,85 @@ void event_connect (ami_event_t *event) {
 		ami_getvar(event, "Port"));
 }
 
-int setvolume (int volume, int *prev_volume) {
-	long min, max;
-	snd_mixer_t *handle;
-	snd_mixer_selem_id_t *sid;
-	const char *card = CONFIG_CARD;
-	const char *selem_name = CONFIG_SELEM;
+int snd_get_card_number (char *name) {
+	char cmd[128];
+	char out[128];
 
-	snd_mixer_open(&handle, 0);
-	snd_mixer_attach(handle, card);
-	snd_mixer_selem_register(handle, NULL, NULL);
-	snd_mixer_load(handle);
-
-	snd_mixer_selem_id_alloca(&sid);
-	snd_mixer_selem_id_set_index(sid, 0);
-	snd_mixer_selem_id_set_name(sid, selem_name);
-	snd_mixer_elem_t* elem = snd_mixer_find_selem(handle, sid);
-
-	snd_mixer_selem_get_playback_volume_range(elem, &min, &max);
-
-	// ha meg van adva prev_volume, akkor beleírjuk a jelenlegi hangerőt
-	if (prev_volume != NULL) {
-		snd_mixer_selem_get_playback_volume(elem, 0, (long*)prev_volume);
-		*prev_volume -= min;
-		max -= min;
-		min = 0;
-		*prev_volume = 100 * (*prev_volume) / max; // make the value bound from 0 to 100
-		*prev_volume = *prev_volume + 1;
-		if (*prev_volume > 100)
-			*prev_volume = 100;
+	#define CARDS "/proc/asound/cards"
+	if (access(CARDS, R_OK) < 0) {
+		printf("Can't open %s\n", CARDS);
+		return -1;
 	}
 
-	// ha a volume != -1 akkor beállítjuk a hangerőt
-	if (volume >= 0) {
-		long setvol;
-		snd_mixer_selem_get_playback_volume_range(elem, &min, &max);
-		setvol = volume * max / 100;
-		snd_mixer_selem_set_playback_volume_all(elem, setvol);
+	FILE *f;
+	snprintf(cmd, sizeof(cmd), "cat %s |grep -w \\\\[%s | awk {'print $1'}", CARDS, name);
+	f = popen(cmd, "r");
+	if (f == NULL)
+		return -1;
+
+	int card_number = -1;
+	if (fgets(out, sizeof(out), f)) {
+		card_number = atoi(out);
+//~ debs(out);
 	}
 
-	snd_mixer_close(handle);
-	return 0;
+	pclose(f);
+//~ debs(cmd);
+	return card_number;
 }
 
-int getvolume () {
-	int volume;
-	setvolume(-1, &volume);
+// visszaadja %-ban a CONFIG_CARD hangkártya CONFIG_SELEM vezérlő playback hangerejét
+// hiba esetén -1
+int snd_getvolume () {
+	char cmd[128];
+	char out[128];
+
+	FILE *f;
+	snprintf(
+		cmd,
+		sizeof(cmd),
+		"amixer -c %d sget %s playback |tail -n 1 |cut -d '[' -f2 |cut -d '%%' -f1",
+		snd_get_card_number(CONFIG_CARD),
+		CONFIG_SELEM
+	);
+//~ debs(cmd);
+
+	f = popen(cmd, "r");
+	if (f == NULL) {
+		perror("popen");
+		return -1;
+	}
+
+	int volume = -1;
+	if (fgets(out, sizeof(out), f)) {
+		volume = atoi(out);
+//~ debs(out);
+	}
+
+	pclose(f);
+	con_debug("volume get: %d%%", volume);
 	return volume;
+}
+
+void snd_setvolume (int volume) {
+	char cmd[128];
+	snprintf(
+		cmd,
+		sizeof(cmd),
+		"amixer -q -c %d sset %s playback %d%%",
+		snd_get_card_number(CONFIG_CARD),
+		CONFIG_SELEM,
+		volume
+	);
+//~ debs(cmd);
+
+	con_debug("volume set: %d%%", volume);
+	system(cmd);
 }
 
 /**
  *
- * name: volume_reel
+ * @name: volume_reel
  * @param vol_to ahova a hangerőt le vagy fel kell tekerni
  * @param steps a hangerő tekerése ennyi lépésben történjen
  * @param fade_time a hangerő tekerése összesen ennyi ideig tartson (milliszekundum)
@@ -102,8 +130,7 @@ int getvolume () {
 void volume_reel (int vol_to, int steps, int fade_time) {
 	int i;
 
-	int vol_from;
-	setvolume(-1, &vol_from);
+	int vol_from = snd_getvolume();
 
 	// ha a jelenlegi és a beállítani kívánt hangerő ugyan az, akkor return
 	if (vol_to == vol_from)
@@ -118,35 +145,34 @@ debi(vol_from); debi(vol_to); debi(diff); debf(uni);
 		int ch = (uni * i) * ((vol_from < vol_to) ? 1 : -1);
 		int destvol = vol_from + ch;
 		debi(ch); debi(destvol);
-		setvolume(destvol, NULL);
+		snd_setvolume(destvol);
 		usleep(udelay);
+		// ha az usleep() kozben egy masik program modositotta a hangerot,
+		// akkor azonnal visszaterunk
+		if (destvol != snd_getvolume())
+			return;
 	}
-	setvolume(vol_to, NULL);
+	snd_setvolume(vol_to);
 
 }
 
-void event_extensionstatus (ami_event_t *event) {
+static void event_extensionstatus (ami_event_t *event) {
 	char *exten = ami_getvar(event, "Exten");
 	int status = atoi(ami_getvar(event, "Status"));
-
 
 	// csak akkor megyünk tovább, ha a CONFIG_EXTEN mellékről van szó
 	if (strcmp(exten, CONFIG_EXTEN))
 		return;
 
-	con_debug("-- Exten: %s Status = %d", exten, status);
-
-	printf("volume %d\n", getvolume());
-	//~ int volume;
-	//~ volumt = getvolume();
+	//~ con_debug("-- Exten: %s Status = %d", exten, status);
 
 	switch (status) {
 		// Kagyló letesz, hangerő felhangosít
 		case 0: // Down
 			if (volume_state == HIGH) {
 				volume_state = LOW;
-				//~ volume_low = volume;
-				//~ if (volume_high >= 0)
+				volume_low = snd_getvolume();
+				if (volume_high >= 0)
 					volume_reel(volume_high, 20, 3000);
 			}
 			return;
@@ -156,15 +182,12 @@ void event_extensionstatus (ami_event_t *event) {
 		case 8: // Ring (?)
 			if (volume_state == LOW) {
 				volume_state = HIGH;
-				//~ volume_high = getvolume();
-				//~ if (volume_low >= 0)
+				volume_high = snd_getvolume();
+				if (volume_low >= 0)
 					volume_reel(volume_low, 10, 1000);
 			}
 			return;
 	}
-
-	debs("hello");
-
 }
 
 int main (int argc, char *argv[]) {
@@ -191,14 +214,8 @@ int main (int argc, char *argv[]) {
 
 	ami_connect(ami);
 
-	//~ long volume = atol(argv[2]);
-	//~ int prev_volume;
-	//~ setvolume(volume, &prev_volume);
-	//~ volume_reel(volume, 20, 1000);
-	//~ printf("previous volume = %i\n", prev_volume);
-
 	volume_state = LOW; // feltételezzük, hogy indításnál a kagyló le van téve
-	volume_high = getvolume(); // feltételezzük, hogy a zene is hangos:)
+	volume_high = snd_getvolume(); // feltételezzük, hogy a zene is hangos:)
 
 	ev_loop(EV_DEFAULT, 0);
 

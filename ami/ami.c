@@ -498,6 +498,7 @@ static void process_input (ami_t *ami) {
 
 static void netsocket_callback (netsocket_t *netsocket, int event) {
 	ami_t *ami = netsocket->userdata;
+	int was_authenticated = 0;
 
 	switch (event) {
 		case NETSOCKET_EVENT_CONNECT:
@@ -509,17 +510,20 @@ static void netsocket_callback (netsocket_t *netsocket, int event) {
 			break;
 
 		case NETSOCKET_EVENT_DISCONNECT:
+			was_authenticated = ami->authenticated;
+
 			// TODO: itt kell alaphelyzetbe állítani az ami-t.
 			// disconnect esemény szétkűrtölése előtt
 			ami->authenticated = 0;
 
 			generate_local_event(ami,
 				AMI_DISCONNECT,
-				"Host: %s\nIP: %s\nPort: %d\nReason: %s",
+				"Host: %s\nIP: %s\nPort: %d\nReason: %s\nWasAuthenticated: %d",
 				netsocket->host,
 				(netsocket->ip) ? netsocket->ip : "",
 				netsocket->port,
-				netsocket->disconnect_reason
+				netsocket->disconnect_reason,
+				was_authenticated
 			);
 
 			if (netsocket->connected) {

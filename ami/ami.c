@@ -578,6 +578,21 @@ static void generate_uuid (char *dst, size_t size) {
 	strncpy(dst, tmp, size);
 }
 
+void connect_delayed (EV_P_ ev_io *w, int revents) {
+	ami_t *ami = w->data;
+	con_debug("invoked connect by timer");
+	ev_timer_stop(ami->loop, &ami->t_connect_delayed);
+	ami_connect(ami);
+}
+
+// delay: millisec
+void ami_connect_delayed (ami_t *ami, int delay) {
+	con_debug("connect after %d ms ...", delay);
+	ev_timer_stop(ami->loop, &ami->t_connect_delayed);
+	ev_timer_set(&ami->t_connect_delayed, (float)((float)delay / (float)1000), 0);
+	ev_timer_start(ami->loop, &ami->t_connect_delayed);
+}
+
 ami_t *ami_new (struct ev_loop *loop) {
 	ami_t *ami = malloc(sizeof(*ami));
 	if (ami == NULL) {
@@ -605,6 +620,9 @@ ami_t *ami_new (struct ev_loop *loop) {
 
 	ami->need_event_processing.data = ami; // ami objektum így kerül az invoke_events-be
 	ev_timer_init(&ami->need_event_processing, (void*)invoke_events, 0, 0);
+
+	ami->t_connect_delayed.data = ami;
+	ev_timer_init(&ami->t_connect_delayed, (void*)connect_delayed, 0, 0);
 
 	return ami;
 }
@@ -634,10 +652,6 @@ void ami_connect (ami_t *ami) {
 	ami->netsocket->host = ami->host;
 	ami->netsocket->port = ami->port;
 	netsocket_connect(ami->netsocket);
-}
-
-void ami_connect_delayed (ami_t *ami, int delay) {
-
 }
 
 int ami_printf (ami_t *ami, const char *fmt, ...) {

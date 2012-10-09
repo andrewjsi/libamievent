@@ -78,6 +78,7 @@ typedef struct ami_t {
 	ami_event_list_t *ami_event_list_head;      // megrendelt események
 	struct ev_loop *loop;                       // eseményhurok
 	ev_timer need_event_processing;				// azonnali idõzítõ az események kiküldéséhez
+	ev_timer t_connect_delayed;					// késleltetett connect idõzítõ
 	char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
 	int inbuf_pos;                              // bejövõ buffer pozíciója
 	struct ami_event_t *event_head;             // esemény várakozósor
@@ -95,6 +96,8 @@ void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char
 void ami_destroy(ami_t *ami);
 
 void ami_connect (ami_t *ami);
+
+void ami_connect_delayed (ami_t *ami, int delay);
 
 int ami_printf (ami_t *ami, const char *fmt, ...);
 

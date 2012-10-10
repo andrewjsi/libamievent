@@ -80,7 +80,9 @@ int main (int argc, char *argv[]) {
 	}
 
 	if (argc < 2) {
-		printf("JSS AMI logger (c) 2012 JSS&Hayer - http://libamievent.jss.hu\n"
+		printf("JSS AMI logger\n"
+		       "(c) 2012 JSS&Hayer - http://libamievent.jss.hu\n"
+		       "\n"
 		       "usage: %s <host>\n", argv[0]);
 		exit(1);
 	}

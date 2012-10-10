@@ -19,7 +19,6 @@
 #include "misc.h"
 #include "logger.h"
 
-
 // event rögzítése
 void put_event (ami_event_t *event) {
 	ami_event_t *event_copy = (ami_event_t*)malloc(sizeof(ami_event_t));

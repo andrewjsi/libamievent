@@ -564,6 +564,7 @@ static void invoke_events (EV_P_ ev_io *w, int revents) {
 
 // 6 byte-os random hexa stringet masol az ami->uuid bufferbe
 // TODO: egy rendes, unique ID-t visszaado fuggvenyt irni ehelyett a random vacak helyett
+// pl. az util-linux-ng csomagban levo libuuid segitsegevel
 static void generate_uuid (char *dst, size_t size) {
 	struct timeval tv;
 	int num;

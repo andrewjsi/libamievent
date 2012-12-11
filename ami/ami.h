@@ -31,8 +31,8 @@ enum ami_event_type {
 
 // ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!
 typedef struct ami_event_list_t {
-    struct ami_event_list_t *prev;
-    struct ami_event_list_t *next;
+	struct ami_event_list_t *prev;
+	struct ami_event_list_t *next;
 	void (*callback)(void*);
 	void *userdata;
 	int field[AMI_FIELD_SIZE];
@@ -49,8 +49,8 @@ typedef struct ami_event_list_t {
 } ami_event_list_t;
 
 typedef struct ami_event_t {
-    struct ami_event_t *prev;
-    struct ami_event_t *next;
+	struct ami_event_t *prev;
+	struct ami_event_t *next;
 	struct ami_t *ami;
 	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
 	int field[AMI_FIELD_SIZE];
@@ -122,3 +122,4 @@ void ami_dump_lists (ami_t *ami);
 void ami_event_dump (ami_event_t *el);
 
 #endif // #ifndef AMI_H_INCLUDED
+

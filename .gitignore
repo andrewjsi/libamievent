@@ -1,0 +1,6 @@
+*.o
+amilog
+calltrack
+test_ami
+volcon
+*.swp

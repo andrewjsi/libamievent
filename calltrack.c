@@ -16,24 +16,24 @@ char dialstring[64];
 
 void originate_event (ori_t *ori, ami_event_t *event) {
 	switch (ori->state) {
-		case DIALING:
+		case ORI_DIALING:
 			printf("Tárcsázás...\n");
 			break;
 
-		case RINGING:
+		case ORI_RINGING:
 			printf("Kicsöng\n");
 			break;
 
-		case ANSWERED:
+		case ORI_ANSWERED:
 			printf("Felvette\n");
 			break;
 
-		case HANGUP:
+		case ORI_HANGUP:
 			printf("Hívás bontva (%d) (%s)\n", ori->hangupcause, ori->hangupcausetxt);
 			exit(0);
 			break;
 
-		case UNKNOWN:
+		case ORI_UNKNOWN:
 			printf("Ismeretlen ori->state !!!\n");
 			break;
 

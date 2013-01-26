@@ -64,7 +64,7 @@ static void got_ami_event (ami_event_t *event) {
 	ami_event_dump(event);
 #endif
 
-	ori->state = UNKNOWN;
+	ori->state = ORI_UNKNOWN;
 	ori->hangupcause = 0;
 	ori->hangupcausetxt[0] = '\0';
 
@@ -73,17 +73,17 @@ static void got_ami_event (ami_event_t *event) {
 
 	if (!strcmp(ami_getvar(event, "Event"), "Newstate")) {
 		if (!strcmp(ami_getvar(event, state_var_name), "Dialing")) {
-			ori->state = DIALING;
+			ori->state = ORI_DIALING;
 		} else if (!strcmp(ami_getvar(event, state_var_name), "Ringing")) {
-			ori->state = RINGING;
+			ori->state = ORI_RINGING;
 		} else if (!strcmp(ami_getvar(event, state_var_name), "Up")) {
-			ori->state = ANSWERED;
+			ori->state = ORI_ANSWERED;
 		} else if (!strcmp(ami_getvar(event, state_var_name), "Down")) {
 			con_debug("ignoring Event=Newstate %s=Down", state_var_name);
 			return;
 		}
 	} else if (!strcmp(ami_getvar(event, "Event"), "Hangup")) {
-		ori->state = HANGUP;
+		ori->state = ORI_HANGUP;
 		ori->hangupcause = atoi(ami_getvar(event, "Cause"));
 		strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt));
 	}
@@ -172,7 +172,7 @@ static void response_originate (ami_event_t *event) {
 static void event_originateresponse_failure_cb (ami_event_t *event) {
 	ori_t *ori = (ori_t*)event->userdata;
 
-	ori->state = HANGUP;
+	ori->state = ORI_HANGUP;
 	ori->hangupcause = 0;
 	strncpy(ori->hangupcausetxt, "Origination failure", sizeof(ori->hangupcausetxt));
 	invoke_callback(ori, NULL);

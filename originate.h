@@ -24,11 +24,11 @@ typedef struct ori_t {
 		ASTERISK16,
 	} asterisk_version;
 	enum {
-		UNKNOWN = 0,
-		ANSWERED = 1,
-		HANGUP,
-		DIALING,
-		RINGING,
+		ORI_UNKNOWN = 0,
+		ORI_ANSWERED = 1,
+		ORI_HANGUP,
+		ORI_DIALING,
+		ORI_RINGING,
 	} state;                                      // esemény típusa, hívás állapota, TODO: megfogalmazni rendesen
 } ori_t;
 

@@ -631,7 +631,7 @@ void ami_destroy(ami_t *ami) {
 	netsocket_destroy(ami->netsocket);
 }
 
-void ami_credentials (ami_t *ami, char *username, char *secret, char *host, char *port) {
+void ami_credentials (ami_t *ami, const char *username, const char *secret, const char *host, const char *port) {
 	if (username != NULL)
 		strncpy(ami->username, username, sizeof(ami->username) - 1);
 

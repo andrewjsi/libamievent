@@ -8,6 +8,7 @@ typedef struct ori_t {
 	char oid[16];                                 // ori objektum saját egyedi azonosítója VarSet-hez
 	char uniqueid[48];                            // Asterisk híváshoz rendelt Uniqueid
 	char channel[48];
+	char local_slave_channel[48];                 // Asterisk 1.4 esetén Local csatorna másik neve
 	void (*callback)(void*,ami_event_t*);
 	void *userdata;
 	int hangupcause;                              // ide került a bontás kódja
@@ -18,6 +19,7 @@ typedef struct ori_t {
 	ami_event_list_t *event_newstate;
 	ami_event_list_t *event_newcallerid;           // Asterisk 1.4-nél innen tudjuk meg a csatornát
 	ami_event_list_t *event_hangup;
+	ami_event_list_t *event_hangup2;			// Asterisk 1.4 hangup cause-code érzékelés
 	ami_event_list_t *event_originateresponse_failure; // itt figyeljük, ha az Originate kudarcba fullad
 	enum {
 		ASTERISK14,

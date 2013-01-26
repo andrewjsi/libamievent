@@ -26,6 +26,7 @@ Asterisk 1.4 esetén
 1. > Action Originate
 2. < a visszajövő Response tartalmazza az UniqueID-t
 3. < Event Newcallerid tartalmazza a Channel-t
+4. < Local channel esetén a Hangup Cause-t a Local-Slave-Channel-ről vesszük
 
 Asterisk 1.6 és magasabb esetén
 1. > Action Originate, benne egy Variable: ami_originate_id = ori->oid
@@ -65,10 +66,10 @@ static void got_ami_event (ami_event_t *event) {
 #endif
 
 	ori->state = ORI_UNKNOWN;
-	ori->hangupcause = 0;
-	ori->hangupcausetxt[0] = '\0';
 
-	char *state_var_name = (ori->asterisk_version == ASTERISK14) ? "State" : "ChannelStateDesc";
+	char *state_var_name = (ori->asterisk_version == ASTERISK14)
+		? "State"              // Asterisk 1.4
+		: "ChannelStateDesc";  // Asterisk 1.6
 	con_debug("requested variable name in Newstate event is %s", state_var_name);
 
 	if (!strcmp(ami_getvar(event, "Event"), "Newstate")) {
@@ -84,17 +85,33 @@ static void got_ami_event (ami_event_t *event) {
 		}
 	} else if (!strcmp(ami_getvar(event, "Event"), "Hangup")) {
 		ori->state = ORI_HANGUP;
-		ori->hangupcause = atoi(ami_getvar(event, "Cause"));
-		strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt));
+		// ha még nem tudjuk a hangupcause-t (AST 1.4 esetén event_hangup2 tudja meg előbb)
+		if (!ori->hangupcause) {
+			ori->hangupcause = atoi(ami_getvar(event, "Cause"));
+			strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt));
+		}
 	}
 
 	invoke_callback(ori, event);
+}
+
+/* Asterisk 1.4 esetén innen tudjuk meg a Hangup Cause és Cause-txt
+értékeket. Magát a Hangup eseményt nem innen vesszük, mert majd ezután fog
+érkezni az igazi Hangup. Abban a Hangupban rossz lesz a Cause. Ezért vesszük
+innen a Cause-t:) */
+static void event_hangup2_cb (ami_event_t *event) {
+	ori_t *ori = (ori_t*)event->userdata;
+
+	ori->hangupcause = atoi(ami_getvar(event, "Cause"));
+	strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt));
+	con_debug("got the real hangup cause = %d, waiting for real hangup", ori->hangupcause);
 }
 
 static void got_uniqueid_and_channel (ori_t *ori, char *uniqueid, char *channel) {
 	ami_t *ami = ori->ami;
 	if (uniqueid) {
 		strncpy(ori->uniqueid, uniqueid, sizeof(ori->uniqueid));
+		// Hangup figyelés Uniqueid alapján
 		ori->event_hangup = ami_event_register(
 			ami, got_ami_event, ori,
 			"Event: Hangup\nUniqueid: %s",
@@ -106,6 +123,58 @@ static void got_uniqueid_and_channel (ori_t *ori, char *uniqueid, char *channel)
 		if (ori->event_newcallerid) {
 			ami_event_unregister(ami, ori->event_newcallerid);
 			ori->event_newcallerid = NULL;
+		}
+
+		/* Asterisk 1.4 alatt a Local channel driver nem adja vissza
+		korrekten a Hangup cause-t, hanem a cause értéke mindig 0 lesz. A
+		Local egyik oldalán (slave) még ott van a cause kód, de a másik
+		oldalán (master) már csak egy 0 jelenik meg. Ezen a ponton csak a
+		master-t ismerjük. Az alábbi kódrészlet megvizsgálja, hogy Asterisk
+		1.4-hez csatlakoztunk -e és Local segítségével indítottuk -e a
+		hívást.
+
+		A Local channel driver két csatornát hoz létre, melyek párban
+		vannak. Az egyik csatorna (Local-Master-Channel) az, amihez az
+		Uniqueid is tartozik, a másik csatorna (Local-Slave-Channel) pedig
+		az, amelyik ténylegesen a fizikai (pl. DAHDI) csatornához
+		kapcsolódik. A Local-Slave-Channel nevéről az AMI láncban nincs
+		közvetlen tudomásunk, ezért nemes egyszerűséggel a
+		Local-Master-Channel nevéből származtatjuk úgy, hogy a
+		Local-Master-Channel utolsó karakteréhez hozzáadunk 1-et. Pl. ha a
+		master neve "Local/0612463433@default-0299,1", akkor a slave neve
+		"Local/0612463433@default-0299,2" lesz.
+
+		Ha igen, akkor regisztrál egy másik Hangup eventet, ami a
+		Local-Slave-Channel alapján figyeli a Hangup-ot. Ez a Hangup esemény
+		az eredeti előtt érkezik és kétesélyes a jelentése. Vagy a jó Cause
+		kód van benne, ha a hívás nem épült fel. Vagy pedig ha a hívás
+		felépül, akkor a felépülés pillanatában a 16-os (Normal Clearing) kód
+		érkezik. Ebben az esetben a Hangup eseményt nem kell komolyan venni,
+		hisz a hívás épp csak most kezdődött el.
+
+		Éppen ezért a Hangup tényét az eredeti esemény (ori->event_hangup)
+		figyeli, a helyes Cause kódot pedig a most regisztrált esemény
+		(ori->event_hangup2).
+
+		Az ori->event_hangup2 callback a Cause és Cause-txt értékeket
+		elmenti az ori->hangupcause és ori->hangupcausetxt változókba. Az
+		ori->event_hangup callback megvizsgálja, hogy az ori->hangupcause be
+		van -e állítva. Ha igen, akkor azt veszi alapul, ha nem, akkor saját
+		maga állapítja meg a Cause és Cause-txt változókat. */
+		if (ori->asterisk_version == ASTERISK14) {
+			if (strlen(channel) > 6 && !strncmp(channel, "Local/", 6)) {
+				strncpy(ori->local_slave_channel, channel, sizeof(ori->local_slave_channel));
+				ori->local_slave_channel[strlen(ori->local_slave_channel)-1]++;
+				con_debug("detected Local-Slave-Channel=%s for ASTERISK14 Hangup method",
+					ori->local_slave_channel);
+
+				// második Hangup event regisztrálása
+				ori->event_hangup2 = ami_event_register(
+					ami, event_hangup2_cb, ori,
+					"Event: Hangup\nChannel: %s",
+					ori->local_slave_channel
+				);
+			}
 		}
 
 		/* Ha van channel, akkor már nem kell az "Event:
@@ -139,6 +208,7 @@ static void event_gotuuid_cb (ami_event_t *event) {
 	got_uniqueid_and_channel(ori, uniqueid, channel);
 }
 
+// Asterisk 1.4 esetén innen tudjuk meg a Channel-t
 static void event_newcallerid_cb (ami_event_t *event) {
 	ori_t *ori = (ori_t*)event->userdata;
 

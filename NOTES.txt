@@ -1,3 +1,8 @@
+BUGOK:
+- Asterisk 1.4 esetén az originate.c rossz Hangup-cause kódot ad vissza, ha Zap
+  csatornán indítjuk a hívást. Rendre 19-et ad vissza. Nem az originate.c
+  hibája, mert az AMI dumpban is 19 látszódik. Local csatornán rendben működik.
+
 TODO:
 -első körben tesztelni kéne az ami.c-t a test_ami.c -vel. Írni valami kis célprogramot! pl. mellék állapot listázás
 -ami.c-ben ami_event_list_t átnevezése valami kultúráltabb típusnévre, mert ez az API-ban megjelenik

@@ -51,7 +51,7 @@ static void generate_oid (char *dst, size_t size) {
 	num = rand();
 	snprintf(tmp, sizeof(tmp), "%x", num);
 	tmp[6] = '\0';
-	strncpy(dst, tmp, size);
+	strncpy(dst, tmp, size - 1);
 }
 
 static void invoke_callback (ori_t *ori, ami_event_t *event) {
@@ -88,7 +88,7 @@ static void got_ami_event (ami_event_t *event) {
 		// ha még nem tudjuk a hangupcause-t (AST 1.4 esetén event_hangup2 tudja meg előbb)
 		if (!ori->hangupcause) {
 			ori->hangupcause = atoi(ami_getvar(event, "Cause"));
-			strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt));
+			strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt) - 1);
 		}
 	}
 
@@ -103,14 +103,14 @@ static void event_hangup2_cb (ami_event_t *event) {
 	ori_t *ori = (ori_t*)event->userdata;
 
 	ori->hangupcause = atoi(ami_getvar(event, "Cause"));
-	strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt));
+	strncpy(ori->hangupcausetxt, ami_getvar(event, "Cause-txt"), sizeof(ori->hangupcausetxt) - 1);
 	con_debug("got the real hangup cause = %d, waiting for real hangup", ori->hangupcause);
 }
 
 static void got_uniqueid_and_channel (ori_t *ori, char *uniqueid, char *channel) {
 	ami_t *ami = ori->ami;
 	if (uniqueid) {
-		strncpy(ori->uniqueid, uniqueid, sizeof(ori->uniqueid));
+		strncpy(ori->uniqueid, uniqueid, sizeof(ori->uniqueid) - 1);
 		// Hangup figyelés Uniqueid alapján
 		ori->event_hangup = ami_event_register(
 			ami, got_ami_event, ori,
@@ -163,7 +163,7 @@ static void got_uniqueid_and_channel (ori_t *ori, char *uniqueid, char *channel)
 		maga állapítja meg a Cause és Cause-txt változókat. */
 		if (ori->asterisk_version == ASTERISK14) {
 			if (strlen(channel) > 6 && !strncmp(channel, "Local/", 6)) {
-				strncpy(ori->local_slave_channel, channel, sizeof(ori->local_slave_channel));
+				strncpy(ori->local_slave_channel, channel, sizeof(ori->local_slave_channel) - 1);
 				ori->local_slave_channel[strlen(ori->local_slave_channel)-1]++;
 				con_debug("detected Local-Slave-Channel=%s for ASTERISK14 Hangup method",
 					ori->local_slave_channel);
@@ -190,7 +190,7 @@ static void got_uniqueid_and_channel (ori_t *ori, char *uniqueid, char *channel)
 			ami_event_unregister(ami, ori->event_originateresponse_failure);
 			ori->event_originateresponse_failure = NULL;
 		}
-		strncpy(ori->channel, channel, sizeof(ori->channel));
+		strncpy(ori->channel, channel, sizeof(ori->channel) - 1);
 		ori->event_newstate = ami_event_register(
 			ami, got_ami_event, ori,
 			"Event: Newstate\nChannel: %s",
@@ -244,7 +244,7 @@ static void event_originateresponse_failure_cb (ami_event_t *event) {
 
 	ori->state = ORI_HANGUP;
 	ori->hangupcause = 0;
-	strncpy(ori->hangupcausetxt, "Origination failure", sizeof(ori->hangupcausetxt));
+	strncpy(ori->hangupcausetxt, "Origination failure", sizeof(ori->hangupcausetxt) - 1);
 	invoke_callback(ori, NULL);
 
 	char *reason = ami_getvar(event, "Reason");

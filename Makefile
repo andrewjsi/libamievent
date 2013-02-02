@@ -7,14 +7,15 @@ OBJ=ami.o originate.o ../libc-jss/netsocket.o ../libc-jss/logger.o ../libc-jss/m
 
 all: clean compile
 
-compile: $(OBJ) test_ami.o calltrack.o amilog.o volcon.o
+compile: $(OBJ) test_ami.o test_ami2.o calltrack.o amilog.o volcon.o
 	$(CC) $(CFLAGS) -o test_ami test_ami.o $(OBJ) $(LIBS)
+	$(CC) $(CFLAGS) -o test_ami2 test_ami2.o $(OBJ) $(LIBS)
 	$(CC) $(CFLAGS) -o calltrack calltrack.o $(OBJ) $(LIBS)
 	$(CC) $(CFLAGS) -o amilog amilog.o $(OBJ) $(LIBS)
 	$(CC) $(CFLAGS) -o volcon volcon.o $(OBJ) $(LIBS)
 
 clean:
-	rm -rf $(OBJ) test_ami.o calltrack.o amilog.o test_ami calltrack core amilog volcon
+	rm -rf $(OBJ) test_ami.o test_ami2.o calltrack.o amilog.o test_ami test_ami2 calltrack core amilog volcon
 
 volcon.o: volcon.c volcon_config.h
 

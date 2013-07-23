@@ -1,0 +1,3 @@
+[submodule "libc-jss"]
+	path = libc-jss
+	url = git://github.com/andrewjsi/libc-jss

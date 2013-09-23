@@ -9,7 +9,7 @@
 #include "ami.h"
 #include "debug.h"
 
-//~ #define CON_DEBUG
+#define CON_DEBUG
 #include "logger.h"
 
 ev_timer timer;
@@ -19,6 +19,7 @@ char *host;
 ami_t *ami;
 int volume_high = 90;
 int volume_low = 30;
+int busy_extens = 0; // foglalt mellékek száma
 
 enum {
 	HIGH,
@@ -162,50 +163,73 @@ void volume_reel (int vol_to, int steps, int fade_time) {
 
 }
 
+// összes kagylót letették, hangerőt felhangosítjuk
+void toggle_volume_up () {
+	if (volume_state == HIGH) {
+		volume_state = LOW;
+
+		int current_volume = snd_getvolume();
+		volume_low = snd_getvolume();
+
+		// ha a jelenlegi hangerő hangosabb, mint ahová felhangosítanánk a hangerőt
+		if (current_volume >= volume_high)
+			return;
+
+		if (volume_high >= 0)
+			volume_reel(volume_high, 20, 3000);
+	}
+}
+
+// valamelyik kagylót felveték, hangerőt lehallkítjuk
+void toggle_volume_down () {
+	if (volume_state == LOW) {
+		volume_state = HIGH;
+
+		int current_volume = snd_getvolume();
+		volume_high = current_volume;
+
+		// ha a jelenlegi hangerő hallkabb, mint ahová lehallkítanánk a hangerőt
+		if (current_volume <= volume_low)
+			return;
+
+		if (volume_low >= 0)
+			volume_reel(volume_low, 10, 1000);
+	}
+}
+
 static void event_extensionstatus (ami_event_t *event) {
 	char *exten = ami_getvar(event, "Exten");
 	int status = atoi(ami_getvar(event, "Status"));
 
-	// csak akkor megyünk tovább, ha a CONFIG_EXTEN mellékről van szó
-	if (strcmp(exten, CONFIG_EXTEN))
+con_debug("extensionstatus %s %d", exten, status);
+	int p;
+	for (p = 0; watch_extens[p]; p++)
+		if (!strcmp(watch_extens[p], exten))
+			break;
+
+	// ha nem volt találat, akkor nem piszkáljuk a hangerőt
+	if (!watch_extens[p])
 		return;
 
-	int current_volume = snd_getvolume();
-
 	switch (status) {
-		// Kagyló letesz, hangerő felhangosít
-		case 0: // Down
-			if (volume_state == HIGH) {
-				volume_state = LOW;
-
-				volume_low = snd_getvolume();
-
-				// ha a jelenlegi hangerő hangosabb, mint ahová felhangosítanánk a hangerőt
-				if (current_volume >= volume_high)
-					return;
-
-				if (volume_high >= 0)
-					volume_reel(volume_high, 20, 3000);
-			}
-			return;
+		case 0:
+			busy_extens--;
+			if (busy_extens < 0)
+				busy_extens = 0;
+			break;
 
 		// Kagyló felvesz, hangerő lehalkít
 		case 1: // Up (?)
 		case 8: // Ring (?)
-			if (volume_state == LOW) {
-				volume_state = HIGH;
+			busy_extens++;
+			break;
+	}
 
-				volume_high = current_volume;
-
-				// ha a jelenlegi hangerő hallkabb, mint ahová lehallkítanánk a hangerőt
-				if (current_volume <= volume_low)
-					return;
-
-
-				if (volume_low >= 0)
-					volume_reel(volume_low, 10, 1000);
-			}
-			return;
+	con_debug("busy_extens = %d", busy_extens);
+	if (busy_extens) { // ha van foglalt mellek
+		toggle_volume_down();
+	} else {
+		toggle_volume_up();
 	}
 }
 
@@ -230,7 +254,10 @@ int main (int argc, char *argv[]) {
 
 	printf("* ALSA card name: %s\n", CONFIG_CARD);
 	printf("* Mixer controller name: %s\n", CONFIG_SELEM);
-	printf("* Watching extension %s ...\n", CONFIG_EXTEN);
+
+	int p;
+	for (p = 0; watch_extens[p]; p++)
+		printf("* Watching extension %s ...\n", watch_extens[p]);
 
 	volume_state = LOW; // feltételezzük, hogy indításnál a kagyló le van téve
 	volume_high = snd_getvolume(); // ezért a mostani hangerőt, mint hangos (high) hangerőt memorizáljuk
@@ -254,5 +281,4 @@ int main (int argc, char *argv[]) {
 	return 0;
 }
 
-
-
+// vim:noexpandtab:ts=8:sts=8:sw=8:

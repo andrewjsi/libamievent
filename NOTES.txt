@@ -20,6 +20,8 @@ TODO:
 -ami_event_unregister megírása
 -ami dump events: response kulonvalasztasa
 -event es response kulonvalasztasa keresesnel
+-megvizsgálni, hogy az originate.c egyszerűbben működhet -e a linkedid változóval?
+-Asterisk 1.4-et dobni, mert nem kell!
 
 CLI formátum:
 action: command
@@ -58,3 +60,10 @@ Nincs elküldve
 	ID: 0x5c0888
 	Status: NotSent
 
+
+JEGYZETEK
+=========
+
+A linkedid változó, pl: ${CHANNEL(LinkedID)} hívásonként és nem csatornánként
+változik. Tehát a tovább kapcsolt, illetve Local channel által továbbvitt
+hívások ugyan azt a LinkedID-t kapják.

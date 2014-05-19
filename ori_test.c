@@ -12,7 +12,8 @@
 #include "logger.h"
 
 ami_t *ami;
-char dialstring[64];
+char exten1[64];
+char exten2[64];
 
 void originate_event (ori_t *ori, ami_event_t *event) {
     switch (ori->state) {
@@ -48,13 +49,13 @@ void event_connect (ami_event_t *event) {
         ami_getvar(event, "Port")
     );
 
-    printf("Calling %s\n", dialstring);
+    printf("Calling %s - %s\n", exten1, exten2);
     ami_originate(event->ami, originate_event, NULL,
-        "Channel: %s\n"
+        "Channel: Local/%s\n"
         "Context: default\n"
-        "Exten: 42\n"
+        "Exten: %s\n"
         "Priority: 1\n"
-        , dialstring
+        , exten1, exten2
     );
 
 }
@@ -73,24 +74,21 @@ void event_disconnect (ami_event_t *event) {
 //~ }
 
 int main (int argc, char *argv[]) {
+    if (argc < 3) {
+        printf("usage: ori <exten1> <exten2>\n");
+        return -1;
+    }
+
+    strncpy(exten1, argv[1], sizeof(exten1) - 1);
+    strncpy(exten2, argv[2], sizeof(exten2) - 1);
+
     ami = ami_new(EV_DEFAULT);
     if (ami == NULL) {
         con_debug("ami_new() returned NULL");
         return 1;
     }
 
-    char host[128];
-    if (argc > 1)
-        strncpy(host, argv[1], sizeof(host));
-    else
-        strcpy(host, "192.168.15.200");
-
-    if (argc > 2)
-        strncpy(dialstring, argv[2], sizeof(dialstring));
-    else
-        strcpy(dialstring, "DAHDI/g1/2480999");
-
-    ami_credentials(ami, "jsi", "pwd", host, "5038");
+    ami_credentials(ami, "jsi", "pwd", "localhost", "5038");
     ami_connect(ami);
 
     ami_event_register(ami, event_disconnect, NULL, "Disconnect");

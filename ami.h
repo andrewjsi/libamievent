@@ -22,71 +22,71 @@
 #endif
 
 enum ami_event_type {
-	AMI_EVENT = 1,
-	AMI_RESPONSE,
-	AMI_CLIRESPONSE,
-	AMI_CONNECT,
-	AMI_DISCONNECT,
+    AMI_EVENT = 1,
+    AMI_RESPONSE,
+    AMI_CLIRESPONSE,
+    AMI_CONNECT,
+    AMI_DISCONNECT,
 };
 
 // ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!
 typedef struct ami_event_list_t {
-	struct ami_event_list_t *prev;
-	struct ami_event_list_t *next;
-	void (*callback)(void*);
-	void *userdata;
-	int field[AMI_FIELD_SIZE];
-	int field_size;
-	char data[AMI_BUFSIZ];
-	char *regby_file;
-	int regby_line;
-	const char *regby_function;
-	const char *regby_cbname;
-	const char *regby_udname;
-	unsigned int action_id;
-	enum ami_event_type type;
-	int allevents; // 1 lesz, ha a megrendelo szures nelkul az osszes AMI esemenyt keri
+    struct ami_event_list_t *prev;
+    struct ami_event_list_t *next;
+    void (*callback)(void*);
+    void *userdata;
+    int field[AMI_FIELD_SIZE];
+    int field_size;
+    char data[AMI_BUFSIZ];
+    char *regby_file;
+    int regby_line;
+    const char *regby_function;
+    const char *regby_cbname;
+    const char *regby_udname;
+    unsigned int action_id;
+    enum ami_event_type type;
+    int allevents; // 1 lesz, ha a megrendelo szures nelkul az osszes AMI esemenyt keri
 } ami_event_list_t;
 
 typedef struct ami_event_t {
-	struct ami_event_t *prev;
-	struct ami_event_t *next;
-	struct ami_t *ami;
-	int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
-	int field[AMI_FIELD_SIZE];
-	int field_size;
-	char data[AMI_BUFSIZ];
-	int data_size;
-	void (*callback)(void*);
-	void *userdata;
-	unsigned int action_id;
-	char *regby_file;
-	int regby_line;
-	const char *regby_function;
-	const char *regby_cbname;
-	const char *regby_udname;
-	enum ami_event_type type;
+    struct ami_event_t *prev;
+    struct ami_event_t *next;
+    struct ami_t *ami;
+    int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
+    int field[AMI_FIELD_SIZE];
+    int field_size;
+    char data[AMI_BUFSIZ];
+    int data_size;
+    void (*callback)(void*);
+    void *userdata;
+    unsigned int action_id;
+    char *regby_file;
+    int regby_line;
+    const char *regby_function;
+    const char *regby_cbname;
+    const char *regby_udname;
+    enum ami_event_type type;
 } ami_event_t;
 
 typedef struct ami_t {
-	char host[64];                              // Asterisk host
-	int port;                                   // Asterisk Manager Interface port
-	char username[32];                          // AMI User
-	char secret[32];                            // AMI Password
-	netsocket_t *netsocket;                     // Netsocket objektum
-	char disconnect_reason[64];                 // ???
-	ami_event_list_t *ami_event_list_head;      // megrendelt események
-	struct ev_loop *loop;                       // eseményhurok
-	ev_timer need_event_processing;				// azonnali idõzítõ az események kiküldéséhez
-	ev_timer t_connect_delayed;					// késleltetett connect idõzítõ
-	char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
-	int inbuf_pos;                              // bejövõ buffer pozíciója
-	struct ami_event_t *event_head;             // esemény várakozósor
-	struct ami_event_t event_tmp;				// itt készítünk új eseményt, amit aztán a várakozósorba másolunk
-	int authenticated;                          // 1 lesz sikeres login után
-	unsigned int action_id;						// soron következõ használható ActionID
-	char uuid[16];                              // AMI sajat belso ID
-	int cli_actionid;                           // process_input() itt jegyzi meg a Response: Follows ActionID-t
+    char host[64];                              // Asterisk host
+    int port;                                   // Asterisk Manager Interface port
+    char username[32];                          // AMI User
+    char secret[32];                            // AMI Password
+    netsocket_t *netsocket;                     // Netsocket objektum
+    char disconnect_reason[64];                 // ???
+    ami_event_list_t *ami_event_list_head;      // megrendelt események
+    struct ev_loop *loop;                       // eseményhurok
+    ev_timer need_event_processing;             // azonnali idõzítõ az események kiküldéséhez
+    ev_timer t_connect_delayed;                 // késleltetett connect idõzítõ
+    char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
+    int inbuf_pos;                              // bejövõ buffer pozíciója
+    struct ami_event_t *event_head;             // esemény várakozósor
+    struct ami_event_t event_tmp;               // itt készítünk új eseményt, amit aztán a várakozósorba másolunk
+    int authenticated;                          // 1 lesz sikeres login után
+    unsigned int action_id;                     // soron következõ használható ActionID
+    char uuid[16];                              // AMI sajat belso ID
+    int cli_actionid;                           // process_input() itt jegyzi meg a Response: Follows ActionID-t
 } ami_t;
 
 ami_t *ami_new (struct ev_loop *loop);
@@ -102,11 +102,11 @@ void ami_connect_delayed (ami_t *ami, int delay);
 int ami_printf (ami_t *ami, const char *fmt, ...);
 
 #define ami_action(ami, callback, userdata, ...) \
-	_ami_action(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, #callback, #userdata, __VA_ARGS__)
+    _ami_action(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, #callback, #userdata, __VA_ARGS__)
 ami_event_list_t *_ami_action (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *udname, const char *fmt, ...);
 
 #define ami_event_register(ami, callback, userdata, ...) \
-	_ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, #callback, #userdata, __VA_ARGS__)
+    _ami_event_register(ami, callback, userdata, __FILE__, __LINE__, __FUNCTION__, #callback, #userdata, __VA_ARGS__)
 ami_event_list_t *_ami_event_register (ami_t *ami, void *callback, void *userdata, char *file, int line, const char *function, const char *cbname, const char *udname, const char *fmt, ...);
 
 void ami_event_unregister(ami_t *ami, ami_event_list_t *el);

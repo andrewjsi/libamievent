@@ -242,11 +242,11 @@ int main (int argc, char *argv[]) {
 
 	if (argc < 2) {
 		printf("JSS VolCon\n"
-		       "(c) 2012 JSS&Hayer - http://libamievent.jss.hu\n"
-		       "\n"
-		       "VolCon control your sound card volume if your Asterisk extension become busy.\n"
-		       "\n"
-		       "usage: %s <host>\n", argv[0]);
+			   "(c) 2012 JSS&Hayer - http://libamievent.jss.hu\n"
+			   "\n"
+			   "VolCon control your sound card volume if your Asterisk extension become busy.\n"
+			   "\n"
+			   "usage: %s <host>\n", argv[0]);
 		exit(1);
 	}
 

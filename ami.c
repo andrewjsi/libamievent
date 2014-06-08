@@ -615,8 +615,8 @@ ami_t *ami_new (struct ev_loop *loop) {
     if (!(ami->netsocket = netsocket_new(netsocket_callback, ami, ami->loop))) {
         con_debug("netsocket_new returned NULL");
     }
-    ami->netsocket->host = AMI_DEFAULT_HOST;
-    ami->netsocket->port = AMI_DEFAULT_PORT;
+    netsocket_host(ami->netsocket, AMI_DEFAULT_HOST);
+    netsocket_port(ami->netsocket, AMI_DEFAULT_PORT);
 
     ami->need_event_processing.data = ami; // ami objektum így kerül az invoke_events-be
     ev_timer_init(&ami->need_event_processing, (void*)invoke_events, 0, 0);
@@ -649,8 +649,8 @@ void ami_credentials (ami_t *ami, const char *username, const char *secret, cons
 }
 
 void ami_connect (ami_t *ami) {
-    ami->netsocket->host = ami->host;
-    ami->netsocket->port = ami->port;
+    netsocket_host(ami->netsocket, ami->host);
+    netsocket_port(ami->netsocket, ami->port);
     netsocket_connect(ami->netsocket);
 }
 

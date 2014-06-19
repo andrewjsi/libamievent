@@ -1,3 +1,11 @@
+/* ami.h
+ * Copyright Â© 2014, Andras Jeszenszky, JSS & Hayer IT - http://www.jsshayer.hu
+ *
+ * This program is free software, distributed under the terms of
+ * the GNU General Public License Version 2. See the LICENSE file
+ * at the top of the source tree.
+ */
+
 #ifndef AMI_H_INCLUDED
 #define AMI_H_INCLUDED
 
@@ -29,7 +37,7 @@ enum ami_event_type {
     AMI_DISCONNECT,
 };
 
-// ha változik, akkor egyeztess az ami.c ami_dump_lists() függvénnyel!
+// ha vÃ¡ltozik, akkor egyeztess az ami.c ami_dump_lists() fÃ¼ggvÃ©nnyel!
 typedef struct ami_event_list_t {
     struct ami_event_list_t *prev;
     struct ami_event_list_t *next;
@@ -52,7 +60,7 @@ typedef struct ami_event_t {
     struct ami_event_t *prev;
     struct ami_event_t *next;
     struct ami_t *ami;
-    int success; // csak "Response: Success" esetén lesz egy, tehát biztos hogy volt Response és az értéke Success volt
+    int success; // csak "Response: Success" esetÃ©n lesz egy, tehÃ¡t biztos hogy volt Response Ã©s az Ã©rtÃ©ke Success volt
     int field[AMI_FIELD_SIZE];
     int field_size;
     char data[AMI_BUFSIZ];
@@ -75,16 +83,16 @@ typedef struct ami_t {
     char secret[32];                            // AMI Password
     netsocket_t *netsocket;                     // Netsocket objektum
     char disconnect_reason[64];                 // ???
-    ami_event_list_t *ami_event_list_head;      // megrendelt események
-    struct ev_loop *loop;                       // eseményhurok
-    ev_timer need_event_processing;             // azonnali idõzítõ az események kiküldéséhez
-    ev_timer t_connect_delayed;                 // késleltetett connect idõzítõ
-    char inbuf[AMI_BUFSIZ];                     // bejövõ buffer
-    int inbuf_pos;                              // bejövõ buffer pozíciója
-    struct ami_event_t *event_head;             // esemény várakozósor
-    struct ami_event_t event_tmp;               // itt készítünk új eseményt, amit aztán a várakozósorba másolunk
-    int authenticated;                          // 1 lesz sikeres login után
-    unsigned int action_id;                     // soron következõ használható ActionID
+    ami_event_list_t *ami_event_list_head;      // megrendelt esemÃ©nyek
+    struct ev_loop *loop;                       // esemÃ©nyhurok
+    ev_timer need_event_processing;             // azonnali idÅ‘zÃ­tÅ‘ az esemÃ©nyek kikÃ¼ldÃ©sÃ©hez
+    ev_timer t_connect_delayed;                 // kÃ©sleltetett connect idÅ‘zÃ­tÅ‘
+    char inbuf[AMI_BUFSIZ];                     // bejÃ¶vÅ‘ buffer
+    int inbuf_pos;                              // bejÃ¶vÅ‘ buffer pozÃ­ciÃ³ja
+    struct ami_event_t *event_head;             // esemÃ©ny vÃ¡rakozÃ³sor
+    struct ami_event_t event_tmp;               // itt kÃ©szÃ­tÃ¼nk Ãºj esemÃ©nyt, amit aztÃ¡n a vÃ¡rakozÃ³sorba mÃ¡solunk
+    int authenticated;                          // 1 lesz sikeres login utÃ¡n
+    unsigned int action_id;                     // soron kÃ¶vetkezÅ‘ hasznÃ¡lhatÃ³ ActionID
     char uuid[16];                              // AMI sajat belso ID
     int cli_actionid;                           // process_input() itt jegyzi meg a Response: Follows ActionID-t
 } ami_t;

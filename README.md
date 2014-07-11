@@ -1,7 +1,7 @@
 # Asterisk Manager Interface client C library
 
 libamievent is an asynchronous event-driven client library for Asterisk Manager
-Interface. It uses [libev](http://software.schmorp.de/pkg/libev.html) as event
+Interface written in C. It uses [libev](http://software.schmorp.de/pkg/libev.html) as event
 loop backend. 
 
 With the libamievent you can send AMI commands and you can subscribe for
@@ -24,9 +24,29 @@ For Gentoo users:
 
     emerge -av libev
 
+## Install
+
+Currently, the Makefile is not prepared to carry out normal library. But, you
+can build the example codes.
+
+Clone the libamievent repo with all submodules.
+
+    git clone --recursive git://github.com/andrewjsi/libamievent
+
+Compile the source, test and install:
+
+    make
+
+## Using library
+
+Sorry, the documentation still needs work, but in the meantime check out the sample
+programs.
+
 ## Todo, Future
 
 * more stability
+* more examples
+* build static and dynamic library
 * well-written documentation
 * the ability to be integrated with other systems as easy as possible
 

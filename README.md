@@ -12,6 +12,10 @@ query AMI variables.
 libamievent support AMI events. You can also specify a callback function of
 what the libamievent is called when events are received.
 
+Huge advantage of the libamievent, that the AMI commands and event names are
+not hardcoded in the library. All commands, event names, parameters and
+variables must be defined by printf-style strings with variable substitution.
+
 ## Requirements
 
 * libev

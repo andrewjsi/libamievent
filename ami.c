@@ -375,7 +375,9 @@ static void process_input (ami_t *ami) {
         allapotban vagyunk, akkor ezt a vizsgalatot kihagyjuk */
         if (!ami->authenticated &&
             (!strcmp(ami->inbuf, "Asterisk Call Manager/1.1\r\n") ||
-            !strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n")))
+            !strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n") ||
+            !strcmp(ami->inbuf, "Asterisk Call Manager/1.2\r\n") ||
+            !strcmp(ami->inbuf, "Asterisk Call Manager/1.3\r\n")))
         {
             bzero(ami->inbuf, sizeof(ami->inbuf));
             ami->inbuf_pos = 0;

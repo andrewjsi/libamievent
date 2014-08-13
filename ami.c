@@ -373,6 +373,8 @@ static void process_input (ami_t *ami) {
 
         /* AMI header vizsgalata. Biztonsagi okokbol ha mar authentikalt
         allapotban vagyunk, akkor ezt a vizsgalatot kihagyjuk */
+
+        // TODO. lekezelni azt az esetet, amikor kezdésnek nem ezt a fejlécet kapjuk!
         if (!ami->authenticated &&
             (!strcmp(ami->inbuf, "Asterisk Call Manager/1.1\r\n") ||
             !strcmp(ami->inbuf, "Asterisk Call Manager/1.0\r\n") ||

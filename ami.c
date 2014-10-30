@@ -7,10 +7,10 @@
  */
 
 // debug infók (kommentezd, ha nem kell)
-//~ #define CON_DEBUG
+// #define CON_DEBUG
 
 // csomagok dumpolása stdout-ra (kommentezd, ha nem kell)
-//~ #define AMI_DEBUG_PACKET_DUMP
+// #define AMI_DEBUG_PACKET_DUMP
 
 #include <stdlib.h>
 #include <unistd.h>

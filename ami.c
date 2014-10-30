@@ -314,6 +314,17 @@ static void parse_input (ami_t *ami, char *buf, int size) {
     }
 }
 
+void ami_disconnect (ami_t *ami, const char *fmt, ...) {
+    char reason_text[AMI_BUFSIZ];
+    va_list ap;
+    va_start(ap, fmt);
+    vsnprintf(reason_text, sizeof(reason_text), fmt, ap);
+    va_end(ap);
+
+    if (netsocket_is_connected(ami->netsocket))
+        netsocket_disconnect_withevent(ami->netsocket, reason_text);
+}
+
 static void response_login (ami_event_t *response) {
     ami_t *ami = response->ami;
 

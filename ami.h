@@ -129,5 +129,7 @@ void ami_dump_lists (ami_t *ami);
 
 void ami_event_dump (ami_event_t *el);
 
+void ami_disconnect (ami_t *ami, const char *fmt, ...);
+
 #endif // #ifndef AMI_H_INCLUDED
 

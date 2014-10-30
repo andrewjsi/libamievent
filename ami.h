@@ -26,7 +26,7 @@
 #endif
 
 #ifndef AMI_FIELD_SIZE
-#define AMI_FIELD_SIZE 64
+#define AMI_FIELD_SIZE 300
 #endif
 
 enum ami_event_type {
